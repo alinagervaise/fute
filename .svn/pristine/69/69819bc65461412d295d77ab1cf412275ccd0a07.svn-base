@@ -1,0 +1,127 @@
+<%-- 
+    Document   : polices
+    Created on : 19 janv. 2015, 18:34:16
+    Author     : Nono Guy
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%--<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>--%>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<script type="text/javascript">
+
+</script>
+<jsp:include page="header.jsp"/>
+<jsp:include page="top_page.jsp"/>
+<jsp:include page="menu_header.jsp"/>
+<div id="menu-container">
+    <div class="divs">
+        <div class="content homepage" id ="menu-8">
+            <div class="container">
+                <jsp:include page="submenus.jsp"/>
+                <div class="row">
+                    <div class="col-md-10 col-sm-6">
+                        <h2><spring:message code="label.editpolicy"/></h2>
+                        <div class="col-sm-12">
+                            <div class="col-lg-12">
+                                <c:if test="${!empty errorMessage }">
+                                    <div class="alert alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <spring:message code="${errorMessage}"/>
+                                    </div>
+                                </c:if>
+                            </div>
+                            <c:choose>
+                                <c:when test="${!empty successMessage }">
+                                    <div class="alert alert-success">
+                                        <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
+                                        <img src="<c:url value="/resources/images/icon/valid.png" />" >
+                                        <spring:message code="${successMessage}"/>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <form id="defaultForm"  action="<c:url value="/editcontracts" />"  method="post">
+                                        <!--<h2 class="title text-center"><spring:message code="label.createPolicy"/></h2>-->
+                                        <div class="form-group">
+                                            <div class="col-lg-12 ">
+                                                <label for="libelle"><spring:message code="form.libelle"/></label>
+                                                <input type="text" class="form-control" name="libelle" value="${libelle}" placeholder="<spring:message code="form.libelle"/>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-12 ">
+                                                <label for="typePolice"><spring:message code="label.typePolice"/></label>
+                                                <select class=" placeholder populate" name="typePolice" id="typePolice" style="width: 100%">
+                                                    <c:if test="${!empty listeTypePolice}" >
+                                                        <c:forEach var="tp" items="${listeTypePolice}">
+                                                            <c:if test="${typePolice== tp.id}" >
+                                                                <option selected value="${tp.id}" class="text-justify">
+                                                                    ${tp.label}
+                                                                </option>
+                                                            </c:if>
+                                                            <option value="${tp.id}" class="text-justify">
+                                                                ${tp.label}
+                                                            </option>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--<option value=""  >-- <spring:message code="label.typePolice"/>--</option>--> 
+                                                </select>
+                                                <script type="text/javascript">
+                                                    $("#typePolice").select2({placeholder: "-- Select --"});
+                                                </script>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-6">
+                                                <label for="montantPrime"><spring:message code="form.montantPrime"/></label>
+                                                <input type="text" class="form-control" placeholder="<spring:message code='form.montantPrime'/>" name="montantPrime" id="montantPrime" value="${montantPrime}" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label for="montantPlafond"><spring:message code="form.montantPlafond"/></label>
+                                                <input type="text" class="form-control" placeholder="<spring:message code='form.montantPlafond'/>" name="montantPlafond" id="montantPlafond" value="${montantPlafond}" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-12">
+                                                <label for="territorialite"><spring:message code="form.territorialite"/></label>
+                                                <input class="form-control" placeholder="<spring:message code='form.territorialite'/> "   id="territorialite" name="territorialite" value="${territorialite}" type="text"  />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-6">
+                                                <label for="actePlafond"><spring:message code="form.actePlafond"/></label>
+                                                <input class="form-control" placeholder="<spring:message code='form.actePlafond'/> "   id="actePlafond" name="actePlafond" value="${actePlafond}" type="text"  />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label for="tauxCouverture"><spring:message code="form.tauxCouverture"/></label>
+                                                <input disabled="" type="text" class="form-control" placeholder="<spring:message code='form.tauxCouverture'/>" id="tauxCouverture" name="tauxCouverture" value="${tauxCouverture}" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6 text-right">
+                                            <br><button type="submit" name="addcontracts"  class="form-control btn btn-primary"><spring:message code="form.submit"/></button>
+                                            <input type="hidden" class="form-control" id="rowId" name="rowId" value="${selectedPolicy.id}" />
+                                        </div>
+                                    </form>
+                                </c:otherwise>
+
+                            </c:choose>
+                        </div>
+                        <div class="clear"></div>
+                    </div> 
+                    <div class="col-md-2 col-sm-6">
+                        <jsp:include page="operations_sub.jsp"/>
+                    </div>
+                </div>
+            </div>    
+        </div>
+        <div class="modal fade" id="editRecord" tabindex="-1" role="dialog" aria-labelledby="editRecord" aria-hidden="true">
+            <jsp:include page="_editRecord.jsp"/>
+        </div>
+        <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="editContactLabel" aria-hidden="true">
+            <jsp:include page="_deleteRecord.jsp"/>
+        </div>
+        <jsp:include page="headcontent.jsp"/>
+    </div>
+    <jsp:include page="footer.jsp"/>

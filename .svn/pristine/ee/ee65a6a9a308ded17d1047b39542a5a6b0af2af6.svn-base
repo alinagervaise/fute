@@ -1,0 +1,39 @@
+/*
+ * This controller aims to map links of administration 
+ * 
+ */
+package com.celylog.curam.web.controller;
+
+
+import com.celylog.curam.service.security.AdministrationService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+
+
+/**
+ *
+ * @author xavalex
+ */
+@Controller
+public class AdministrationController {
+    
+    @Autowired
+    AdministrationService adminService;
+    
+    @RequestMapping(value = {"/pays"}, method = RequestMethod.GET)
+    public String login_test(HttpServletRequest request, HttpSession session) {
+        return "pays";
+    }
+    @RequestMapping(value = {"/pays"}, method = RequestMethod.POST)
+    public String test2(HttpServletRequest request, HttpSession session) {
+        String  countryLabel =  request.getParameter("countryName");
+        session.setAttribute("country_name", "TEST");
+        adminService.addCountry(countryLabel);
+        return "pays";
+    }
+}

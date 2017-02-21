@@ -1,0 +1,233 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author user
+ */
+@Entity
+@Table(name = "menus")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Menus.findAll", query = "SELECT m FROM Menus m"),
+    @NamedQuery(name = "Menus.findById", query = "SELECT m FROM Menus m WHERE m.id = :id"),
+    @NamedQuery(name = "Menus.findByLibelle", query = "SELECT m FROM Menus m WHERE m.libelle = :libelle"),
+    @NamedQuery(name = "Menus.findByIcone", query = "SELECT m FROM Menus m WHERE m.icone = :icone"),
+    @NamedQuery(name = "Menus.findByClasse", query = "SELECT m FROM Menus m WHERE m.classe = :classe"),
+    @NamedQuery(name = "Menus.findByParent", query = "SELECT m FROM Menus m WHERE m.parent = :parent"),
+    @NamedQuery(name = "Menus.findByOrdre", query = "SELECT m FROM Menus m WHERE m.ordre = :ordre"),
+    @NamedQuery(name = "Menus.findByDateCreation", query = "SELECT m FROM Menus m WHERE m.dateCreation = :dateCreation"),
+    @NamedQuery(name = "Menus.findByDateModification", query = "SELECT m FROM Menus m WHERE m.dateModification = :dateModification")})
+public class Menus implements Serializable {
+    @Size(max = 50)
+    @Column(name = "code_libelle")
+    private String codeLibelle;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 30)
+    @Column(name = "libelle")
+    private String libelle;
+    @Size(max = 80)
+    @Column(name = "description")
+    private String description;
+    @Size(max = 20)
+    @Column(name = "action")
+    private String action;
+    @Size(max = 20)
+    @Column(name = "icone")
+    private String icone;
+    @Size(max = 10)
+    @Column(name = "classe")
+    private String classe;
+    @ManyToOne
+    @JoinColumn (name="parent")
+    private Menus parent;
+    @Column(name = "ordre")
+    private Short ordre;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+    @Column(name = "date_modification")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModification;
+    
+    @ManyToMany(mappedBy = "menus")
+    private Set<Profil> profils = new HashSet<Profil>(0);
+    
+    @OneToMany(mappedBy = "parent")
+    private List<Menus> subMenus = new ArrayList<Menus>(0);
+    
+    
+
+    public Menus() {
+    }
+
+    public Menus(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }    
+    
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action_) {
+        this.action = action_;
+    }
+
+
+    public String getIcone() {
+        return icone;
+    }
+
+    public void setIcone(String icone) {
+        this.icone = icone;
+    }
+
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public Menus getParent() {
+        return parent;
+    }
+
+    public void setParent(Menus parent) {
+        this.parent = parent;
+    }
+
+    public Short getOrdre() {
+        return ordre;
+    }
+
+    public void setOrdre(Short ordre) {
+        this.ordre = ordre;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Date getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(Date dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Set<Profil> getProfils() {
+        return profils;
+    }
+
+    public void setProfils(Set<Profil> profils) {
+        this.profils = profils;
+    }
+
+    public List<Menus> getSubMenus() {
+        return subMenus;
+    }
+
+    public void setSubMenus(List<Menus> subMenus) {
+        this.subMenus = subMenus;
+    }
+
+    
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Menus)) {
+            return false;
+        }
+        Menus other = (Menus) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.Menus[ id=" + id + " ]";
+    }
+
+    public String getCodeLibelle() {
+        return codeLibelle;
+    }
+
+    public void setCodeLibelle(String codeLibelle) {
+        this.codeLibelle = codeLibelle;
+    }
+
+    }

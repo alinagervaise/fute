@@ -1,0 +1,61 @@
+//le ControleurBeneficiare communique directement avec la table beneficiaire
+package com.celylog.curam.web.controller;
+
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.security.FormService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.celylog.curam.model.entities.Prestation;
+import com.celylog.curam.service.DefaultService;
+import com.celylog.curam.service.security.UtilisateurService;
+import static org.hibernate.annotations.common.util.impl.LoggerFactory.logger;
+
+/**
+ *
+ * @author Administrateur
+ */
+@Controller
+public class PrestationController {
+    @Autowired
+    FormService formService;
+    
+    @Autowired
+    DefaultService service;
+    
+    @RequestMapping(value = {"/faireprestation"}, method = RequestMethod.GET)
+    public String home_() {
+        return "faireprestation";
+    }
+    @RequestMapping(value = {"/faireprestation"}, method = RequestMethod.POST)
+    public String insertPrestation(HttpServletRequest request, HttpSession session) {
+        try {
+            Object o = formService.add(request, session, "Prestation", false);
+            Prestation prestation = (Prestation)o;
+            this.createPrestation(session, request,prestation);
+        } catch (Exception ex) {
+//            Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "redirect:/faireprestation";
+    }
+       
+  private void createPrestation(HttpSession session, HttpServletRequest request, Prestation prestation) {
+        try {
+            // ici on peut créer une prestation et la modifier
+            // on peut mettre à jours les autres info de la prestation avant de l'enregistrer
+            
+//            prestation.setVersion(1);
+//            prestation.setActive(1);
+            service.create(prestation);
+        } catch (Exception ex) {
+//            logger.log(Level.SEVERE, ex.getMessage());
+        }
+    }
+  
+}

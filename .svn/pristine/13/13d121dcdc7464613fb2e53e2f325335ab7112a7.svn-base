@@ -1,0 +1,47 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.utils;
+
+/**
+ *
+ * @author Nono Guy
+ */
+public class GenericParamName {
+    public static String ENTITY = "entity"; // représente le nom de la table telque défini dans l'entity
+    public static String TABLENAME = "tableName"; // représente le nom de la table telque défini dans l'entity
+    public static String OPERATION = "operation"; // c'est le libelle du paramètre contenant l'opération du formulaire à exécuter
+    public static String SEARCH = "recherche";
+    public static String USER = "user";
+    public static String userId = "userId";
+    public static String RESULT_SQLSEARCH_ENTITY = "ENTITY_";
+    public static String packageentity = "com.celylog.curam.model.entities.";
+    public static String DATE_HEURE_CREATION = "dateHeureCreation";
+    
+    public static String DATE_HEURE_MAJ = "dateHeureDerniereMaj";
+    public static String TEMPSUPDATE = "dateDerniereMaj";
+    public static String Codecreateur = "code_createur";
+    public static String codeediteur = "code_modificateur";
+    public static String DOWNLOAD = "download";
+    public static String MESSAGE = "message";
+    public static String UPLOAD = "upload";
+    public static String MENU = "menu";
+    public static String PREFIXE_NEW = "add";
+    
+    // champs à mettre à jour automatiquement
+    public static String createdDate = "createdDate";
+    public static String createdHour = "createdHour";
+//    public static String createdDateTime = "createdDateTime";
+    public static String createdDateTime = "dateCreation";
+//    public static String lastUpdatedDateTime = "lastUpdatedDateTime";
+    public static String lastUpdatedDateTime = "dateModification";
+    public static String isActiveData = "isActiveData";
+    public static String isDeleteData = "isDeleteData";
+    public static String liveStatus = "liveStatus";
+    public static String creatorId = "creatorId";
+    public static String lastModifierId = "lastModifierId";
+    public static String universalId = "universalId";
+    public static String signature = "signature";
+}

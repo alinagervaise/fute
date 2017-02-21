@@ -1,0 +1,52 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.web.controller;
+
+import com.celylog.curam.model.entities.Prestataire;
+import com.celylog.curam.model.entities.Statuts;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DefaultService;
+import com.celylog.curam.service.security.FormService;
+import com.celylog.curam.service.security.PrestataireService;
+import com.celylog.curam.service.security.StatutService;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ *
+ * @author Harry Wanki
+ */
+@RequestMapping(value = "/prestataire")
+@Controller
+public class PrestataireController {
+private static final Logger logger = Logger.getLogger(UtilisateurController.class.getName());
+    @Autowired
+    FormService formService;
+    @Autowired
+    DefaultService dao;
+    @Autowired
+    StatutService statutService;
+    @Autowired
+    PrestataireService prestataireService;
+    
+    @RequestMapping(method = RequestMethod.GET)
+    public String list(Model uiModel) {
+        logger.info("Listing prestataires");
+        Statuts statuts2 = statutService.getById(2, Statuts.class);
+        Statuts statuts3 = statutService.getById(3, Statuts.class);
+        List<Prestataire> prestataire = prestataireService.getAll("from Prestataire as p where p.statuts=" + statuts2.getId() + " or p.statuts=" + statuts3.getId());
+        
+        uiModel.addAttribute("prestataire", prestataire);
+        logger.log(Level.INFO, "No. of users: {0}", prestataire.size());
+        return "list_prestataire";
+    }
+}

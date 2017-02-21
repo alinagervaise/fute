@@ -1,0 +1,253 @@
+annotation.processing.enabled=true
+annotation.processing.enabled.in.editor=true
+annotation.processing.processor.options=-Aeclipselink.canonicalmodel.use_static_factory=false
+annotation.processing.processors.list=
+annotation.processing.run.all.processors=true
+annotation.processing.source.output=${build.generated.sources.dir}/ap-source-output
+build.classes.dir=${build.web.dir}/WEB-INF/classes
+build.classes.excludes=**/*.java,**/*.form
+build.dir=build
+build.generated.dir=${build.dir}/generated
+build.generated.sources.dir=${build.dir}/generated-sources
+build.test.classes.dir=${build.dir}/test/classes
+build.test.results.dir=${build.dir}/test/results
+build.web.dir=${build.dir}/web
+build.web.excludes=${build.classes.excludes}
+client.urlPart=login
+compile.jsps=false
+conf.dir=${source.root}/conf
+debug.classpath=${build.classes.dir}:${javac.classpath}
+debug.test.classpath=\
+    ${run.test.classpath}
+display.browser=true
+# Files to be excluded from distribution war
+dist.archive.excludes=
+dist.dir=dist
+dist.ear.war=${dist.dir}/${war.ear.name}
+dist.javadoc.dir=${dist.dir}/javadoc
+dist.war=${dist.dir}/${war.name}
+endorsed.classpath=\
+    ${libs.javaee-endorsed-api-6.0.classpath}
+excludes=
+file.reference.antlr-2.7.7.jar=lib/antlr-2.7.7.jar
+file.reference.aopalliance-1.0.jar=lib/aopalliance-1.0.jar
+file.reference.aspectjweaver-1.8.2.jar=lib/aspectjweaver-1.8.2.jar
+file.reference.c3p0-0.9.2.1.jar=lib/c3p0-0.9.2.1.jar
+file.reference.cglib-nodep-3.1.jar=lib/cglib-nodep-3.1.jar
+file.reference.com.google.guice.jar=lib/com.google.guice.jar
+file.reference.commons-codec-1.6.jar=lib/commons-codec-1.6.jar
+file.reference.commons-fileupload-1.3.jar=lib/commons-fileupload-1.3.jar
+file.reference.commons-io-1.3.2.jar=lib/commons-io-1.3.2.jar
+file.reference.commons-logging-1.2.jar=lib/commons-logging-1.2.jar
+file.reference.dom4j-1.6.1.jar=lib/dom4j-1.6.1.jar
+file.reference.eclipselink-2.5.2.jar=lib/eclipselink-2.5.2.jar
+file.reference.eclipselink.jar=lib/eclipselink.jar
+file.reference.ehcache-core-2.6.9.jar=lib/ehcache-core-2.6.9.jar
+file.reference.fluent-hc-4.3.5.jar=lib/fluent-hc-4.3.5.jar
+file.reference.hibernate-commons-annotations-4.0.4.Final.jar=lib/hibernate-commons-annotations-4.0.4.Final.jar
+file.reference.hibernate-core-4.3.5.Final.jar=lib/hibernate-core-4.3.5.Final.jar
+file.reference.hibernate-entitymanager-4.3.6.Final.jar=lib/hibernate-entitymanager-4.3.6.Final.jar
+file.reference.hibernate-search-engine-4.5.1.Final.jar=lib/hibernate-search-engine-4.5.1.Final.jar
+file.reference.hibernate-search-orm-4.5.1.Final.jar=lib/hibernate-search-orm-4.5.1.Final.jar
+file.reference.hsqldb-2.3.2.jar=lib/hsqldb-2.3.2.jar
+file.reference.httpclient-4.3.5.jar=lib/httpclient-4.3.5.jar
+file.reference.httpclient-cache-4.3.5.jar=lib/httpclient-cache-4.3.5.jar
+file.reference.httpcore-4.3.2.jar=lib/httpcore-4.3.2.jar
+file.reference.httpmime-4.3.5.jar=lib/httpmime-4.3.5.jar
+file.reference.iText-2.1.7.js2.jar=lib/iText-2.1.7.js2.jar
+file.reference.jandex-1.1.0.Final.jar=lib/jandex-1.1.0.Final.jar
+file.reference.jasperreports-chart-themes-5.1.0.jar=lib/jasperreports-chart-themes-5.1.0.jar
+file.reference.javassist-3.10.0.GA.jar=lib/javassist-3.10.0.GA.jar
+file.reference.javax.persistence-2.1.0.jar=lib/javax.persistence-2.1.0.jar
+file.reference.javax.persistence_2.1.0.v201304241213.jar=lib/javax.persistence_2.1.0.v201304241213.jar
+file.reference.javax.servlet-api-3.1.0.jar=lib/javax.servlet-api-3.1.0.jar
+file.reference.jaxen-1.1.6.jar=lib/jaxen-1.1.6.jar
+file.reference.jboss-logging-3.1.4.GA.jar=lib/jboss-logging-3.1.4.GA.jar
+file.reference.jboss-logging-annotations-1.2.0.Beta1.jar=lib/jboss-logging-annotations-1.2.0.Beta1.jar
+file.reference.jboss-transaction-api_1.2_spec-1.0.0.Final.jar=lib/jboss-transaction-api_1.2_spec-1.0.0.Final.jar
+file.reference.jcl-over-slf4j-1.7.5.jar=lib/jcl-over-slf4j-1.7.5.jar
+file.reference.jsr250-api-1.0.jar=lib/jsr250-api-1.0.jar
+file.reference.jstl-api.jar=lib/jstl-api.jar
+file.reference.jstl-impl.jar=lib/jstl-impl.jar
+file.reference.junit-4.11.jar=lib/junit-4.11.jar
+file.reference.ldapsdk-4.1.jar=lib/ldapsdk-4.1.jar
+file.reference.log4j-1.2.14.jar=lib/log4j-1.2.14.jar
+file.reference.logback-classic-0.9.29.jar=lib/logback-classic-0.9.29.jar
+file.reference.logback-core-1.0.13.jar=lib/logback-core-1.0.13.jar
+file.reference.lucene-core-3.6.2.jar=lib/lucene-core-3.6.2.jar
+file.reference.mail.jar=lib/mail.jar
+file.reference.mysql-connector-java-5.1.23-bin.jar=lib/mysql-connector-java-5.1.23-bin.jar
+file.reference.objenesis-1.2.jar=lib/objenesis-1.2.jar
+file.reference.openid4java-0.9.8.jar=lib/openid4java-0.9.8.jar
+file.reference.org.eclipse.persistence.jpa.jpql-2.5.2.jar=lib/org.eclipse.persistence.jpa.jpql-2.5.2.jar
+file.reference.org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar=lib/org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar
+file.reference.powermock-reflect-1.5.1.jar=lib/powermock-reflect-1.5.1.jar
+file.reference.slf4j-api-1.7.7.jar=lib/slf4j-api-1.7.7.jar
+file.reference.slf4j-simple-1.7.7.jar=lib/slf4j-simple-1.7.7.jar
+file.reference.spring-aop-4.1.0.RELEASE.jar=lib/spring-aop-4.1.0.RELEASE.jar
+file.reference.spring-aspects-4.1.0.RELEASE.jar=lib/spring-aspects-4.1.0.RELEASE.jar
+file.reference.spring-beans-4.1.0.RELEASE.jar=lib/spring-beans-4.1.0.RELEASE.jar
+file.reference.spring-context-4.1.0.RELEASE.jar=lib/spring-context-4.1.0.RELEASE.jar
+file.reference.spring-context-support-4.1.0.RELEASE.jar=lib/spring-context-support-4.1.0.RELEASE.jar
+file.reference.spring-core-4.1.0.RELEASE.jar=lib/spring-core-4.1.0.RELEASE.jar
+file.reference.spring-expression-4.1.0.RELEASE.jar=lib/spring-expression-4.1.0.RELEASE.jar
+file.reference.spring-instrument-4.1.0.RELEASE.jar=lib/spring-instrument-4.1.0.RELEASE.jar
+file.reference.spring-jdbc-4.1.0.RELEASE.jar=lib/spring-jdbc-4.1.0.RELEASE.jar
+file.reference.spring-ldap-1.1.2.jar=lib/spring-ldap-1.1.2.jar
+file.reference.spring-ldap-core-2.0.2.RELEASE.jar=lib/spring-ldap-core-2.0.2.RELEASE.jar
+file.reference.spring-orm-4.1.0.RELEASE.jar=lib/spring-orm-4.1.0.RELEASE.jar
+file.reference.spring-security-acl-3.2.5.RELEASE.jar=lib/spring-security-acl-3.2.5.RELEASE.jar
+file.reference.spring-security-config-3.2.5.RELEASE.jar=lib/spring-security-config-3.2.5.RELEASE.jar
+file.reference.spring-security-core-3.2.5.RELEASE.jar=lib/spring-security-core-3.2.5.RELEASE.jar
+file.reference.spring-security-core-tiger-2.0.8.RELEASE.jar=lib/spring-security-core-tiger-2.0.8.RELEASE.jar
+file.reference.spring-security-ldap-3.2.5.RELEASE.jar=lib/spring-security-ldap-3.2.5.RELEASE.jar
+file.reference.spring-security-openid-3.2.5.RELEASE.jar=lib/spring-security-openid-3.2.5.RELEASE.jar
+file.reference.spring-security-taglibs-3.2.5.RELEASE.jar=lib/spring-security-taglibs-3.2.5.RELEASE.jar
+file.reference.spring-security-web-3.2.5.RELEASE.jar=lib/spring-security-web-3.2.5.RELEASE.jar
+file.reference.spring-test-4.1.0.RELEASE.jar=lib/spring-test-4.1.0.RELEASE.jar
+file.reference.spring-tx-4.1.0.RELEASE.jar=lib/spring-tx-4.1.0.RELEASE.jar
+file.reference.spring-web-4.1.0.RELEASE.jar=lib/spring-web-4.1.0.RELEASE.jar
+file.reference.spring-webmvc-4.1.0.RELEASE.jar=lib/spring-webmvc-4.1.0.RELEASE.jar
+file.reference.validation-api-1.0.0.GA.jar=lib/validation-api-1.0.0.GA.jar
+file.reference.xml-apis-1.3.03.jar=lib/xml-apis-1.3.03.jar
+includes=**
+j2ee.compile.on.save=true
+j2ee.copy.static.files.on.save=true
+j2ee.deploy.on.save=false
+j2ee.platform=1.6-web
+j2ee.platform.classpath=${j2ee.server.middleware}/mq/lib/jaxm-api.jar:${j2ee.server.home}/modules/endorsed/javax.annotation-api.jar:${j2ee.server.home}/modules/endorsed/jaxb-api.jar:${j2ee.server.home}/modules/endorsed/webservices-api-osgi.jar:${j2ee.server.home}/modules/bean-validator.jar:${j2ee.server.home}/modules/javax.batch-api.jar:${j2ee.server.home}/modules/javax.ejb-api.jar:${j2ee.server.home}/modules/javax.el.jar:${j2ee.server.home}/modules/javax.enterprise.concurrent-api.jar:${j2ee.server.home}/modules/javax.enterprise.concurrent.jar:${j2ee.server.home}/modules/javax.enterprise.deploy-api.jar:${j2ee.server.home}/modules/javax.faces.jar:${j2ee.server.home}/modules/javax.inject.jar:${j2ee.server.home}/modules/javax.interceptor-api.jar:${j2ee.server.home}/modules/javax.jms-api.jar:${j2ee.server.home}/modules/javax.json.jar:${j2ee.server.home}/modules/javax.mail.jar:${j2ee.server.home}/modules/javax.management.j2ee-api.jar:${j2ee.server.home}/modules/javax.persistence.jar:${j2ee.server.home}/modules/javax.resource-api.jar:${j2ee.server.home}/modules/javax.security.auth.message-api.jar:${j2ee.server.home}/modules/javax.security.jacc-api.jar:${j2ee.server.home}/modules/javax.servlet-api.jar:${j2ee.server.home}/modules/javax.servlet.jsp-api.jar:${j2ee.server.home}/modules/javax.servlet.jsp.jar:${j2ee.server.home}/modules/javax.servlet.jsp.jstl-api.jar:${j2ee.server.home}/modules/javax.servlet.jsp.jstl.jar:${j2ee.server.home}/modules/javax.transaction-api.jar:${j2ee.server.home}/modules/javax.websocket-api.jar:${j2ee.server.home}/modules/javax.ws.rs-api.jar:${j2ee.server.home}/modules/javax.xml.registry-api.jar:${j2ee.server.home}/modules/javax.xml.rpc-api.jar:${j2ee.server.home}/modules/jaxb-osgi.jar:${j2ee.server.home}/modules/webservices-osgi.jar:${j2ee.server.home}/modules/weld-osgi-bundle.jar
+j2ee.platform.embeddableejb.classpath=${j2ee.server.home}/lib/embedded/glassfish-embedded-static-shell.jar
+j2ee.platform.wscompile.classpath=${j2ee.server.home}/modules/webservices-osgi.jar
+j2ee.platform.wsgen.classpath=${j2ee.server.home}/modules/webservices-osgi.jar:${j2ee.server.home}/modules/endorsed/webservices-api-osgi.jar:${j2ee.server.home}/modules/jaxb-osgi.jar:${j2ee.server.home}/modules/endorsed/jaxb-api.jar
+j2ee.platform.wsimport.classpath=${j2ee.server.home}/modules/webservices-osgi.jar:${j2ee.server.home}/modules/endorsed/webservices-api-osgi.jar:${j2ee.server.home}/modules/jaxb-osgi.jar:${j2ee.server.home}/modules/endorsed/jaxb-api.jar
+j2ee.platform.wsit.classpath=
+j2ee.server.type=gfv3ee6
+jar.compress=false
+javac.classpath=\
+    ${libs.eclipselink.classpath}:\
+    ${file.reference.antlr-2.7.7.jar}:\
+    ${file.reference.aopalliance-1.0.jar}:\
+    ${file.reference.aspectjweaver-1.8.2.jar}:\
+    ${file.reference.c3p0-0.9.2.1.jar}:\
+    ${file.reference.cglib-nodep-3.1.jar}:\
+    ${file.reference.com.google.guice.jar}:\
+    ${file.reference.commons-codec-1.6.jar}:\
+    ${file.reference.commons-fileupload-1.3.jar}:\
+    ${file.reference.commons-io-1.3.2.jar}:\
+    ${file.reference.commons-logging-1.2.jar}:\
+    ${file.reference.dom4j-1.6.1.jar}:\
+    ${file.reference.eclipselink-2.5.2.jar}:\
+    ${file.reference.eclipselink.jar}:\
+    ${file.reference.ehcache-core-2.6.9.jar}:\
+    ${file.reference.fluent-hc-4.3.5.jar}:\
+    ${file.reference.hibernate-commons-annotations-4.0.4.Final.jar}:\
+    ${file.reference.hibernate-core-4.3.5.Final.jar}:\
+    ${file.reference.hibernate-entitymanager-4.3.6.Final.jar}:\
+    ${file.reference.hibernate-search-engine-4.5.1.Final.jar}:\
+    ${file.reference.hibernate-search-orm-4.5.1.Final.jar}:\
+    ${file.reference.hsqldb-2.3.2.jar}:\
+    ${file.reference.httpclient-4.3.5.jar}:\
+    ${file.reference.httpclient-cache-4.3.5.jar}:\
+    ${file.reference.httpcore-4.3.2.jar}:\
+    ${file.reference.httpmime-4.3.5.jar}:\
+    ${file.reference.iText-2.1.7.js2.jar}:\
+    ${file.reference.jandex-1.1.0.Final.jar}:\
+    ${file.reference.jasperreports-chart-themes-5.1.0.jar}:\
+    ${file.reference.javassist-3.10.0.GA.jar}:\
+    ${file.reference.javax.persistence-2.1.0.jar}:\
+    ${file.reference.javax.persistence_2.1.0.v201304241213.jar}:\
+    ${file.reference.javax.servlet-api-3.1.0.jar}:\
+    ${file.reference.jaxen-1.1.6.jar}:\
+    ${file.reference.jboss-logging-3.1.4.GA.jar}:\
+    ${file.reference.jboss-logging-annotations-1.2.0.Beta1.jar}:\
+    ${file.reference.jboss-transaction-api_1.2_spec-1.0.0.Final.jar}:\
+    ${file.reference.jcl-over-slf4j-1.7.5.jar}:\
+    ${file.reference.jsr250-api-1.0.jar}:\
+    ${file.reference.jstl-api.jar}:\
+    ${file.reference.jstl-impl.jar}:\
+    ${file.reference.junit-4.11.jar}:\
+    ${file.reference.ldapsdk-4.1.jar}:\
+    ${file.reference.log4j-1.2.14.jar}:\
+    ${file.reference.logback-classic-0.9.29.jar}:\
+    ${file.reference.logback-core-1.0.13.jar}:\
+    ${file.reference.lucene-core-3.6.2.jar}:\
+    ${file.reference.mail.jar}:\
+    ${file.reference.mysql-connector-java-5.1.23-bin.jar}:\
+    ${file.reference.objenesis-1.2.jar}:\
+    ${file.reference.openid4java-0.9.8.jar}:\
+    ${file.reference.org.eclipse.persistence.jpa.jpql-2.5.2.jar}:\
+    ${file.reference.org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar}:\
+    ${file.reference.powermock-reflect-1.5.1.jar}:\
+    ${file.reference.slf4j-api-1.7.7.jar}:\
+    ${file.reference.slf4j-simple-1.7.7.jar}:\
+    ${file.reference.spring-aop-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-aspects-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-beans-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-context-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-context-support-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-core-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-expression-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-instrument-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-jdbc-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-ldap-1.1.2.jar}:\
+    ${file.reference.spring-ldap-core-2.0.2.RELEASE.jar}:\
+    ${file.reference.spring-orm-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-security-acl-3.2.5.RELEASE.jar}:\
+    ${file.reference.spring-security-config-3.2.5.RELEASE.jar}:\
+    ${file.reference.spring-security-core-3.2.5.RELEASE.jar}:\
+    ${file.reference.spring-security-core-tiger-2.0.8.RELEASE.jar}:\
+    ${file.reference.spring-security-ldap-3.2.5.RELEASE.jar}:\
+    ${file.reference.spring-security-openid-3.2.5.RELEASE.jar}:\
+    ${file.reference.spring-security-taglibs-3.2.5.RELEASE.jar}:\
+    ${file.reference.spring-security-web-3.2.5.RELEASE.jar}:\
+    ${file.reference.spring-test-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-tx-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-web-4.1.0.RELEASE.jar}:\
+    ${file.reference.spring-webmvc-4.1.0.RELEASE.jar}:\
+    ${file.reference.validation-api-1.0.0.GA.jar}:\
+    ${file.reference.xml-apis-1.3.03.jar}
+# Space-separated list of extra javac options
+javac.compilerargs=
+javac.debug=true
+javac.deprecation=false
+javac.processorpath=\
+    ${javac.classpath}:\
+    ${libs.eclipselinkmodelgen.classpath}
+javac.source=1.6
+javac.target=1.6
+javac.test.classpath=\
+    ${javac.classpath}:\
+    ${build.classes.dir}
+javac.test.processorpath=\
+    ${javac.test.classpath}
+javadoc.additionalparam=
+javadoc.author=false
+javadoc.encoding=${source.encoding}
+javadoc.noindex=false
+javadoc.nonavbar=false
+javadoc.notree=false
+javadoc.preview=true
+javadoc.private=false
+javadoc.splitindex=true
+javadoc.use=true
+javadoc.version=false
+javadoc.windowtitle=
+lib.dir=${web.docbase.dir}/WEB-INF/lib
+persistence.xml.dir=${conf.dir}
+platform.active=default_platform
+resource.dir=setup
+run.test.classpath=\
+    ${javac.test.classpath}:\
+    ${build.test.classes.dir}
+# Space-separated list of JVM arguments used when running a class with a main method or a unit test
+# (you may also define separate properties like run-sys-prop.name=value instead of -Dname=value):
+runmain.jvmargs=
+source.encoding=UTF-8
+source.root=src
+src.dir=${source.root}/java
+test.src.dir=test
+war.content.additional=
+war.ear.name=${war.name}
+war.name=Curam.war
+web.docbase.dir=web
+webinf.dir=web/WEB-INF

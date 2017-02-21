@@ -1,0 +1,144 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.lecaddyfute.model.dao;
+
+import com.lecaddyfute.utils.GenericParamName;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+
+/**
+ *
+ * @author Nono
+ */
+public class DefaultEntityModel extends AbstractEntityModel {
+
+    //public static Map<String,List<Field>>   mapfieldsuneditables=new HashMap<>();
+    public static Map<String, List<Field>> mapfieldsrelations = new HashMap();
+    public static Map<String, List<Field>> mapfields = new HashMap();
+    public static Map<String, List<Field>> mapfieldscolumns = new HashMap();
+    public static Map<String, List<Field>> mapfieldsjoincolums = new HashMap();
+    public static Map<String, List<Field>> mapfieldsrequired = new HashMap();
+    public static Map<String, Field> mapfieldlibelle = new HashMap();
+    public static Map<String, List<Field>> mapfieldsmultipart = new HashMap();
+
+    public static void init(String categorie) {
+
+        populateMap(categorie);
+        //init les categories des joins columns
+        for (Field f : mapfieldsjoincolums.get(categorie)) {
+            populateMap(f.getType().getSimpleName());
+        }
+    }
+
+    public static List<Field> getfieldsrelations(String categorie) {
+        init(categorie);
+        return mapfieldsrelations.get(categorie);
+    }
+
+    public static List<Field> getfields(String categorie) {
+        init(categorie);
+        return mapfields.get(categorie);
+    }
+
+    public static List<Field> getfieldscolumns(String categorie) {
+        init(categorie);
+        return mapfieldscolumns.get(categorie);
+
+    }
+
+    public static List<Field> getfieldsjoincolumns(String categorie) {
+        init(categorie);
+        return mapfieldsjoincolums.get(categorie);
+    }
+
+    public static List<Field> getfieldsrequired(String categorie) {
+        init(categorie);
+        return mapfieldsrequired.get(categorie);
+    }
+
+    public static Field getfieldlibelle(String categorie) {
+        init(categorie);
+        return mapfieldlibelle.get(categorie);
+    }
+
+    public static List<Field> getfieldsmultipart(String categorie) {
+        init(categorie);
+        return mapfieldsrequired.get(categorie);
+    }
+
+    public static void populateMap(String categorie) {
+        List<Field> listattributs = mapfields.get(categorie);
+
+        if (listattributs == null || listattributs.isEmpty()) {
+            listattributs = new ArrayList();
+            List<Field> listfieldsrequired = new ArrayList();
+            List<Field> listrelations = new ArrayList();
+            List<Field> listcolumns = new ArrayList();
+            List<Field> listjoincolumns = new ArrayList();
+            List<Field> listmultipart = new ArrayList();
+
+            Class classcategorie = null;
+            try {
+                classcategorie = Class.forName(GenericParamName.packageentity + categorie);
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+
+            Field[] allfieldscategorie = null;
+            allfieldscategorie = classcategorie != null ? classcategorie.getDeclaredFields() : null;
+
+            for (Field f : allfieldscategorie) {
+                //champs libelle
+                if (f.getName().startsWith("libelle")) {
+                    mapfieldlibelle.put(categorie, f);
+                }
+                if (f.getName().startsWith("fichier")) {
+                    listmultipart.add(f);
+                }
+                OneToMany relationcolunm = f.getAnnotation(OneToMany.class);
+                Column annotationcolum = f.getAnnotation(Column.class);
+                JoinColumn annotationjoincolumn = f.getAnnotation(JoinColumn.class);
+                NotNull annotationnotnul = f.getAnnotation(NotNull.class);
+                if ((annotationcolum != null) || (annotationjoincolumn != null)) {
+                    listattributs.add(f);
+                }
+
+                //pr les relations
+                if (relationcolunm != null) {
+                    listrelations.add(f);
+                }
+                //pr les validations des formulaires
+                if (annotationnotnul != null) {
+                    listfieldsrequired.add(f);
+                }
+
+                if (annotationcolum != null) {
+                    listcolumns.add(f);
+                }
+                if (annotationjoincolumn != null) {
+                    listjoincolumns.add(f);
+                }
+
+            }
+
+            mapfields.put(categorie, listattributs);
+            mapfieldsrelations.put(categorie, listrelations);
+            mapfieldsrequired.put(categorie, listfieldsrequired);
+            mapfieldscolumns.put(categorie, listcolumns);
+            mapfieldsjoincolums.put(categorie, listjoincolumns);
+            mapfieldsmultipart.put(categorie, listmultipart);
+
+        }
+    }
+
+}

@@ -1,0 +1,139 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.lecaddyfute.model.entities;
+
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author Nono Guy
+ */
+@Entity
+@Table(name = "visitor_counter")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "VisitorCounter.findAll", query = "SELECT v FROM VisitorCounter v"),
+    @NamedQuery(name = "VisitorCounter.findById", query = "SELECT v FROM VisitorCounter v WHERE v.id = :id"),
+    @NamedQuery(name = "VisitorCounter.findByAnneeVisite", query = "SELECT v FROM VisitorCounter v WHERE v.anneeVisite = :anneeVisite"),
+    @NamedQuery(name = "VisitorCounter.findByMoiVisite", query = "SELECT v FROM VisitorCounter v WHERE v.moiVisite = :moiVisite"),
+    @NamedQuery(name = "VisitorCounter.findByJourVisite", query = "SELECT v FROM VisitorCounter v WHERE v.jourVisite = :jourVisite"),
+    @NamedQuery(name = "VisitorCounter.findByHeureVisite", query = "SELECT v FROM VisitorCounter v WHERE v.heureVisite = :heureVisite"),
+    @NamedQuery(name = "VisitorCounter.findByNbVisite", query = "SELECT v FROM VisitorCounter v WHERE v.nbVisite = :nbVisite")})
+public class VisitorCounter implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 4)
+    @Column(name = "anneeVisite")
+    private String anneeVisite;
+    @Size(max = 2)
+    @Column(name = "moiVisite")
+    private String moiVisite;
+    @Size(max = 2)
+    @Column(name = "jourVisite")
+    private String jourVisite;
+    @Size(max = 2)
+    @Column(name = "heureVisite")
+    private String heureVisite;
+    @Column(name = "nbVisite")
+    private Integer nbVisite;
+
+    public VisitorCounter() {
+    }
+
+    public VisitorCounter(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getAnneeVisite() {
+        return anneeVisite;
+    }
+
+    public void setAnneeVisite(String anneeVisite) {
+        this.anneeVisite = anneeVisite;
+    }
+
+    public String getMoiVisite() {
+        return moiVisite;
+    }
+
+    public void setMoiVisite(String moiVisite) {
+        this.moiVisite = moiVisite;
+    }
+
+    public String getJourVisite() {
+        return jourVisite;
+    }
+
+    public void setJourVisite(String jourVisite) {
+        this.jourVisite = jourVisite;
+    }
+
+    public String getHeureVisite() {
+        return heureVisite;
+    }
+
+    public void setHeureVisite(String heureVisite) {
+        this.heureVisite = heureVisite;
+    }
+
+    public Integer getNbVisite() {
+        return nbVisite;
+    }
+
+    public void setNbVisite(Integer nbVisite) {
+        this.nbVisite = nbVisite;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof VisitorCounter)) {
+            return false;
+        }
+        VisitorCounter other = (VisitorCounter) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ngs.model.entities.VisitorCounter[ id=" + id + " ]";
+    }
+    
+}

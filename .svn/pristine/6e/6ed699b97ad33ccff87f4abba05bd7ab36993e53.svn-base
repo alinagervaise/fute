@@ -1,0 +1,244 @@
+//le ControleurBeneficiare communique directement avec la table beneficiaire
+package com.celylog.curam.web.controller;
+
+import com.celylog.curam.model.entities.Adresse;
+import com.celylog.curam.model.entities.Beneficiaire;
+import com.celylog.curam.model.entities.BeneficiaireHistorique;
+import com.celylog.curam.model.entities.BeneficiaireUtilisateurView;
+import com.celylog.curam.model.entities.Country;
+import com.celylog.curam.model.entities.District;
+import com.celylog.curam.model.entities.HistoriqueUtilisateur;
+import com.celylog.curam.model.entities.Police;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DefaultService;
+import com.celylog.curam.service.security.FormService;
+import com.celylog.curam.service.security.UserService;
+import com.celylog.curam.utils.Message;
+import com.celylog.curam.utils.UrlUtil;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+/**
+ *
+ * @author Administrateur
+ */
+@Controller
+
+public class BeneficiaireController {
+    
+    @Autowired
+    FormService formService;
+    
+    @Autowired
+    UserService userservice;
+    
+    @Autowired
+    DefaultService dao;
+    
+    @Autowired
+    UtilisateurController userController;
+
+    /**
+     * Cette fonction affiche une page permettant de configurer les beneficiaires.
+     * Elle affiche par aillieurs la liste de tous  bénéficiaires existant dans le
+     * systeme.
+     * 
+     * @param request
+     * @param session
+     * @param uiModel
+     * @return return chemin du .jsp correspondant à l 'url reçue
+     */
+    @RequestMapping(value ="/beneficiaires" , method = RequestMethod.GET)
+    public String adminBeneficiaire(HttpServletRequest request, HttpSession session) {
+        this.getFormValues(request, session);
+        this.listerBeneficiaire(request, session);
+        return "beneficiaire/index_beneficiaires";
+    }
+    
+    @RequestMapping(value ="/listbeneficiaire", method = RequestMethod.GET)
+    public String listBeneficiaire(HttpServletRequest request, HttpSession session) {
+        return "redirect:/beneficiaires";
+    }
+    /**
+     * Sauvegarde les informations liées  à un bénéficiaire à l 'interface
+     * @param request
+     * @param session 
+     */
+    public void  listerBeneficiaire(HttpServletRequest request, HttpSession session){
+        // Display submenu
+        userservice.setAminProfilSession(request,session);
+        try{
+            userservice.setAdminProfilSubMenu(request,session);
+        }catch(IllegalStateException ie){
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.SEVERE, null, ie.toString());
+        }
+        
+        // TODO  add id police as a parameter and remove int id=10001
+        int idPolice = 10001;
+        Police police = (Police)userservice.getById((Object)idPolice, Police.class);
+        Set <Beneficiaire> beneficiaires = police.getBeneficiaires();
+        java.util.Queue <BeneficiaireUtilisateurView> users = new LinkedList <BeneficiaireUtilisateurView> ();
+        for (Beneficiaire beneficiaire : beneficiaires){
+            if (beneficiaire.getIdUtilisateur() != null){
+                String query = "select b from BeneficiaireUtilisateurView b where id_utilisateur"
+                                + "= '"+ beneficiaire.getIdUtilisateur() + "'";
+                List<BeneficiaireUtilisateurView> bList = userservice.getAll(query);
+                BeneficiaireUtilisateurView user = null;
+                if (!bList.isEmpty()){
+                    user = bList.get(0);
+                }
+                users.add(user);
+            } 
+        }
+        request.setAttribute("idPolice", idPolice);
+        request.setAttribute("curentrubric", "beneficiaire");
+        request.setAttribute("users", users);
+      
+    }
+    /**
+     * Cette fonction permet d' afficher une nouvelle page pour créer un beneficiaire
+     * dans le systeme.
+     * @param request
+     * @return 
+     */
+    @RequestMapping(value = "/addbeneficiaire", method = RequestMethod.GET)
+    public String addBeneficiaire(HttpServletRequest request) {
+        String query = "select c from Country c order by c.name";
+        List<Country> countries = userservice.getAll(query);
+        request.setAttribute("CountryList", countries);
+        query = "select d from District d order by d.label";
+        List<District> districts = userservice.getAll(query);
+        request.setAttribute("districts", districts);
+        return "beneficiaire/new_beneficiaire";
+    }
+    /**
+    * Cette methode permet de recuperer les informations d' un benefciaire par
+    * un formulaire et les sauvegarde dans la table historisation des beneficiaires
+    * Si le bénéficiaire est deja un utilisateur
+    *  du systeme  sont matricule utilisateur ne sera pas generer . La fonction 
+    *  retrouve son matricule et le lui affecte.
+    */
+    @RequestMapping(value = "/submitbeneficiaire", method = RequestMethod.POST)
+    public String submitBeneficiaire(HttpServletRequest request, HttpSession session) {
+        try {
+            
+            int  idPolice = (Integer)request.getAttribute("idPolice");
+            
+            Object o2 = formService.add(request, session,"BeneficiaireHistorique", false);
+            BeneficiaireHistorique beneficiaireH = (BeneficiaireHistorique) o2;
+            
+            Object o0 = formService.add(request, session,"Utilisateur", false);
+            Utilisateur user = (Utilisateur) o0;
+            // Recherche si le utilisateur existe dans la base de données CURAM
+            String matricule = "";
+            
+            if (userservice.findUtilisateurByMatricule(user)){
+                matricule = user.getMatricule();
+                beneficiaireH.setIdUtilisateur(user.getId());
+                // Check if Beneficiaire  is register for the same police
+                String query = "select bH from BeneficiaireHistorique bH where bH.idUtilisateur ="
+                            + "'"+user.getId() +"' and ' idPolice"+ idPolice +"'";
+                List<Police> pList = dao.getAll(query);
+                if (!pList.isEmpty()){
+                    request.setAttribute("errorMessage", "form.beneficiaire.exists.errorMessage");
+                    return "redirect:beneficiaire/index";
+                }
+                dao.create((Object)beneficiaireH);
+                    
+            }
+            else {
+                matricule = userservice.generateMatricule(user);
+                Object o1 = formService.add(request, session,"HistoriqueUtilisateur", false);
+                HistoriqueUtilisateur userH = (HistoriqueUtilisateur) o1;
+                userH.setMatricule(matricule);
+                formService.setAllAutomatiqueFields(session,"HistoriqueUtilisateur", true, o1);
+                dao.create((Object)userH);
+                dao.create((Object)beneficiaireH);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "redirect:beneficiaire/index_beneficiaires";
+    }
+    /**
+     *  Cette fonction recupere les informations d ' un beneficiaire et les sauvegarde 
+     *  dans la table des beneficiaire. Si le bénéficiaire est deja un utilisateur
+     *  du systeme  sont matricule utilisateur ne sera pas generer . La fonction 
+     *  retrouve son matricule et le lui affecte.
+     * @param request
+     * @return 
+     */
+    @RequestMapping(value = "/validatebeneficiaire", method = RequestMethod.POST)
+    public String validateBeneficiaire(HttpServletRequest request, HttpSession session) {
+         try {
+            
+            int  idPolice = (Integer)request.getAttribute("idPolice");
+            
+            Object o2 = formService.add(request, session,"BeneficiaireHistorique", false);
+            BeneficiaireHistorique beneficiaireH = (BeneficiaireHistorique) o2;
+            
+            Object o0 = formService.add(request, session,"Utilisateur", false);
+            Utilisateur user = (Utilisateur) o0;
+            
+            // Recherche si le utilisateur existe dans la base de données CURAM
+            String matricule = "";
+            
+            if (userservice.findUtilisateurByMatricule(user)){
+                matricule = user.getMatricule();
+                beneficiaireH.setIdUtilisateur(user.getId());
+                // Check if Beneficiaire  is register for the same police
+                String query = "select bH from BeneficiaireHistorique bH where bH.idUtilisateur ="
+                            + "'"+user.getId() +"' and ' idPolice"+ idPolice +"'";
+                List<Police> pList = dao.getAll(query);
+                if (!pList.isEmpty()){
+                    request.setAttribute("errorMessage", "form.beneficiaire.exists.errorMessage");
+                    return "redirect:beneficiaire/index";
+                }
+                dao.create((Object)beneficiaireH);
+                    
+            }
+            else {
+                matricule = userservice.generateMatricule(user);
+                Object o1 = formService.add(request, session,"HistoriqueUtilisateur", false);
+                HistoriqueUtilisateur userH = (HistoriqueUtilisateur) o1;
+                userH.setMatricule(matricule);
+                formService.setAllAutomatiqueFields(session,"HistoriqueUtilisateur", true, o1);
+                dao.create((Object)userH);
+                dao.create((Object)beneficiaireH);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+
+    public void getFormValues(HttpServletRequest request, HttpSession session){
+        String query = "select c from Country c order by c.name";
+        List<Country> countries = userservice.getAll(query);
+        request.setAttribute("CountryList", countries);
+        query = "select d from District d order by d.label";
+        List<District> districts = userservice.getAll(query);
+        request.setAttribute("districts", districts);
+    }
+}

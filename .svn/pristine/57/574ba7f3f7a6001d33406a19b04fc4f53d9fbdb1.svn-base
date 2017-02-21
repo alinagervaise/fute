@@ -1,0 +1,104 @@
+<%-- 
+    Document   : _div_newPolice
+    Created on : 24 janv. 2015, 16:34:02
+    Author     : Nono Guy
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<div class="col-md-10 col-sm-10">
+    <h2><spring:message code="form.creerUnSouscripteur"/></h2>
+    <div class="col-sm-12">
+        <div class="col-lg-12">
+            <c:if test="${!empty errorMessage }">
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <img src="<c:url value="/resources/images/icon/alert.png" />" >
+                    <spring:message code="${errorMessage}"/>
+                </div>
+            </c:if>
+        </div>
+        <c:choose>
+            <c:when test="${!empty successMessage }">
+                <div class="alert alert-success">
+                    <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
+
+                    <img src="<c:url value="/resources/images/icon/valid.png" />" >
+                    <spring:message code="${successMessage}"/>
+                </div>
+            </c:when>
+
+            <c:otherwise>
+                <form id="defaultForm"  action="<c:url value="/addsouscripteurs" />"  method="post">
+                    <div class="">
+                        <script>
+                            function Ctrl($scope) {
+                                $scope.addsouscriptorMethode = "";
+                            }
+                            ;
+                        </script>
+<!--                        <h2><spring:message code="label.infoSouscritpeur"/></h2>-->
+                        <div class="col-md-12" class="col-lg-12" style=" background: #f8f8f8; border-radius: 5px; margin-top: 20px">
+                            <div class="form-group">
+                                <div class="col-lg-6">
+                                    <label for="typeSouscripteur"><spring:message code="label.typeSouscripteur"/></label>
+                                    <input class="form-control" placeholder="<spring:message code='label.typeSouscripteur'/> "   id="typeSouscripteur" name="typeSouscripteur" value="${typeSouscripteur}" type="text"  />
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="raisonsociale"><spring:message code="form.raisonsociale"/></label>
+                                    <input type="text" class="form-control" placeholder="<spring:message code='form.raisonsociale'/>" id="raisonsociale" name="raisonsociale" value="${raisonsociale}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12 ">
+                                    <Label><spring:message code="label.representantLegal"/></label>
+                                    <select class="form-control"  ng-model="addsouscriptorMethode"   id="addsouscriptorMethode" style="width: 100%">
+                                        <option value=""><spring:message code='form.choose'/></option>
+                                        <option value="0"><spring:message code='form.rechercherRepresentant'/></option>
+                                        <option value="1"><spring:message code='form.creerUnRepresentant'/></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <c:if test="${empty enterSouscriptorInformation }">
+
+                                <div  ng-if="addsouscriptorMethode === '0'">
+                                    <div class="form-group">
+                                        <div class="col-lg-12 ">
+                                            <label for="matricule"><spring:message code="label.matricule"/></label>
+                                            <select class="" name="matricule" id="matricule" style="width: 100%">
+                                                <c:forEach var="matricule" items="${allMatriculeList}">
+                                                    <c:if test="${currentUser.matricule == matricule}" >
+                                                        <option selected value="${matricule}" class="text-justify">
+                                                            ${matricule}
+                                                        </option>
+                                                    </c:if>
+                                                    <option value="${matricule}" class="text-justify">
+                                                        ${matricule}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+
+                                            <script type="text/javascript">
+                                                $("#matricule").select2({placeholder: "--"});
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="addsouscriptorMethode === '1'" >
+                                    <jsp:include page="_div_newUser.jsp"/>
+                                </div>
+                            </c:if>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 text-right">
+                        <br><button type="submit" name="addsouscripteurs"  class="form-control btn btn-primary"><spring:message code="form.submit"/></button>
+                    </div>
+                </form>
+            </c:otherwise>
+
+        </c:choose>
+    </div>
+    <div class="clear"></div>
+</div>                
+<div class="clear"></div>

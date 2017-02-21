@@ -1,0 +1,37 @@
+<%-- 
+    Document   : headcontent
+    Created on : 15 janv. 2015, 17:09:22
+    Author     : Sergeo
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!-- head content start -->
+<c:forEach var="menu" items="${menusUser}" >
+    <div class="content" id="menu-${menu.ordre}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1><spring:message code="${menu.codeLibelle}"></spring:message></h1>
+                </div>
+            </div>
+            <div class="row">
+            <c:forEach var="sMenu" items="${menu.subMenus}" >
+                <div class="col-md-3 col-sm-12 curam_servicegap">
+                    <a href="${sMenu.action}?p=${sMenu.id}" class="">
+                        <div class="curam_icon">
+                            <span class="fa fa-${sMenu.icone}"></span>
+                        </div>
+                        <div class="curam_greentitle"><spring:message code="${sMenu.codeLibelle}"></spring:message></div>
+                    </a>                    
+                    <div class="clear"></div>
+                    <p>${sMenu.description}</p>
+                </div> 
+            </c:forEach>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+<!-- head content end -->
+</c:forEach>      

@@ -1,0 +1,42 @@
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<link rel="shortcut icon" sizes="16x16 32x32 40x40 64x64" href="<c:url value="/resources/images/logo/cm.png"/>"/>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="<c:url value="/resources/css/animate.css"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/datepicker.css"/>">
+<!--<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">-->
+<link href="<c:url value="/resources/plugins/bootstrap/bootstrap.css"/>" rel="stylesheet" >
+<link rel="stylesheet" href="<c:url value="/resources/css/font-awesome.min.css"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/templatemo_misc.css"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/templatemo_style.css"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/main.css"/>">
+<!-- JavaScripts -->
+<script src="<c:url value="/resources/plugins/jquery/jquery-2.1.0.min.js"/>" ></script>
+<script src="<c:url value="/resources/plugins/jquery/jquery.min.js"/>" ></script>
+
+<!--<script src="<c:url value="/resources/js/jquery-1.10.2.min.js"/>"></script>-->
+<script src="<c:url value="/resources/js/jquery.singlePageNav.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery.flexslider.js"/>"></script>
+<script src="<c:url value="/resources/js/custom.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery.lightbox.js"/>"></script>
+<script src="<c:url value="/resources/js/templatemo_custom.js"/>"></script>
+<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+<script src="<c:url value="/resources/js/bootstrap-datepicker.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery-git2.js"/>"></script>
+
+<!--Script necessaires pour l'integration de fonctionnalités de select-->
+<script src="<c:url value="/resources/plugins/select2/select2.js"/>" ></script> 
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/plugins/select2/select2.css"/>"  >
+<!--<link rel="stylesheet" type="text/css" href="<c:url value="/resources/plugins/multiple-select/multiple-select.css"/>"  >-->
+<script  type="text/javascript" src="<c:url value="/resources/js/angular.min.js"/>" ></script>
+<script  type="text/javascript" src="<c:url value="/resources/js/datepicker_classic.js"/>" ></script>
+<!--<script  type="text/javascript" src="<c:url value="/resources/js/lotusBeans.js"/>" ></script>-->
+
+<script src="<c:url value="/resources/plugins/datatables/jquery.dataTables.js"/>" ></script>
+<script src="<c:url value="/resources/plugins/datatables/dataTables.bootstrap.js"/>" ></script>
+<script src="<c:url value="/resources/plugins/datatables/dataTables.tableTools.min.js"/>" ></script>
+<link href="<c:url value="/resources/plugins/datatables/dataTables.bootstrap.css"/>" rel="stylesheet" >
+<link href="<c:url value="/resources/plugins/datatables/jquery.dataTables.css"/>" rel="stylesheet" >
+<link href="<c:url value="/resources/plugins/datatables/dataTables.tableTools.min.css"/>" rel="stylesheet" >

@@ -1,0 +1,29 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<h4><spring:message code="User.Profils"></spring:message></h4>
+<table class="table table-condensed table-hover table-responsive">                                        
+    <thead>
+        <tr>
+            <th>#</th>
+            <th><spring:message code="form.lastName"></spring:message></th>
+            <th><spring:message code="form.active"></spring:message></th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="profil" items="${user.profils}">
+        <tr>
+            <td>${profil.id}</td>
+            <td>${profil.nom}</td>
+            <td>${profil.active}</td>
+            <td>
+                <a class="fa fa-trash-o" href="#" onclick="doAjaxDelete(${profil.id},'users/usersProfil')"  title="Delete"></a>
+            </td>
+        </tr>
+        </c:forEach>
+    </tbody>
+</table>
+<p class="" style="color: tomato">${repport_message}</p>

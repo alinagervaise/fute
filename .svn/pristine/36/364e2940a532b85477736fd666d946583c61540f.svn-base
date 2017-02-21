@@ -1,0 +1,126 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.service.security;
+
+import com.celylog.curam.model.entities.Etat;
+import com.celylog.curam.model.entities.Requete;
+import com.celylog.curam.model.entities.TypeRequete;
+import com.celylog.curam.service.DefaultService;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ *
+ * @author Sergeo
+ */
+@Service
+public class RequeteService {
+    @Autowired
+    DefaultService dao;
+    
+    Logger logger = Logger.getLogger(RequeteService.class.getName());
+    
+    public Requete getRequeteById(int id){
+        Requete r = null;
+        try{
+            r = (Requete) dao.getById(id, Requete.class);
+        }catch(Exception ex){
+            logger.log(Level.SEVERE, "Error during getting the object by Id={0} end class ={1}",new String[]{""+id,""+Requete.class.getName()});
+        }
+    
+        return r;
+    }
+    
+    public List<Requete> getAllRembourssement(){
+        List<Requete> rembourssements = new ArrayList<Requete>();
+        String qr = "select r from Requete r where type_requete= "+TypeRequete.REMBOURSSEMENT;        
+        try{
+            rembourssements = (ArrayList<Requete>)dao.getAll(qr);
+        }catch(Exception ex){
+            logger.log(Level.SEVERE, "Error during getting the object by Id={0} end class ={1} Error:{2}",new String[]{""+qr,""+Requete.class.getName(),ex.getLocalizedMessage()});
+        }
+        
+        return rembourssements;
+    }
+    
+    public List<Requete> getAllRembourssementUser(int idUtilisateur){
+        List<Requete> rembourssements = new ArrayList<Requete>();
+        String qr = "select r from Requete r where type_requete= "+ TypeRequete.REMBOURSSEMENT +" and id_utilisateur= "+idUtilisateur;
+        try{
+            rembourssements = (ArrayList<Requete>)dao.getAll(qr);
+        }catch(Exception ex){
+            logger.log(Level.SEVERE, "Error during getting the object by Id={0} end class ={1} Error:{2}",new String[]{""+qr,""+Requete.class.getName(),ex.getLocalizedMessage()});
+        }
+        return rembourssements;
+    }
+    
+    public List<Requete> getAllRembourssementDestinataire(int idDestinataire){
+        List<Requete> rembourssements = new ArrayList<Requete>();
+        String qr = "select r from Requete r where type_requete= "+ TypeRequete.REMBOURSSEMENT +" and id_destinataire= "+idDestinataire;
+        try{
+            rembourssements = (ArrayList<Requete>)dao.getAll(qr);
+        }catch(Exception ex){
+            logger.log(Level.SEVERE, "Error during getting the object by Id={0} end class ={1} Error:{2}",new String[]{""+qr,""+Requete.class.getName(),ex.getLocalizedMessage()});
+        }
+        return rembourssements;
+    }
+    
+    public void saveRequete(Requete req){
+        boolean exist = false;
+        exist = (req.getId()<=0);
+        if(exist){
+            dao.create(req);
+        }else{
+            dao.update(req);
+        }
+    }
+    
+    private Etat getEtatById(int id){
+        Etat et =(Etat)dao.getById(id, Etat.class);
+        
+        return et;
+    }
+    
+    public Requete setEtat(Requete req, int idEtat){
+        Etat et = this.getEtatById(idEtat);
+        req.setEtat(et);
+        
+        return req;
+    }
+    
+    public Requete getInstanceOfRembourssement(){
+        Requete remb = new Requete();
+        remb.setTypeRequete(TypeRequete.REMBOURSSEMENT);
+        remb = this.setEtat(remb, Etat.OUVERT);
+        
+        return remb;
+    }
+    
+    public Requete getInstanceOfReclamation(){
+        Requete rec = new Requete();
+        rec.setTypeRequete(TypeRequete.RECLAMATION);
+        rec = this.setEtat(rec, Etat.OUVERT);
+        return rec;
+    }
+    
+    public Requete addReclamation(Requete requete, Requete reclamation){
+        if(!(requete.getTypeRequete()==TypeRequete.REMBOURSSEMENT))
+            return requete;
+        
+        List<Requete> reclamations = requete.getReclamations();
+        reclamations.add(reclamation);
+        requete.setReclamations(reclamations);
+        dao.update(requete);
+        requete = (Requete)dao.refresh(requete);
+        
+        return requete;
+    }
+        
+}

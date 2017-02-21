@@ -1,0 +1,47 @@
+<%-- 
+    Document   : page-404
+    Created on : Jul 11, 2014, 11:38:08 PM
+    Author     : Nono Guy
+--%>
+
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<script type="text/javascript">
+
+</script>
+<jsp:include page="header.jsp"/>
+<jsp:include page="top_page.jsp"/>
+<jsp:include page="menu_header.jsp"/>     
+<div id="menu-container">
+    <div class="divs">        
+        <div class="content homepage" id ="menu-8">
+            <div class="container">
+                <%--<jsp:include page="submenus.jsp"/>--%>
+                <div class="row">
+                    
+                    <div class="col-md-10 col-sm-10">
+                        <h2><spring:message code="pageNotFound"/></h2>
+                        <div class="col-sm-12">
+                            <div class="error-page-wrapper">
+                                <p><spring:message code="page404Message1"/></p>
+                                <p><spring:message code="page404Message2"/> <a href="<c:url value="/home"/>">Home</a></p>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>                
+                </div>
+            </div>    
+        </div>    
+        <div class="modal fade" id="editRecord" tabindex="-1" role="dialog" aria-labelledby="editRecord" aria-hidden="true">
+            <jsp:include page="_editRecord.jsp"/>
+        </div>
+        <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="editContactLabel" aria-hidden="true">
+            <jsp:include page="_deleteRecord.jsp"/>
+        </div>
+        <jsp:include page="headcontent.jsp"/>
+
+    </div>
+    <jsp:include page="footer.jsp"/>

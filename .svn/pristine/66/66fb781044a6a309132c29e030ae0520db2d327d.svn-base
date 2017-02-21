@@ -1,0 +1,16 @@
+ALTER TABLE `utilisateur`
+MODIFY COLUMN `id`  int(11) NOT NULL AUTO_INCREMENT FIRST ;
+
+ALTER TABLE `utilisateur`
+MODIFY COLUMN `signature`  char(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `version`;
+
+-- 20/01/2015 -- nono
+ALTER TABLE `police`
+MODIFY COLUMN `id`  int(11) NOT NULL AUTO_INCREMENT FIRST ;
+
+INSERT INTO `menus` (`id`, `action`, `classe`, `code_libelle`, `date_creation`, `date_modification`) VALUES ('305', 'addcontrats', 'page1', 'addcontrats', '2015-01-20 16:28:15', '2015-01-20 16:28:21');
+UPDATE `menus` SET `icone`='plus-square', `libelle`='Ajouter police', `ordre`='5', `parent`='3' WHERE (`id`='305');
+
+UPDATE `menus` SET `action`='newcontracts' WHERE (`id`='305');
+
+UPDATE `menus` SET `code_libelle`='newcontracts', `libelle`='Creer un contrat' WHERE (`id`='305');

@@ -1,0 +1,174 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "prestation")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Prestation.findAll", query = "SELECT p FROM Prestation p"),
+    @NamedQuery(name = "Prestation.findById", query = "SELECT p FROM Prestation p WHERE p.id = :id"),
+    @NamedQuery(name = "Prestation.findByIdPrestataire", query = "SELECT p FROM Prestation p WHERE p.idPrestataire = :idPrestataire"),
+    @NamedQuery(name = "Prestation.findByIdAgentMedical", query = "SELECT p FROM Prestation p WHERE p.idAgentMedical = :idAgentMedical"),
+    @NamedQuery(name = "Prestation.findByIdBeneficiaire", query = "SELECT p FROM Prestation p WHERE p.idBeneficiaire = :idBeneficiaire"),
+    @NamedQuery(name = "Prestation.findByDatePrestation", query = "SELECT p FROM Prestation p WHERE p.datePrestation = :datePrestation"),
+    @NamedQuery(name = "Prestation.findByDateFin", query = "SELECT p FROM Prestation p WHERE p.dateFin = :dateFin"),
+    @NamedQuery(name = "Prestation.findByMontant", query = "SELECT p FROM Prestation p WHERE p.montant = :montant"),
+    @NamedQuery(name = "Prestation.findByNatureMaladie", query = "SELECT p FROM Prestation p WHERE p.natureMaladie = :natureMaladie"),
+    @NamedQuery(name = "Prestation.findByObservation", query = "SELECT p FROM Prestation p WHERE p.observation = :observation")})
+public class Prestation implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "id_prestataire")
+    private Integer idPrestataire;
+    @Column(name = "id_agent_medical")
+    private Integer idAgentMedical;
+    @Column(name = "id_beneficiaire")
+    private Integer idBeneficiaire;
+    @Column(name = "date_prestation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datePrestation;
+    @Column(name = "date_fin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFin;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "montant")
+    private Double montant;
+    @Size(max = 254)
+    @Column(name = "nature_maladie")
+    private String natureMaladie;
+    @Size(max = 254)
+    @Column(name = "observation")
+    private String observation;
+
+    public Prestation() {
+    }
+
+    public Prestation(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getIdPrestataire() {
+        return idPrestataire;
+    }
+
+    public void setIdPrestataire(Integer idPrestataire) {
+        this.idPrestataire = idPrestataire;
+    }
+
+    public Integer getIdAgentMedical() {
+        return idAgentMedical;
+    }
+
+    public void setIdAgentMedical(Integer idAgentMedical) {
+        this.idAgentMedical = idAgentMedical;
+    }
+
+    public Integer getIdBeneficiaire() {
+        return idBeneficiaire;
+    }
+
+    public void setIdBeneficiaire(Integer idBeneficiaire) {
+        this.idBeneficiaire = idBeneficiaire;
+    }
+
+    public Date getDatePrestation() {
+        return datePrestation;
+    }
+
+    public void setDatePrestation(Date datePrestation) {
+        this.datePrestation = datePrestation;
+    }
+
+    public Date getDateFin() {
+        return dateFin;
+    }
+
+    public void setDateFin(Date dateFin) {
+        this.dateFin = dateFin;
+    }
+
+    public Double getMontant() {
+        return montant;
+    }
+
+    public void setMontant(Double montant) {
+        this.montant = montant;
+    }
+
+    public String getNatureMaladie() {
+        return natureMaladie;
+    }
+
+    public void setNatureMaladie(String natureMaladie) {
+        this.natureMaladie = natureMaladie;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Prestation)) {
+            return false;
+        }
+        Prestation other = (Prestation) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.Prestation[ id=" + id + " ]";
+    }
+    
+}

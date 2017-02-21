@@ -1,0 +1,48 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.lecaddyfute.model.dao;
+
+import java.lang.reflect.Field;
+import java.util.List;
+
+/**
+ *
+ * @author Nono
+ */
+public abstract class AbstractEntityModel {
+    
+    public static void init(String categorie) {
+    }
+    
+    public static List<Field> getfieldsrelations(String categorie) {
+        return null;
+    }
+
+    public static List<Field> getfields(String categorie) {
+        return null;
+    }
+
+    public static List<Field> getfieldscolumns(String categorie) {
+        return null;
+    }
+
+    public static List<Field> getfieldsjoincolumns(String categorie) {
+        return null;
+    }
+
+    public static List<Field> getfieldsrequired(String categorie) {
+        return null;
+    }
+
+    public static Field getfieldlibelle(String categorie) {
+        return null;
+    }
+
+    public static List<Field> getfieldsmultipart(String categorie) {
+        return null;
+    }
+
+}

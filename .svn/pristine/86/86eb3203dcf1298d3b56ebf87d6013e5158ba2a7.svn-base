@@ -1,0 +1,337 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * @Document Police
+ * @created on 21 janv. 2015, 18:36:23
+ * @Author Nono Guy
+ */
+@Entity
+@Table(name = "police")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Police.findAll", query = "SELECT p FROM Police p"),
+    @NamedQuery(name = "Police.findById", query = "SELECT p FROM Police p WHERE p.id = :id"),
+    @NamedQuery(name = "Police.findByIdProprietaire", query = "SELECT p FROM Police p WHERE p.idProprietaire = :idProprietaire"),
+    @NamedQuery(name = "Police.findByIdGroupe", query = "SELECT p FROM Police p WHERE p.idGroupe = :idGroupe"),
+    @NamedQuery(name = "Police.findByLibelle", query = "SELECT p FROM Police p WHERE p.libelle = :libelle"),
+    @NamedQuery(name = "Police.findByTypePolice", query = "SELECT p FROM Police p WHERE p.typePolice = :typePolice"),
+    @NamedQuery(name = "Police.findByMontantPrime", query = "SELECT p FROM Police p WHERE p.montantPrime = :montantPrime"),
+    @NamedQuery(name = "Police.findByMontantPlafond", query = "SELECT p FROM Police p WHERE p.montantPlafond = :montantPlafond"),
+    @NamedQuery(name = "Police.findByActePlafond", query = "SELECT p FROM Police p WHERE p.actePlafond = :actePlafond"),
+    @NamedQuery(name = "Police.findByPeriodicite", query = "SELECT p FROM Police p WHERE p.periodicite = :periodicite"),
+    @NamedQuery(name = "Police.findByTerritorialite", query = "SELECT p FROM Police p WHERE p.territorialite = :territorialite"),
+    @NamedQuery(name = "Police.findByEffectif", query = "SELECT p FROM Police p WHERE p.effectif = :effectif"),
+    @NamedQuery(name = "Police.findByStatut", query = "SELECT p FROM Police p WHERE p.statut = :statut"),
+    @NamedQuery(name = "Police.findByDateSouscription", query = "SELECT p FROM Police p WHERE p.dateSouscription = :dateSouscription"),
+    @NamedQuery(name = "Police.findByActive", query = "SELECT p FROM Police p WHERE p.active = :active"),
+    @NamedQuery(name = "Police.findByVersion", query = "SELECT p FROM Police p WHERE p.version = :version"),
+    @NamedQuery(name = "Police.findBySignature", query = "SELECT p FROM Police p WHERE p.signature = :signature"),
+    @NamedQuery(name = "Police.findByDateActivation", query = "SELECT p FROM Police p WHERE p.dateActivation = :dateActivation"),
+    @NamedQuery(name = "Police.findByDateFermeture", query = "SELECT p FROM Police p WHERE p.dateFermeture = :dateFermeture"),
+    @NamedQuery(name = "Police.findByDateModification", query = "SELECT p FROM Police p WHERE p.dateModification = :dateModification"),
+    @NamedQuery(name = "Police.findByDateCreation", query = "SELECT p FROM Police p WHERE p.dateCreation = :dateCreation")})
+public class Police implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "id_proprietaire")
+    private Integer idProprietaire;
+    @Column(name = "id_groupe")
+    private Integer idGroupe;
+    @Size(max = 254)
+    @Column(name = "libelle")
+    private String libelle;
+    @Column(name = "type_police")
+    private Integer typePolice;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "montant_prime")
+    private Double montantPrime;
+    @Column(name = "montant_plafond")
+    private Double montantPlafond;
+    @Column(name = "acte_plafond")
+    private Integer actePlafond;
+    @Column(name = "periodicite")
+    private Integer periodicite;
+    @Column(name = "territorialite")
+    private Integer territorialite;
+    @Column(name = "effectif")
+    private Integer effectif;
+    @Column(name = "statut")
+    private Integer statut;
+    @Column(name = "date_souscription")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateSouscription;
+    @Column(name = "active")
+    private Integer active;
+    @Column(name = "version")
+    private Integer version;
+    @Size(max = 20)
+    @Column(name = "signature")
+    private String signature;
+    @Column(name = "date_activation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateActivation;
+    @Column(name = "date_fermeture")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFermeture;
+    @Column(name = "date_modification")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModification;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+
+    @OneToMany(mappedBy="police", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    private Set <Beneficiaire> beneficiaires = new HashSet<Beneficiaire>(0);
+    
+  
+    @ManyToMany(cascade= CascadeType.ALL)
+    @JoinTable(name="souscripteurpolice", joinColumns = {@JoinColumn (name="id_police")}, inverseJoinColumns ={ @JoinColumn (name="id_souscripteur")})
+    private Set<Souscripteur> soucripteur = new HashSet<Souscripteur>(0);
+
+  
+    public Police() {
+    }
+    
+    public Police(Integer id) {
+        this.id = id;
+    }
+    
+    public Integer getId() {
+        return id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getIdProprietaire() {
+        return idProprietaire;
+    }
+
+    public void setIdProprietaire(Integer idProprietaire) {
+        this.idProprietaire = idProprietaire;
+    }
+
+    public Integer getIdGroupe() {
+        return idGroupe;
+    }
+
+    public void setIdGroupe(Integer idGroupe) {
+        this.idGroupe = idGroupe;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public Integer getTypePolice() {
+        return typePolice;
+    }
+
+    public void setTypePolice(Integer typePolice) {
+        this.typePolice = typePolice;
+    }
+
+    public Double getMontantPrime() {
+        return montantPrime;
+    }
+
+    public void setMontantPrime(Double montantPrime) {
+        this.montantPrime = montantPrime;
+    }
+
+    public Double getMontantPlafond() {
+        return montantPlafond;
+    }
+
+    public void setMontantPlafond(Double montantPlafond) {
+        this.montantPlafond = montantPlafond;
+    }
+
+    public Integer getActePlafond() {
+        return actePlafond;
+    }
+
+    public void setActePlafond(Integer actePlafond) {
+        this.actePlafond = actePlafond;
+    }
+
+    public Integer getPeriodicite() {
+        return periodicite;
+    }
+
+    public void setPeriodicite(Integer periodicite) {
+        this.periodicite = periodicite;
+    }
+
+    public Integer getTerritorialite() {
+        return territorialite;
+    }
+
+    public void setTerritorialite(Integer territorialite) {
+        this.territorialite = territorialite;
+    }
+
+    public Integer getEffectif() {
+        return effectif;
+    }
+
+    public void setEffectif(Integer effectif) {
+        this.effectif = effectif;
+    }
+
+    public Integer getStatut() {
+        return statut;
+    }
+
+    public void setStatut(Integer statut) {
+        this.statut = statut;
+    }
+
+    public Date getDateSouscription() {
+        return dateSouscription;
+    }
+
+    public void setDateSouscription(Date dateSouscription) {
+        this.dateSouscription = dateSouscription;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public Date getDateActivation() {
+        return dateActivation;
+    }
+
+    public void setDateActivation(Date dateActivation) {
+        this.dateActivation = dateActivation;
+    }
+
+    public Date getDateFermeture() {
+        return dateFermeture;
+    }
+
+    public void setDateFermeture(Date dateFermeture) {
+        this.dateFermeture = dateFermeture;
+    }
+
+    public Date getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(Date dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Police)) {
+            return false;
+        }
+        Police other = (Police) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.Police[ id=" + id + " ]";
+    }
+    public Set<Beneficiaire> getBeneficiaires() {
+        return beneficiaires;
+    }
+    public void setBeneficiaires(Set<Beneficiaire> beneficaires) {
+        this.beneficiaires = beneficaires;
+    }
+
+    public Set<Souscripteur> getSoucripteur() {
+        return soucripteur;
+    }
+
+    public void setSoucripteur(Set<Souscripteur> soucripteur) {
+        this.soucripteur = soucripteur;
+    }
+    
+    
+}

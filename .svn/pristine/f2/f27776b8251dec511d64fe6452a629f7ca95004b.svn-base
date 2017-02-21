@@ -1,0 +1,121 @@
+//le ControleurBeneficiare communique directement avec la table beneficiaire
+package com.celylog.curam.web.controller;
+
+import com.celylog.curam.model.entities.Adresse;
+import com.celylog.curam.model.entities.Beneficiaire;
+import com.celylog.curam.model.entities.BeneficiaireHistorique;
+import com.celylog.curam.model.entities.BeneficiaireUtilisateurView;
+import com.celylog.curam.model.entities.Country;
+import com.celylog.curam.model.entities.District;
+import com.celylog.curam.model.entities.HistoriqueUtilisateur;
+import com.celylog.curam.model.entities.Police;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DefaultService;
+import com.celylog.curam.service.security.FormService;
+import com.celylog.curam.service.security.UserService;
+import com.celylog.curam.utils.Message;
+import com.celylog.curam.utils.UrlUtil;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+/**
+ *
+ * @author Administrateur
+ */
+@Controller
+
+public class BeneficiaireController {
+    
+    @Autowired
+    FormService formService;
+    
+    @Autowired
+    UserService userservice;
+    
+    @Autowired
+    DefaultService dao;
+    
+    @Autowired
+    UtilisateurController userController;
+
+    @RequestMapping(value ="/beneficiaires", method = RequestMethod.GET)
+    public String adminBeneficiaire(HttpServletRequest request, HttpSession session, Model uiModel) {
+        // TODO  add id police as a parameter and remove int id=10001
+        int id = 10001;
+        Police police = (Police)userservice.getById((Object)id, Police.class);
+        Set <Beneficiaire> beneficiaires = police.getBeneficiaires();
+        java.util.Queue <BeneficiaireUtilisateurView> users = new LinkedList <BeneficiaireUtilisateurView> ();
+        for (Beneficiaire beneficiaire : beneficiaires){
+            if (beneficiaire.getIdUtilisateur() != null){
+                String query = "select b from BeneficiaireUtilisateurView b where id_utilisateur"
+                                + "= '"+ beneficiaire.getIdUtilisateur() + "'";
+                List<BeneficiaireUtilisateurView> bList = userservice.getAll(query);
+                BeneficiaireUtilisateurView user = null;
+                if (!bList.isEmpty()){
+                    user = bList.get(0);
+                }
+                users.add(user);
+            } 
+        }
+        request.setAttribute("curentrubric", "beneficiaire");
+        request.setAttribute("users", users);
+      
+        return "beneficiaire/index";
+    }
+    @RequestMapping(value = "/addbeneficiaire", method = RequestMethod.GET)
+    public String addBeneficiaire(HttpServletRequest request) {
+        String query = "select c from Country c order by c.name";
+        List<Country> countries = userservice.getAll(query);
+        request.setAttribute("countries", countries);
+        query = "select d from District d order by d.label";
+        List<District> districts = userservice.getAll(query);
+        request.setAttribute("districts", districts);
+        return "beneficiaire/new_beneficiaire";
+    }
+    
+    @RequestMapping(value = "/addbeneficiaire", method = RequestMethod.POST)
+    public String submitBeneficiaire(HttpServletRequest request, HttpSession session) {
+        try {
+            Object o1 = formService.add(request, session,"HistoriqueUtilisateur", false);
+            HistoriqueUtilisateur user = (HistoriqueUtilisateur) o1;
+            
+            Object o2 = formService.add(request, session,"BeneficiaireHistorique", false);
+            BeneficiaireHistorique beneficiaire = (BeneficiaireHistorique) o2;
+            // TODO Remove parameter Locale.FRENCH
+            request.setAttribute("", o2);
+           userController.create(request, session, Locale.FRENCH);
+            dao.create(beneficiaire);
+        } catch (Exception ex) {
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "redirect:beneficiaire/index";
+    }
+    
+    @RequestMapping(value = "/validatebeneficiaire", method = RequestMethod.POST)
+    public String validateBeneficiaire(HttpServletRequest request) {
+        return "redirect:beneficiaire/index";
+    }
+
+
+}

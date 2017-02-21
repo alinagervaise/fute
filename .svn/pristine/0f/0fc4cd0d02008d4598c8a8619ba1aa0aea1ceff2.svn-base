@@ -1,0 +1,269 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "employe")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Employe.findAll", query = "SELECT e FROM Employe e"),
+    @NamedQuery(name = "Employe.findById", query = "SELECT e FROM Employe e WHERE e.id = :id"),
+    @NamedQuery(name = "Employe.findByIdUtilisteur", query = "SELECT e FROM Employe e WHERE e.idUtilisteur = :idUtilisteur"),
+    @NamedQuery(name = "Employe.findByFonction", query = "SELECT e FROM Employe e WHERE e.fonction = :fonction"),
+    @NamedQuery(name = "Employe.findByDateEmploie", query = "SELECT e FROM Employe e WHERE e.dateEmploie = :dateEmploie"),
+    @NamedQuery(name = "Employe.findByDateNaissance", query = "SELECT e FROM Employe e WHERE e.dateNaissance = :dateNaissance"),
+    @NamedQuery(name = "Employe.findByLieuxNaissance", query = "SELECT e FROM Employe e WHERE e.lieuxNaissance = :lieuxNaissance"),
+    @NamedQuery(name = "Employe.findByCni", query = "SELECT e FROM Employe e WHERE e.cni = :cni"),
+    @NamedQuery(name = "Employe.findByDateDelivranceCni", query = "SELECT e FROM Employe e WHERE e.dateDelivranceCni = :dateDelivranceCni"),
+    @NamedQuery(name = "Employe.findByLieuxDelivranceCni", query = "SELECT e FROM Employe e WHERE e.lieuxDelivranceCni = :lieuxDelivranceCni"),
+    @NamedQuery(name = "Employe.findByStatut", query = "SELECT e FROM Employe e WHERE e.statut = :statut"),
+    @NamedQuery(name = "Employe.findByActive", query = "SELECT e FROM Employe e WHERE e.active = :active"),
+    @NamedQuery(name = "Employe.findByVersion", query = "SELECT e FROM Employe e WHERE e.version = :version"),
+    @NamedQuery(name = "Employe.findBySignature", query = "SELECT e FROM Employe e WHERE e.signature = :signature"),
+    @NamedQuery(name = "Employe.findByDateActivation", query = "SELECT e FROM Employe e WHERE e.dateActivation = :dateActivation"),
+    @NamedQuery(name = "Employe.findByDateFermeture", query = "SELECT e FROM Employe e WHERE e.dateFermeture = :dateFermeture"),
+    @NamedQuery(name = "Employe.findByDateModification", query = "SELECT e FROM Employe e WHERE e.dateModification = :dateModification"),
+    @NamedQuery(name = "Employe.findByDateCreation", query = "SELECT e FROM Employe e WHERE e.dateCreation = :dateCreation")})
+public class Employe implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "id_utilisteur")
+    private Integer idUtilisteur;
+    @Size(max = 254)
+    @Column(name = "fonction")
+    private String fonction;
+    @Column(name = "date_emploie")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateEmploie;
+    @Column(name = "date_naissance")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateNaissance;
+    @Size(max = 254)
+    @Column(name = "lieux_naissance")
+    private String lieuxNaissance;
+    @Size(max = 254)
+    @Column(name = "cni")
+    private String cni;
+    @Column(name = "date_delivrance_cni")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateDelivranceCni;
+    @Size(max = 254)
+    @Column(name = "lieux_delivrance_cni")
+    private String lieuxDelivranceCni;
+    @Column(name = "statut")
+    private Integer statut;
+    @Column(name = "active")
+    private Integer active;
+    @Column(name = "version")
+    private Integer version;
+    @Size(max = 20)
+    @Column(name = "signature")
+    private String signature;
+    @Column(name = "date_activation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateActivation;
+    @Column(name = "date_fermeture")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFermeture;
+    @Column(name = "date_modification")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModification;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+
+    public Employe() {
+    }
+
+    public Employe(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getIdUtilisteur() {
+        return idUtilisteur;
+    }
+
+    public void setIdUtilisteur(Integer idUtilisteur) {
+        this.idUtilisteur = idUtilisteur;
+    }
+
+    public String getFonction() {
+        return fonction;
+    }
+
+    public void setFonction(String fonction) {
+        this.fonction = fonction;
+    }
+
+    public Date getDateEmploie() {
+        return dateEmploie;
+    }
+
+    public void setDateEmploie(Date dateEmploie) {
+        this.dateEmploie = dateEmploie;
+    }
+
+    public Date getDateNaissance() {
+        return dateNaissance;
+    }
+
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
+
+    public String getLieuxNaissance() {
+        return lieuxNaissance;
+    }
+
+    public void setLieuxNaissance(String lieuxNaissance) {
+        this.lieuxNaissance = lieuxNaissance;
+    }
+
+    public String getCni() {
+        return cni;
+    }
+
+    public void setCni(String cni) {
+        this.cni = cni;
+    }
+
+    public Date getDateDelivranceCni() {
+        return dateDelivranceCni;
+    }
+
+    public void setDateDelivranceCni(Date dateDelivranceCni) {
+        this.dateDelivranceCni = dateDelivranceCni;
+    }
+
+    public String getLieuxDelivranceCni() {
+        return lieuxDelivranceCni;
+    }
+
+    public void setLieuxDelivranceCni(String lieuxDelivranceCni) {
+        this.lieuxDelivranceCni = lieuxDelivranceCni;
+    }
+
+    public Integer getStatut() {
+        return statut;
+    }
+
+    public void setStatut(Integer statut) {
+        this.statut = statut;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public Date getDateActivation() {
+        return dateActivation;
+    }
+
+    public void setDateActivation(Date dateActivation) {
+        this.dateActivation = dateActivation;
+    }
+
+    public Date getDateFermeture() {
+        return dateFermeture;
+    }
+
+    public void setDateFermeture(Date dateFermeture) {
+        this.dateFermeture = dateFermeture;
+    }
+
+    public Date getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(Date dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Employe)) {
+            return false;
+        }
+        Employe other = (Employe) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.Employe[ id=" + id + " ]";
+    }
+    
+}

@@ -1,0 +1,344 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author Gervaise
+ */
+@Entity
+@Table(name = "beneficiaireutilisateurview")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findAll", query = "SELECT b FROM BeneficiaireUtilisateurView b"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findById", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.id = :id"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByIdBeneficiaire", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.idBeneficiaire = :idBeneficiaire"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByIdUtilisateur", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.idUtilisateur = :idUtilisateur"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByTypeBeneficiaire", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.typeBeneficiaire = :typeBeneficiaire"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByMatriculeAssurance", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.matriculeAssurance = :matriculeAssurance"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByStatut", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.statut = :statut"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByIdAssurePrincipal", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.idAssurePrincipal = :idAssurePrincipal"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByIdAffinite", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.idAffinite = :idAffinite"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByAffiniteName", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.affiniteName = :affiniteName"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByActive", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.active = :active"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByVersion", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.version = :version"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findBySignature", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.signature = :signature"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByDateActivation", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.dateActivation = :dateActivation"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByDateFermeture", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.dateFermeture = :dateFermeture"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByDateModification", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.dateModification = :dateModification"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByDateCreation", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.dateCreation = :dateCreation"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByIdUser", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.idUser = :idUser"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByMatricule", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.matricule = :matricule"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByPassword", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.password = :password"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByNom", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.nom = :nom"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByPrenom", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.prenom = :prenom"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findBySexe", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.sexe = :sexe"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByDateNaissance", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.dateNaissance = :dateNaissance"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByLieuNaissance", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.lieuNaissance = :lieuNaissance"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByIdArrondissementOrigine", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.idArrondissementOrigine = :idArrondissementOrigine"),
+    @NamedQuery(name = "BeneficiaireUtilisateurView.findByNationnalite", query = "SELECT b FROM BeneficiaireUtilisateurView b WHERE b.nationnalite = :nationnalite")})
+public class BeneficiaireUtilisateurView implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Size(max = 22)
+    @Column(name = "id")
+    private String id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id_beneficiaire")
+    private int idBeneficiaire;
+    @Column(name = "id_utilisateur")
+    private Integer idUtilisateur;
+    @Column(name = "type_beneficiaire")
+    private Integer typeBeneficiaire;
+    @Size(max = 20)
+    @Column(name = "matricule_assurance")
+    private String matriculeAssurance;
+    @Column(name = "statut")
+    private Integer statut;
+    @Column(name = "id_assure_principal")
+    private Integer idAssurePrincipal;
+    @Column(name = "id_affinite")
+    private Integer idAffinite;
+    @Size(max = 100)
+    @Column(name = "affinite_name")
+    private String affiniteName;
+    @Column(name = "active")
+    private Integer active;
+    @Column(name = "version")
+    private Integer version;
+    @Size(max = 20)
+    @Column(name = "signature")
+    private String signature;
+    @Column(name = "date_activation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateActivation;
+    @Column(name = "date_fermeture")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFermeture;
+    @Column(name = "date_modification")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModification;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id_user")
+    private int idUser;
+    @Size(max = 254)
+    @Column(name = "matricule")
+    private String matricule;
+    @Size(max = 254)
+    @Column(name = "password")
+    private String password;
+    @Size(max = 254)
+    @Column(name = "nom")
+    private String nom;
+    @Size(max = 254)
+    @Column(name = "prenom")
+    private String prenom;
+    @Column(name = "sexe")
+    private Character sexe;
+    @Column(name = "date_naissance")
+    @Temporal(TemporalType.DATE)
+    private Date dateNaissance;
+    @Size(max = 254)
+    @Column(name = "lieu_naissance")
+    private String lieuNaissance;
+    @Column(name = "id_arrondissement_origine")
+    private Integer idArrondissementOrigine;
+    @Size(max = 254)
+    @Column(name = "nationnalite")
+    private String nationnalite;
+
+    public BeneficiaireUtilisateurView() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getIdBeneficiaire() {
+        return idBeneficiaire;
+    }
+
+    public void setIdBeneficiaire(int idBeneficiaire) {
+        this.idBeneficiaire = idBeneficiaire;
+    }
+
+    public Integer getIdUtilisateur() {
+        return idUtilisateur;
+    }
+
+    public void setIdUtilisateur(Integer idUtilisateur) {
+        this.idUtilisateur = idUtilisateur;
+    }
+
+    public Integer getTypeBeneficiaire() {
+        return typeBeneficiaire;
+    }
+
+    public void setTypeBeneficiaire(Integer typeBeneficiaire) {
+        this.typeBeneficiaire = typeBeneficiaire;
+    }
+
+    public String getMatriculeAssurance() {
+        return matriculeAssurance;
+    }
+
+    public void setMatriculeAssurance(String matriculeAssurance) {
+        this.matriculeAssurance = matriculeAssurance;
+    }
+
+    public Integer getStatut() {
+        return statut;
+    }
+
+    public void setStatut(Integer statut) {
+        this.statut = statut;
+    }
+
+    public Integer getIdAssurePrincipal() {
+        return idAssurePrincipal;
+    }
+
+    public void setIdAssurePrincipal(Integer idAssurePrincipal) {
+        this.idAssurePrincipal = idAssurePrincipal;
+    }
+
+    public Integer getIdAffinite() {
+        return idAffinite;
+    }
+
+    public void setIdAffinite(Integer idAffinite) {
+        this.idAffinite = idAffinite;
+    }
+
+    public String getAffiniteName() {
+        return affiniteName;
+    }
+
+    public void setAffiniteName(String affiniteName) {
+        this.affiniteName = affiniteName;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public Date getDateActivation() {
+        return dateActivation;
+    }
+
+    public void setDateActivation(Date dateActivation) {
+        this.dateActivation = dateActivation;
+    }
+
+    public Date getDateFermeture() {
+        return dateFermeture;
+    }
+
+    public void setDateFermeture(Date dateFermeture) {
+        this.dateFermeture = dateFermeture;
+    }
+
+    public Date getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(Date dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public Character getSexe() {
+        return sexe;
+    }
+
+    public void setSexe(Character sexe) {
+        this.sexe = sexe;
+    }
+
+    public Date getDateNaissance() {
+        return dateNaissance;
+    }
+
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
+
+    public String getLieuNaissance() {
+        return lieuNaissance;
+    }
+
+    public void setLieuNaissance(String lieuNaissance) {
+        this.lieuNaissance = lieuNaissance;
+    }
+
+    public Integer getIdArrondissementOrigine() {
+        return idArrondissementOrigine;
+    }
+
+    public void setIdArrondissementOrigine(Integer idArrondissementOrigine) {
+        this.idArrondissementOrigine = idArrondissementOrigine;
+    }
+
+    public String getNationnalite() {
+        return nationnalite;
+    }
+
+    public void setNationnalite(String nationnalite) {
+        this.nationnalite = nationnalite;
+    }
+    
+}

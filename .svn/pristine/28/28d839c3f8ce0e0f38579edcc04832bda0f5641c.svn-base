@@ -1,0 +1,198 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.service.security;
+
+import com.celylog.curam.model.entities.Adresse;
+import com.celylog.curam.model.entities.Country;
+import com.celylog.curam.model.entities.District;
+import com.celylog.curam.model.entities.HistoriqueUtilisateur;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DaoService;
+import com.celylog.curam.utils.PasswordCuram;
+import com.celylog.curam.web.controller.UtilisateurController;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ *
+ * @author Harry Wanki
+ */
+@Service
+public class UtilisateurService extends DaoService<Utilisateur> {
+    private static final Logger logger = Logger.getLogger(UtilisateurService.class.getName());
+    @Autowired
+    AdresseService adresseService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    HistoriqueUtilisateurService historiqueUtilisateurService;
+    @Autowired
+    AdministrationService adminService;
+    @Autowired
+    FormService formService;
+    private MessageSource messageSource;
+    private String createUser = "C";
+    private String birthDate = "dd/MM/yyyy";
+    @RequestMapping(params = "form", method = RequestMethod.GET)
+    public String createForm(Model uiModel) {
+        HistoriqueUtilisateur huser = new HistoriqueUtilisateur();
+        Adresse adresse = new Adresse();
+        uiModel.addAttribute("huser", huser);
+        uiModel.addAttribute("huseradresse", adresse);
+        uiModel.addAttribute("createUser", createUser);
+        uiModel.addAttribute("birthDate", birthDate);
+        
+        return "new_user";
+    }
+
+//    private void createUser(HttpSession session, HttpServletRequest request, HistoriqueUtilisateur user) {
+    private HistoriqueUtilisateur createUser(HistoriqueUtilisateur user, Adresse adresse) {
+        try {
+            adresseService.create(adresse);
+            user.setAdresse(adresse);
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            String matricule = matriculeGen(user);
+            user.setMatricule(matricule);
+            user.setPassword(getGeneratedPassword().getPassword());
+
+            Calendar calendar = Calendar.getInstance();
+            Date dateCreation = calendar.getTime();
+            String date = format.format(dateCreation);
+            dateCreation = format.parse(date);
+            logger.log(Level.INFO, "BirthDate {0}", this.birthDate);
+//            user.setDateNaissance(new Date(this.birthDate));
+            user.setDateCreation(dateCreation);
+            try {
+                user.setDateNaissance(format.parse(this.birthDate));
+            } catch (ParseException e) {
+                logger.log(Level.WARNING, e.getMessage());
+            } catch (Exception ex) {
+                Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            user.setVersion(1);
+            user.setActive(1);
+            Utilisateur utilisateur;
+//                utilisateur = getUtilisateurFormHistorique(user);
+//            userService.create(utilisateur);
+//            historiqueUtilisateurService.create(user);
+            logger.log(Level.INFO, "value {0}", createUser);
+            if ("O".equals(createUser)) {//must be directly created
+//                Utilisateur utilisateur;
+                utilisateur = getUtilisateurFormHistorique(user);
+                utilisateur.setDateActivation(dateCreation);
+                userService.create(utilisateur);
+                logger.info("Well done utilisateur");
+            } else if ("N".equals(createUser)) {//historique must be created first
+                historiqueUtilisateurService.create(user);
+                logger.info("Well done historique");
+            }
+
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+        return user;
+    }
+
+    private HistoriqueUtilisateur editUser(HistoriqueUtilisateur user, Adresse adresse) {
+        try {
+            adresseService.create(adresse);
+            user.setAdresse(adresse);
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            String matricule = matriculeGen(user);
+            user.setMatricule(matricule);
+            user.setPassword(getGeneratedPassword().getPassword());
+
+            Calendar calendar = Calendar.getInstance();
+            Date dateCreation = calendar.getTime();
+            String date = format.format(dateCreation);
+            dateCreation = format.parse(date);
+            logger.log(Level.INFO, "BirthDate {0}", this.birthDate);
+//            user.setDateNaissance(new Date(this.birthDate));
+            user.setDateModification(dateCreation);
+            try {
+                user.setDateNaissance(format.parse(this.birthDate));
+            } catch (ParseException e) {
+                logger.log(Level.WARNING, e.getMessage());
+            } catch (Exception ex) {
+                Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+//            user.setVersion(1);
+//            user.setActive(1);
+            Utilisateur utilisateur;
+//                utilisateur = getUtilisateurFormHistorique(user);
+//            userService.create(utilisateur);
+//            historiqueUtilisateurService.create(user);
+            logger.log(Level.INFO, "value {0}", createUser);
+            if ("O".equals(createUser)) {//must be directly created
+//                Utilisateur utilisateur;
+                utilisateur = getUtilisateurFormHistorique(user);
+                utilisateur.setDateActivation(dateCreation);
+                userService.refresh(utilisateur);
+                logger.info("Well done utilisateur");
+            } else if ("N".equals(createUser)) {//historique must be created first
+                historiqueUtilisateurService.create(user);
+                logger.info("Well done historique");
+            }
+
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+        return user;
+    }
+
+    private String matriculeGen(HistoriqueUtilisateur user) {
+        String matricule = "08p266";
+        return matricule;
+    }
+
+    private PasswordCuram getGeneratedPassword() {
+        PasswordCuram passwordCuram = new PasswordCuram("password01");
+        return passwordCuram;
+    }
+
+    private Utilisateur getUtilisateurFormHistorique(HistoriqueUtilisateur hu) {
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setActive(hu.getActive());
+        utilisateur.setDateCreation(hu.getDateCreation());
+        utilisateur.setDateNaissance(hu.getDateNaissance());
+        utilisateur.setId(hu.getId());
+        utilisateur.setIdArrondissementOrigine(hu.getIdArrondissementOrigine());
+        utilisateur.setLieuNaissance(hu.getLieuNaissance());
+        utilisateur.setMatricule(hu.getMatricule());
+        utilisateur.setNationnalite(hu.getNationnalite());
+        utilisateur.setNom(hu.getNom());
+        utilisateur.setPassword(hu.getPassword());
+        utilisateur.setPrenom(hu.getPrenom());
+        utilisateur.setSexe(hu.getSexe());
+        utilisateur.setSignature(hu.getSignature());
+        utilisateur.setVersion(hu.getVersion());
+        utilisateur.setAdresse(hu.getAdresse());
+        return utilisateur;
+    }
+
+    public void getFormValues(HttpServletRequest request, HttpSession session){
+        String query = "select c from Country c order by c.name";
+        List<Country> countries = userService.getAll(query);
+        session.setAttribute("CountryList", countries);
+        query = "select d from District d order by d.label";
+        List<District> districts = userService.getAll(query);
+        session.setAttribute("districts", districts);
+    }
+    
+}

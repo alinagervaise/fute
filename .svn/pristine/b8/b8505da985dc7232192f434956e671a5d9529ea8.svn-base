@@ -1,0 +1,379 @@
+/*
+ * This conroller aims to map links to police
+ */
+package com.celylog.curam.web.controller;
+
+import com.celylog.curam.model.entities.Groupepolice;
+import com.celylog.curam.model.entities.Menus;
+import com.celylog.curam.model.entities.Police;
+import com.celylog.curam.model.entities.Souscripteur;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DefaultService;
+import com.celylog.curam.service.security.AppliParameters;
+import com.celylog.curam.service.security.FormService;
+import com.celylog.curam.service.security.PoliceService;
+import com.celylog.curam.service.security.UserService;
+import com.celylog.curam.service.security.UtilisateurService;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ *
+ * @author xavalex
+ */
+@Controller
+public class PoliceController {
+
+    @Autowired
+    UserService userservice;
+    @Autowired
+    FormService formService;
+    @Autowired
+    DefaultService dao;
+    @Autowired
+    PoliceService policeService;
+    @Autowired
+    AppliParameters appliParameters;
+    @Autowired
+    UtilisateurService utilisateurService;
+
+    @RequestMapping(value = {"/contracts"}, method = RequestMethod.GET)
+    public String contracts(HttpServletRequest request, HttpSession session) {
+        Utilisateur currentUser = (Utilisateur) session.getAttribute("currentUser");
+        policeService.setPoliceSession(session, request);
+        request.setAttribute("curentrubric", "contracts");
+        String idmenu_ = request.getParameter("p");
+        if (idmenu_ != null) {
+//            int idMenu = Integer.parseInt(idmenu_);
+            userservice.setAdminProfilSubMenu(request, session);
+        }
+        return "contracts";
+    }
+
+    @RequestMapping(value = {"/listcontracts"}, method = RequestMethod.GET)
+    public String listcontracts(HttpServletRequest request, HttpSession session) {
+        policeService.setPoliceSession(session, request);
+        return "redirect:/contracts";
+    }
+
+    @RequestMapping(value = {"/addsouscripteurs"}, method = RequestMethod.GET)
+    public String addsouscripteurs(HttpServletRequest request, HttpSession session) {
+        request.setAttribute("curentrubric", "souscripteurs");
+        policeService.setPoliceSession(session, request);
+        return "addsouscripteurs";
+    }
+
+    @RequestMapping(value = {"/addsouscripteurs"}, method = RequestMethod.POST)
+    public String addsouscripteurs_post(HttpServletRequest request, HttpSession session) {
+        try {
+            request.setAttribute("curentrubric", "souscripteurs");
+            Object o = formService.add(request, session, "Souscripteur", false);
+            if (o != null) {
+                Souscripteur s = (Souscripteur) o;
+                String flag = appliParameters.getAppliParameter("param.validerRepresentantSouscripteur");
+                if (flag != null && flag.equals("1")) {
+                    List<Utilisateur> user = new ArrayList();
+                    String matricule = request.getParameter("matricule");
+                    if (matricule == null) {
+                        Utilisateur u = (Utilisateur) formService.add(request, session, "Utulisateur", false);
+                        user = userservice.getUtilisateurByMatricule(u);
+                        if (user == null || user.isEmpty()) {
+                            utilisateurService.create(u);
+                            request.setAttribute("errorMessage", "message.errorMessage.submit");
+                            return "addsouscripteurs";
+                        } else {
+                            request.setAttribute("errorMessage", "message.errorMessage.waitingForControllerValidation");
+                            return "souscripteurs";
+                        }
+                    } else {
+                        user = userservice.getUserByMatricule(matricule);
+                    }
+                    if (user != null || !user.isEmpty()) {
+                        s.setIdUtilisateur(user.get(0).getId());
+                    } else {
+                        return "addsouscripteurs";
+                    }
+                }
+                dao.create(s);
+                request.setAttribute("successMessage", "message.successMessage.createSouscripteur");
+                policeService.setPoliceSession(session, request);
+                return "souscripteurs";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "message.errorMessage.createSouscripteur");
+            return "addsouscripteurs";
+        }
+        return "souscripteurs";
+    }
+
+    @RequestMapping(value = {"/listsouscripteurs"}, method = RequestMethod.GET)
+    public String listsouscripteurs(HttpServletRequest request, HttpSession session
+    ) {
+        return "redirect:/souscripteurs";
+    }
+
+    @RequestMapping(value = {"/addcontracts"}, method = RequestMethod.GET)
+    public String addcontracts(HttpServletRequest request, HttpSession session
+    ) {
+        request.setAttribute("curentrubric", "contracts");
+        String idmenu_ = request.getParameter("p");
+        if (idmenu_ != null) {
+//            int idMenu = Integer.parseInt(idmenu_);
+            userservice.setAdminProfilSubMenu(request, session);
+        }
+        policeService.setPoliceSession(session, request);
+        List<Object> allMatricule = (List<Object>) dao.getAll("select u.matricule from Utilisateur u");
+        session.setAttribute("allMatriculeList", allMatricule);
+        String flag = appliParameters.getAppliParameter("param.entrerinfosouscripteur");
+        if (flag != null && flag.equals("0")) {
+            request.setAttribute("enterSouscriptorInformation", flag);
+        }
+
+        return "addcontracts";
+    }
+
+    @RequestMapping(value = {"/configcontracts"}, method = RequestMethod.GET)
+    public String configcontracts(HttpServletRequest request, HttpSession session
+    ) {
+        try {
+            request.setAttribute("curentrubric", "contracts");
+            String rowId_ = request.getParameter("rowId");
+            if (rowId_ != null) {
+                int rowId = Integer.parseInt(rowId_);
+                Police p = (Police) dao.getById(rowId, Police.class);
+                formService.setEntitySessionInForm(request, p, "Police");
+                if (p != null) {
+                    request.setAttribute("selectedPolicy", p);
+                } else {
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PoliceController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "configcontracts";
+    }
+
+    @RequestMapping(value = {"/editcontracts"}, method = RequestMethod.GET)
+    public String editcontracts(HttpServletRequest request, HttpSession session
+    ) {
+        try {
+            request.setAttribute("curentrubric", "contracts");
+            String rowId_ = request.getParameter("rowId");
+            if (rowId_ != null) {
+                int rowId = Integer.parseInt(rowId_);
+                Police p = (Police) dao.getById(rowId, Police.class);
+                formService.setEntitySessionInForm(request, p, "Police");
+                if (p != null) {
+                    request.setAttribute("selectedPolicy", p);
+                    policeService.setPoliceSession(session, request);
+                } else {
+                }
+            }
+        } catch (Exception ex) {
+            request.setAttribute("errorMessage", "message.errorMessage.editContract");
+            Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "editcontracts";
+    }
+
+    @RequestMapping(value = {"/editcontracts"}, method = RequestMethod.POST)
+    public String editcontracts8(HttpServletRequest request, HttpSession session
+    ) {
+        try {
+            request.setAttribute("curentrubric", "contracts");
+            String rowId_ = request.getParameter("rowId");
+            if (rowId_ != null) {
+                int rowId = Integer.parseInt(rowId_);
+                Police p = (Police) dao.getById(rowId, Police.class);
+                if (p != null) {
+                    formService.update(request, session, "Police", p, true);
+                    request.setAttribute("successMessage", "message.successMessage.editContract");
+                    policeService.setPoliceSession(session, request);
+//                    return "editcontracts";
+                } else {
+                    request.setAttribute("errorMessage", "message.errorMessage.editContract");
+//                    List<Typepolice> ltype = dao.getAll("select t from Typepolice t");
+//                    request.setAttribute("listeTypePolice", ltype);
+                }
+            }
+        } catch (Exception ex) {
+            request.setAttribute("errorMessage", "message.errorMessage.editContract");
+            Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "editcontracts";
+    }
+
+    @RequestMapping(value = {"/souscripteurs"}, method = RequestMethod.GET)
+    public String souscripteurs(HttpServletRequest request, HttpSession session
+    ) {
+        Utilisateur currentUser = (Utilisateur) session.getAttribute("currentUser");
+        String rowId_ = request.getParameter("rowId");
+        if (rowId_ != null) {
+            int rowId = Integer.parseInt(rowId_);
+            Police p = (Police) dao.getById(rowId, Police.class);
+            Set<Souscripteur> souscripteur = p.getSoucripteur();
+            request.setAttribute("souscripteurs", souscripteur);
+        } else {
+            List<Souscripteur> s = (List<Souscripteur>) dao.getAll("select s from Souscripteur s");
+            request.setAttribute("souscripteurs", s);
+        }
+        request.setAttribute("curentrubric", "souscripteurs");
+//        policeService.setPoliceSession(session, request);
+        String idmenu_ = request.getParameter("p");
+        if (idmenu_ != null) {
+//            int idMenu = Integer.parseInt(idmenu_);
+            userservice.setAdminProfilSubMenu(request, session);
+        }
+        return "souscripteurs";
+    }
+
+    @RequestMapping(value = {"/addcontracts"}, method = RequestMethod.POST)
+    public String addcontracts_post(HttpServletRequest request, HttpSession session
+    ) {
+        try {
+            request.setAttribute("curentrubric", "contracts");
+            Object o = formService.add(request, session, "Police", false);
+            policeService.setPoliceSession(session, request);
+            if (o != null) {
+                Police p = (Police) o;
+                Groupepolice gp = (Groupepolice) this.createPolicyGoup(session, request, (Police) o);
+                if (gp != null) {
+                    // on attribut par défaut à la police un groupe; 
+                    p.setIdGroupe(gp.getId());
+                    String flag = appliParameters.getAppliParameter("param.entrerinfosouscripteur");
+                    if (flag != null && flag.equals("1")) {
+                        request.setAttribute("enterSouscriptorInformation", flag);
+                        List<Utilisateur> user = new ArrayList();
+                        String matricule = request.getParameter("matricule");
+                        if (matricule == null) {
+                            Utilisateur u = (Utilisateur) formService.add(request, session, "Utulisateur", false);
+                            user = userservice.getUtilisateurByMatricule(u);
+                            if (user == null || user.isEmpty()) {
+                                utilisateurService.create(u);
+                                request.setAttribute("errorMessage", "message.errorMessage.waitingForControllerValidation");
+//                            request.setAttribute("errorMessage", "message.errorMessage.addContract");
+                                return "addcontracts";
+                            } else {
+                                request.setAttribute("errorMessage", "message.errorMessage.waitingForControllerValidation");
+                                return "souscripteurs";
+                            }
+                        } else {
+                            user = userservice.getUserByMatricule(matricule);
+                        }
+                        if (!user.isEmpty()) {
+                            if (user.size() == 1) {
+                                Souscripteur s = new Souscripteur();
+//                            s.setUtilisateur(user.get(0));
+                                Set<Souscripteur> setS = new HashSet<Souscripteur>();
+                                s.setIdUtilisateur(user.get(0).getId());
+                                s.setType(request.getParameter("typeSouscripteur") == null ? 0 : Integer.parseInt(request.getParameter("typeSouscripteur")));
+                                s.setRaisonsociale(request.getParameter("raisonsociale") == null ? "" : request.getParameter("raisonsociale"));
+                                p.setSoucripteur(setS);
+                            } else {
+                                request.setAttribute("errorMessage", "message.errorMessage.toUsersWithSameMatriculeExist");
+                                return "addcontracts";
+                            }
+
+                        } else {
+                            request.setAttribute("errorMessage", "message.errorMessage.addContract");
+                            return "addcontracts";
+                        }
+
+                    }
+                    dao.create(p); // enregistrmeent de la police dans la base de donnée. 
+                    policeService.setPoliceSession(session, request);
+                    request.setAttribute("successMessage", "message.successMessage.addContract");
+                    return "contracts";
+                }
+            } else {
+                policeService.setPoliceSession(session, request);
+                request.setAttribute("errorMessage", "message.errorMessage.addContract");
+                return "addcontracts";
+            }
+        } catch (Exception ex) {
+            request.setAttribute("errorMessage", "message.errorMessage.addContract");
+            Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+            return "addcontracts";
+        }
+        request.setAttribute("errorMessage", "message.errorMessage.addContract");
+        return "addcontracts";
+    }
+
+    @RequestMapping(value = {"/findcontracts"}, method = RequestMethod.GET)
+    public String findcontracts(HttpServletRequest request, HttpSession session) {
+        Utilisateur currentUser = (Utilisateur) session.getAttribute("currentUser");
+        policeService.setPoliceSession(session, request);
+        request.setAttribute("curentrubric", "contracts");
+        String idmenu_ = request.getParameter("p");
+        if (idmenu_ != null) {
+//            int idMenu = Integer.parseInt(idmenu_);
+            userservice.setAdminProfilSubMenu(request, session);
+        }
+        return "findcontracts";
+    }
+
+    @RequestMapping(value = {"/findcontracts"}, method = RequestMethod.POST)
+    public String findcontracts_post(HttpServletRequest request, HttpSession session
+    ) {
+        try {
+            request.setAttribute("curentrubric", "contracts");
+            String searchAttribute = request.getParameter("searchAttribute");
+            String searchValue = request.getParameter("searchValue");
+            String searchOperator = request.getParameter("searchOperator");
+//            List<Object> resultList = dao.search(Police.class, new String[]{"idGroupe"}, searchValue);
+            List<Object> resultList = dao.getAll("select e from Police e where e." + searchAttribute + " " + searchOperator + " '" + searchValue + "'");
+
+            if (!resultList.isEmpty()) {
+                request.setAttribute("result", resultList);
+                request.setAttribute("nbItemFound", resultList.size());
+                request.setAttribute("resultList", resultList);
+                request.setAttribute("successMessage", "message.successMessage.itemFound");
+            } else {
+                request.setAttribute("nbItemFound", 0);
+                request.setAttribute("errorMessage", "message.successMessage.itemFound");
+            }
+        } catch (Exception ex) {
+            request.setAttribute("errorMessage", "message.errorMessage.addContract");
+            Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "findcontracts";
+    }
+
+    public void setAdminProfilSubMenu(int idMenu, HttpServletRequest request, HttpSession session) {
+        Menus m = (Menus) userservice.getById(idMenu, Menus.class);
+        List<Menus> mBrothter = new ArrayList<Menus>(m.getParent().getSubMenus());
+        for (Menus b : mBrothter) {
+            if (b.getId().equals(m.getId())) {
+                b.setClasse("active");
+            } else {
+                b.setClasse("");
+            }
+        }
+    }
+
+    public Object createPolicyGoup(HttpSession session, HttpServletRequest request, Police policy) throws InstantiationException, IllegalAccessException {
+
+        // on crée la police de façon permanente de la base de donnée
+//        on crée aussi un groupe de police pour cette police nouvellement crée
+        Boolean isNewRecord = true;
+        Groupepolice gp = new Groupepolice();
+        gp.setActePlafond(policy.getActePlafond());
+        gp.setMontantPlafond(policy.getMontantPlafond());
+        // on renseigne tous les champs automatique du groupe de la police -- ceci est une methode générique
+        formService.setAllAutomatiqueFields(session, "Groupepolice", isNewRecord, gp);// true ici sign
+        // on crée le groupe de police de façon permanante dans la base de donnée
+
+        return dao.create(gp);
+    }
+}

@@ -1,0 +1,78 @@
+<%-- 
+    Document   : demande de rembourssement
+    Created on : 15 janv. 2015, 18:34:16
+    Author     : user
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<script type="text/javascript">
+    
+</script>
+<jsp:include page="header.jsp"/>
+<jsp:include page="top_page.jsp"/>
+<jsp:include page="menu_header.jsp"/>     
+<div id="menu-container">
+    <div class="divs">        
+            <div class="content homepage" id ="menu-8">
+            <div class="container">
+                <jsp:include page="submenus.jsp"/>
+                <div class="row">    
+                    <div class="col-md-2 col-sm-6">
+                        <jsp:include page="operations.jsp"/>
+                    </div>
+                    <div class="col-md-10 col-sm-6">
+                        <div class="pagecontent" id="">
+                            <h1><spring:message code="requete.rembourssement"></spring:message></h1>
+                            <table class="table table-condensed table-hover table-responsive">                
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th><spring:message code="requete.reason"></spring:message></th>
+                                        <th><spring:message code="requete.dateOuverture"></spring:message></th>
+                                        <th><spring:message code="requete.state"></spring:message></th>
+                                        <th><spring:message code="requete.statut"></spring:message></th>
+                                        <th><spring:message code="form.name"></spring:message></th>
+                                        <th><spring:message code="beneficiaire"></spring:message></th>
+                                        <th><spring:message code="form.user.date_de_creation"></spring:message></th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="requete" items="${requetes}">
+                                    <tr>
+                                        <td>${requete.id}</td>
+                                        <td>${requete.motif}</td>
+                                        <td>${requete.dateActivation}</td>
+                                        <td><span class="curam_etat curam_etat-${requete.etat.classe}">${requete.etat.libelle}</span></td>
+                                        <td>${requete.active}</td>
+                                        <td>${requete.utilisateur.nom} ${requete.utilisateur.prenom}</td>
+                                        <td>${requete.beneficiaire.matriculeAssurance}</td>
+                                        <td>${requete.dateCreation}</td>
+                                        <td>
+                                            <a class="fa fa-edit" data-toggle="modal" data-target="#editRecord" href="#" title="Edit"></a>
+                                            <a class="fa fa-minus-square-o" href="deleteproprietaire?id=${requete.id}" title="Delete"></a>
+                                            <a class="fa fa-cog" href="confProprietaire?id=${requete.id}" title="Configure"></a>
+                                            <a class="fa fa-eject" href="disableProprietaire?id=${requete.id}" title="Disable"></a>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                        <div class="clear"></div>
+                        <div class="form-new">
+                            <jsp:include page="RembourssementApplication.jsp"/>
+                        </div>              
+                     </div>                
+                </div>
+            </div>    
+        </div>    
+        
+        <jsp:include page="headcontent.jsp"/>    
+    </div>
+
+<jsp:include page="footer.jsp"/>

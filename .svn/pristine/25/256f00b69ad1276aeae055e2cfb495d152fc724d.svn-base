@@ -1,0 +1,58 @@
+<%-- 
+    Document   : pays
+    Created on : 9 janv. 2015, 09:39:20
+    Author     : xavalex
+--%>
+
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+        <jsp:include page="ressource.jsp"/>
+    </head>
+    <body>
+        <h1><spring:message code="form.add"/> <spring:message code="label.country"/></h1>
+           <form  role="form"  action="<c:url value="/pays"/>"  method="post">
+            <spring:message code="${errorMessage}"/> 
+            <div class="col-lg-6">
+                <div class="col-lg-12">
+                    <div class="col-lg-12 input-group" style="">
+                        <span class="input-group-addon"><i class="fa fa-phone"><spring:message code="label.country"/></i></span>
+                        <input class="form-control" value="${country_name}" 
+                               placeholder=" <spring:message code="label.country"/>" data-toggle="tooltip" title="country_name" data-placement="bottom"  id="country_name" name="countryName" type="text"  />
+                    </div>
+                </div>
+               
+                <div class="col-lg-12 ">
+                    <div class="choose">
+                        <ul class="nav nav-pills nav-justified">
+                            <li>
+                                <a href="/pays">
+                                    <span>
+                                        <button type="submit" name="add_country"  class="btn btn-default pull-left"><spring:message code="form.ok"/></button>                                        
+                                    </span>
+                                </a>
+                            </li>
+                             <li>
+                                <a href="#">
+                                    <span>
+                                        <button type="submit" name="cancel_add_country"  class="btn btn-default pull-left"><spring:message code="form.cancel"/></button>                                        
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+     
+    </body>
+</html>

@@ -1,0 +1,365 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.*;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "utilisateur")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Utilisateur.findAll", query = "SELECT u FROM Utilisateur u"),
+    @NamedQuery(name = "Utilisateur.findById", query = "SELECT u FROM Utilisateur u WHERE u.id = :id"),
+    @NamedQuery(name = "Utilisateur.findByMatricule", query = "SELECT u FROM Utilisateur u WHERE u.matricule = :matricule"),
+    @NamedQuery(name = "Utilisateur.findByPassword", query = "SELECT u FROM Utilisateur u WHERE u.password = :password"),
+    @NamedQuery(name = "Utilisateur.findByNom", query = "SELECT u FROM Utilisateur u WHERE u.nom = :nom"),
+    @NamedQuery(name = "Utilisateur.findByPrenom", query = "SELECT u FROM Utilisateur u WHERE u.prenom = :prenom"),
+    @NamedQuery(name = "Utilisateur.findBySexe", query = "SELECT u FROM Utilisateur u WHERE u.sexe = :sexe"),
+    @NamedQuery(name = "Utilisateur.findByDateNaissance", query = "SELECT u FROM Utilisateur u WHERE u.dateNaissance = :dateNaissance"),
+    @NamedQuery(name = "Utilisateur.findByLieuNaissance", query = "SELECT u FROM Utilisateur u WHERE u.lieuNaissance = :lieuNaissance"),
+    @NamedQuery(name = "Utilisateur.findByIdArrondissementOrigine", query = "SELECT u FROM Utilisateur u WHERE u.idArrondissementOrigine = :idArrondissementOrigine"),
+    @NamedQuery(name = "Utilisateur.findByNationnalite", query = "SELECT u FROM Utilisateur u WHERE u.nationnalite = :nationnalite"),
+    @NamedQuery(name = "Utilisateur.findByActive", query = "SELECT u FROM Utilisateur u WHERE u.active = :active"),
+    @NamedQuery(name = "Utilisateur.findByVersion", query = "SELECT u FROM Utilisateur u WHERE u.version = :version"),
+    @NamedQuery(name = "Utilisateur.findBySignature", query = "SELECT u FROM Utilisateur u WHERE u.signature = :signature"),
+    @NamedQuery(name = "Utilisateur.findByDateActivation", query = "SELECT u FROM Utilisateur u WHERE u.dateActivation = :dateActivation"),
+    @NamedQuery(name = "Utilisateur.findByDateFermeture", query = "SELECT u FROM Utilisateur u WHERE u.dateFermeture = :dateFermeture"),
+    @NamedQuery(name = "Utilisateur.findByDateModification", query = "SELECT u FROM Utilisateur u WHERE u.dateModification = :dateModification"),
+    @NamedQuery(name = "Utilisateur.findByDateCreation", query = "SELECT u FROM Utilisateur u WHERE u.dateCreation = :dateCreation")})
+public class Utilisateur implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+//    @Size(max = 2147483647)
+    @Column(name = "adresse")
+    private Integer adresse;
+    @Column(name = "statuts")
+    private Integer statuts;
+
+    @Size(max = 255)
+    @Column(name = "rue")
+    private String rue;
+    @Column(name = "id_pays_naissance")
+    private Integer idPaysNaissance;
+    @Column(name = "numero_registre")
+    private Integer numeroRegistre;
+    @Column(name = "matricule")
+    private String matricule;
+    @Size(max = 254)
+    @Column(name = "password")
+    private String password;
+    @Size(max = 254)
+    @Column(name = "nom")
+    private String nom;
+    @Size(max = 254)
+    @Column(name = "prenom")
+    private String prenom;
+    @Column(name = "sexe")
+    private Character sexe;
+    @Column(name = "date_naissance")
+    @Temporal(TemporalType.DATE)
+    private Date dateNaissance;
+    @Size(max = 254)
+    @Column(name = "lieu_naissance")
+    private String lieuNaissance;
+    @Column(name = "id_arrondissement_origine")
+    private Integer idArrondissementOrigine;
+    @Size(max = 254)
+    @Column(name = "nationnalite")
+    private String nationnalite;
+    @Column(name = "active")
+    private Integer active;
+    @Column(name = "version")
+    private Integer version;
+    @Size(max = 100)
+    @Column(name = "signature")
+    private String signature;
+    @Column(name = "date_activation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateActivation;
+    @Column(name = "date_fermeture")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFermeture;
+    @Column(name = "date_modification")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModification;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+
+    @ManyToMany(mappedBy = "utilisateurs", cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+    private Set<Profil> profils = new HashSet<Profil>(0);
+    
+    @OneToMany(mappedBy = "utilisateur", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})    
+    private List<Beneficiaire> beneficaires = new ArrayList();
+
+    public Utilisateur() {
+    }
+
+    public Utilisateur(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public Character getSexe() {
+        return sexe;
+    }
+
+    public void setSexe(Character sexe) {
+        this.sexe = sexe;
+    }
+
+    public Date getDateNaissance() {
+        return dateNaissance;
+    }
+
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
+
+    public String getLieuNaissance() {
+        return lieuNaissance;
+    }
+
+    public void setLieuNaissance(String lieuNaissance) {
+        this.lieuNaissance = lieuNaissance;
+    }
+
+    public Integer getIdArrondissementOrigine() {
+        return idArrondissementOrigine;
+    }
+
+    public void setIdArrondissementOrigine(Integer idArrondissementOrigine) {
+        this.idArrondissementOrigine = idArrondissementOrigine;
+    }
+
+    public String getNationnalite() {
+        return nationnalite;
+    }
+
+    public void setNationnalite(String nationnalite) {
+        this.nationnalite = nationnalite;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public Date getDateActivation() {
+        return dateActivation;
+    }
+
+    public void setDateActivation(Date dateActivation) {
+        this.dateActivation = dateActivation;
+    }
+
+    public Date getDateFermeture() {
+        return dateFermeture;
+    }
+
+    public void setDateFermeture(Date dateFermeture) {
+        this.dateFermeture = dateFermeture;
+    }
+
+    public Date getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(Date dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Set<Profil> getProfils() {
+        return profils;
+    }
+
+    public void setProfils(Set<Profil> profils) {
+        this.profils = profils;
+    }
+
+
+    public void setAdresse(int adresse) {
+        this.adresse = adresse;
+    }
+
+    public int getStatuts() {
+        return statuts;
+    }
+
+    public void setStatuts(int statuts) {
+        this.statuts = statuts;
+    }
+
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Utilisateur)) {
+            return false;
+        }
+        Utilisateur other = (Utilisateur) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.Utilisateur[ id=" + id + " ]";
+    }
+
+    public Integer getIdPaysNaissance() {
+        return idPaysNaissance;
+    }
+
+    public void setIdPaysNaissance(Integer idPaysNaissance) {
+        this.idPaysNaissance = idPaysNaissance;
+    }
+
+    public Integer getNumeroRegistre() {
+        return numeroRegistre;
+    }
+
+    public void setNumeroRegistre(Integer numeroRegistre) {
+        this.numeroRegistre = numeroRegistre;
+    }
+
+    public String getRue() {
+        return rue;
+    }
+
+    public void setRue(String rue) {
+        this.rue = rue;
+    }
+
+    public Integer getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(Integer adresse) {
+        this.adresse = adresse;
+    }
+
+
+    public List<Beneficiaire> getBeneficaires() {
+        return beneficaires;
+    }
+
+    public void setBeneficaires(List<Beneficiaire> beneficaires) {
+        this.beneficaires = beneficaires;
+    }
+    
+    
+
+}

@@ -1,0 +1,59 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+"use strict";
+
+ function doAjaxPost(url) {
+    // get the form values
+    if(!url)
+        url ="manageGestionnaire";
+    var path = $("#path").val();
+    var identifier = $("#id_or_mat_user").val();
+    var proprietaire = $("#idproprietaire").val();
+    
+
+    $.ajax({
+        type: "POST",
+        url: path+"/"+url,
+        data: "action=add&userIdentifier=" + identifier + "&proprietaire=" + proprietaire,
+        success: function(response){
+            // we have the response
+            $("#lisgestionnaires").fadeOut("slow").html(response).addClass("animated").fadeIn("slow");
+            $("#add_gestionnaire_form").hide(0);
+            $("#add_gestionnaire").show(0);
+         },
+         error: function(e){
+             alert('Error: ' + e);
+         }
+    });
+}
+
+ function doAjaxDelete(id, pathAction) {
+    // get the form values
+    var path = $("#path").val();
+    if(!id)
+        return false;
+    var reponse = confirm("Are You Sure you want to delete this?");
+    
+    if(!reponse)
+        return false;
+
+    var proprietaire = $("#idproprietaire").val();
+        $.ajax({
+        type: "POST",
+        url: path+"/"+pathAction,
+        data: "action=delete&userIdentifier=" + id+ "&proprietaire=" + proprietaire,
+        success: function(response){
+            // we have the response
+            $("#lisgestionnaires").fadeOut("slow").html(response).addClass("animated").fadeIn("slow");
+            $("#add_gestionnaire_form").hide(0);
+            $("#add_gestionnaire").show(0);
+         },
+         error: function(e){
+             alert('Error: ' + e);
+         }
+    });
+}
+

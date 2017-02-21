@@ -1,0 +1,453 @@
+//le ControleurBeneficiare communique directement avec la table beneficiaire
+package com.celylog.curam.web.controller;
+
+import com.celylog.curam.model.entities.Adresse;
+import com.celylog.curam.model.entities.Beneficiaire;
+import com.celylog.curam.model.entities.BeneficiaireHistorique;
+import com.celylog.curam.model.entities.Country;
+import com.celylog.curam.model.entities.District;
+import com.celylog.curam.model.entities.HistoriqueUtilisateur;
+import com.celylog.curam.model.entities.Police;
+import com.celylog.curam.model.entities.Profil;
+import com.celylog.curam.model.entities.Statuts;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DefaultService;
+import com.celylog.curam.service.security.FormService;
+import com.celylog.curam.service.security.UserService;
+import com.celylog.curam.utils.BasicFonctions;
+import com.celylog.curam.utils.Message;
+import com.celylog.curam.utils.UrlUtil;
+import com.celylog.curam.utils.enumeration.ConstantsDeControl;
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+/**
+ *
+ * @author Administrateur
+ */
+@Controller
+
+public class BeneficiaireController {
+    
+    @Autowired
+    FormService formService;
+    
+    @Autowired
+    UserService userservice;
+    
+    @Autowired
+    DefaultService dao;
+    
+    @Autowired
+    UtilisateurController userController;
+
+    /**
+     * Cette fonction affiche une page permettant de configurer les beneficiaires.
+     * Elle affiche par ailleurs la liste de tous  bénéficiaires d ' une police 
+     * données
+     * 
+     * @param request
+     * @param session
+     * @param uiModel
+     * @return return chemin du .jsp correspondant à l 'url reçue
+     */
+    @RequestMapping(value ="/beneficiaires" , params={"rowId"}, method = RequestMethod.GET)
+    public String adminBeneficiaire(HttpServletRequest request, HttpSession session) {
+     
+        String idPolice = request.getParameter("rowId");
+        if (idPolice.isEmpty()){
+            return "";
+        }
+        session.setAttribute("rowId", idPolice);
+        this.getFormValues(request, session);
+        this.listerBeneficiaire(request, session);
+        return "beneficiaire/index_beneficiaires";
+    }
+    @RequestMapping(value ="/beneficiaires/control", params={"p"}, method = RequestMethod.GET)
+    public String adminBeneficiaireHistorique(HttpServletRequest request,HttpSession session) {
+  
+        String idmenu_ = request.getParameter("p");
+        if (idmenu_.isEmpty()){
+            return "";
+        }
+        this.getFormValues(request, session);
+
+        // TODO move it to a new function once we have controleur profile
+        this.listerBeneficiaireHistorique(request, session);
+        return "redirect:beneficaires?p=" + idmenu_;
+    }
+    
+    @RequestMapping(value ="/listbeneficiaire", method = RequestMethod.GET)
+    public String listBeneficiaire(HttpServletRequest request, HttpSession session) {
+        return "redirect:/beneficiaires?rowId="+session.getAttribute("rowId");
+    }
+    /**
+     * Liste les beneficaires d ' une police
+     * @param request
+     * @param session 
+     */
+    public void  listerBeneficiaire(HttpServletRequest request, HttpSession session){
+        // Display submenu
+        userservice.setAminProfilSession(request,session);
+        try{
+            userservice.setAdminProfilSubMenu(request,session);
+        }catch(IllegalStateException ie){
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.INFO, ie.toString());
+        }
+        //Rechercher les beneficaires enregistrés dans le système
+        int idPolice = Integer.valueOf((String)session.getAttribute("rowId"));
+        String query = "select b from Beneficiaire b where b.idPolice = '"+idPolice + "'";
+        List<Beneficiaire> beneficiaires = userservice.getAll(query);
+        
+        // Sauvegarder les attributs a afficher sur le formulaire
+        request.setAttribute("idPolice", idPolice);
+        request.setAttribute("curentrubric", "beneficiaire");
+        request.setAttribute("beneficiaires", beneficiaires);
+      
+    }
+    /**
+     * Liste tous les bénéficiaires non valider
+     * @param request
+     * @param session 
+     */
+    public void  listerBeneficiaireHistorique(HttpServletRequest request, HttpSession session){
+        // Display submenu
+        userservice.setAminProfilSession(request,session);
+        try{
+            userservice.setAdminProfilSubMenu(request,session);
+        }catch(IllegalStateException ie){
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.SEVERE, null, ie.toString());
+        }
+        String query = "select b from BeneficiaireHistorique b where b.statut != '"
+                        + ConstantsDeControl.STATUT_VALIDER + "'";
+        List <BeneficiaireHistorique> users = userservice.getAll(query);
+        request.setAttribute("curentrubric", "beneficiaire");
+        request.setAttribute("users", users);
+      
+    }
+    /**
+     * Cette fonction permet d' afficher une nouvelle page pour créer un beneficiaire
+     * dans le systeme.
+     * @param request
+     * @return 
+     */
+    @RequestMapping(value = "/addbeneficiaire", method = RequestMethod.GET)
+    public String addBeneficiaire(HttpServletRequest request, HttpSession session) {
+        
+        //Information sur la police
+        int idPolice = Integer.valueOf((String)session.getAttribute("rowId"));
+   
+        // Sauvegarde des attributs
+        this.getFormValues(request,session);
+        request.setAttribute("idPolice", idPolice);
+        
+        return "beneficiaire/new_beneficiaire";
+    }
+    /**
+    * Cette methode permet de recuperer les informations d' un benefciaire par
+    * un formulaire et les sauvegarde dans la table historisation des beneficiaires
+    * Si le bénéficiaire est deja un utilisateur
+    *  du systeme  son matricule utilisateur ne sera pas generer . La fonction 
+    *  retrouve son matricule et le lui réaffecte.
+    */
+    @RequestMapping(value = "/addbeneficiaire", method = RequestMethod.POST)
+    public String submitBeneficiaire(HttpServletRequest request, HttpSession session) {
+        try {
+            //recuperation et formatage des valeurs du formulaire
+            String date = request.getParameter("date_Naissance");
+            Date dateNaissance = BasicFonctions.getDateFromString(
+                                request.getParameter("date_Naissance"),
+                                 BasicFonctions.DATE_FORMAT2);
+            String nom = request.getParameter("nom");
+            String prenom = request.getParameter("prenom");
+            String nationalite = request.getParameter("nationalite");
+            Country  countryN = (Country)dao.getById(Integer.valueOf(nationalite), Country.class);
+            String numeroRegistre = request.getParameter("numeroRegistre");
+            int  idPolice = Integer.valueOf((String)session.getAttribute("rowId"));
+            int idPaysNaissance = Integer.parseInt(request.getParameter("idPaysNaissance"));
+            String lieuNaissance = request.getParameter("lieuNaissance");
+            int idArrondissementOrigine = Integer.parseInt(request.getParameter("idArrondissementOrigine"));
+            char sexe = request.getParameter("sexe").charAt(0);
+            Statuts statut = (Statuts)userservice.getById(ConstantsDeControl.STATUT_NON_VALIDER, Statuts.class);
+            Statuts statutH = (Statuts)userservice.getById(ConstantsDeControl.STATUT_NEW, Statuts.class);
+            
+            // TODO replace this section by generic fonction called
+            //Sauvegarde de l ' adresse du beneficiaire
+            Adresse adresse = new Adresse();
+            if (!request.getParameter("pays").isEmpty()){
+                int pays=  Integer.parseInt(request.getParameter("pays"));
+                adresse.setPays(pays);
+            }
+            String region =  request.getParameter("region");
+            adresse.setRegion(region);
+            String ville =  request.getParameter("ville");
+            adresse.setVille(ville);
+            String rue =  request.getParameter("rue");
+            adresse.setRue(rue);
+            String tel =  request.getParameter("tel");
+            adresse.setTel(tel);
+            if (!request.getParameter("bp").isEmpty()){
+                int bp =  Integer.parseInt(request.getParameter("bp")); 
+                adresse.setBp(bp);
+            }
+            String email =  request.getParameter("email");
+            adresse.setEmail(email);
+            String website =  request.getParameter("website");
+            adresse.setWebsite(website);
+            adresse.setActive(ConstantsDeControl.ACTIVE);
+            //adresse.setCodePostal();
+            //adresse.setQuartier();
+            adresse = (Adresse)dao.create(adresse);
+            int idAdresse = adresse.getId();
+            
+            //Generation d ' un bénéficaire
+            BeneficiaireHistorique beneficiaireH = (BeneficiaireHistorique) formService.add(request,
+                                                    session,"BeneficiaireHistorique", false);
+           
+            //generation d ' un utilisateur
+            Utilisateur user = new Utilisateur();
+            user.setNom(nom);
+            user.setPrenom(prenom);
+            user.setIdArrondissementOrigine(idArrondissementOrigine);
+            user.setLieuNaissance(lieuNaissance);
+            user.setDateNaissance(dateNaissance);
+            user.setNationnalite(countryN.getName());
+            user.setNumeroRegistre(Integer.parseInt(numeroRegistre));
+            user.setIdPaysNaissance(idPaysNaissance);
+            user.setSexe(sexe);
+            user.setAdresse(idAdresse);
+            int idUser = -1;
+            
+            // Creer profil beneficaire
+            Profil profil = (Profil)dao.getById(ConstantsDeControl.BENEFICIAIRE, Profil.class);
+            Set profilSet = new HashSet();
+            profilSet.add(profil);
+                    
+            Beneficiaire beneficiaire = new Beneficiaire();
+            // Recherche si le utilisateur existe dans la base de données CURAM
+            String matricule = "";
+            if (userservice.findUtilisateurByMatricule(user)){
+                matricule = user.getMatricule();
+                idUser = user.getId();
+                // Recherche si  Beneficiaire  est enregistre dans cette police
+                String query = "select b from Beneficiaire b where b.idUtilisateur ="
+                            + "'"+user.getId() +"' and ' idPolice"+ idPolice +"'";
+                List<Police> pList = dao.getAll(query);
+                if (!pList.isEmpty()){
+                    request.setAttribute("errorMessage", "form.beneficiaire.exists.errorMessage");
+                    return "redirect:beneficiaire";
+                }
+            }else {
+                    // creation d ' un nouveau utilisateur
+                    matricule = userservice.generateMatricule(user);
+                    user.setMatricule(matricule);
+                    user.setStatuts(ConstantsDeControl.STATUT_NON_VALIDER);
+                    formService.setAllAutomatiqueFields(session, "Utilisateur", true, user);
+                   
+                    user = (Utilisateur)dao.create(user);
+                    user = (Utilisateur)dao.refresh(user);
+                    
+                    /** TODO need to set a beneficaire profil **/
+                    user.setProfils(profilSet);
+                    dao.update(user);
+                    
+                    idUser = user.getId();
+
+                    // enregistrement d ' un nouvel utilisateur dans historique
+                    HistoriqueUtilisateur userH = new HistoriqueUtilisateur();
+                    formService.cloneEntity(userH, user);
+                    userH.setIdUtilisateur(idUser);
+                    userH.setMatricule(matricule);
+                    userH.setStatuts(statutH);
+                    formService.setAllAutomatiqueFields(session,"HistoriqueUtilisateur", true, userH);
+                    userH = (HistoriqueUtilisateur)dao.create(userH);
+                    userH = (HistoriqueUtilisateur)dao.refresh(userH);
+            }
+           
+            //enregistrer le beneficiaire
+            beneficiaireH.setType(ConstantsDeControl.ASSURE_PRINCIPAL);
+            beneficiaireH.setIdPolice(idPolice);
+            beneficiaireH.setStatut(ConstantsDeControl.STATUT_NEW);
+            beneficiaireH.setIdUtilisateur(idUser);
+            
+            formService.cloneEntity(beneficiaire, beneficiaireH);
+            beneficiaire.setUtilisateur(user);
+            beneficiaire.setStatut(ConstantsDeControl.STATUT_NON_VALIDER);
+            formService.setAllAutomatiqueFields(session,"Beneficiaire", true, beneficiaire);
+            beneficiaire = (Beneficiaire)dao.create(beneficiaire);
+            beneficiaire = (Beneficiaire)dao.refresh(beneficiaire);
+                
+            //enregistrer historique beneficiaire
+            beneficiaireH.setIdBeneficiaireActif(beneficiaire.getId());
+            formService.setAllAutomatiqueFields(session,"BeneficiaireHistorique", true, beneficiaireH);
+            dao.create(beneficiaireH); 
+            dao.refresh(beneficiaireH);
+            
+        } catch (Exception ex) {
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "redirect:/beneficiaires?rowId="+session.getAttribute("rowId");
+    }
+
+    public void getFormValues(HttpServletRequest request, HttpSession session){
+        
+        //Recuperation de la liste des pays
+        String query = "select c from Country c order by c.name";
+        List<Country> countries = userservice.getAll(query);
+        request.setAttribute("CountryList", countries);
+        
+        //Recuperation de la liste des arrondissements
+        query = "select d from District d order by d.label";
+        List<District> districts = userservice.getAll(query);
+        request.setAttribute("districts", districts);
+    }
+    
+    @RequestMapping(value = "beneficiaire/validate", method = RequestMethod.GET)
+    public String viewBeneficiaire(HttpServletRequest request, HttpSession session) {
+         try {
+           
+            // Recois le id d ' un benenificiaire dans la table historique
+            // affiche les informations de ce beneficiaire à l interface
+            int idBeneficiaireH = Integer.parseInt(request.getParameter("id"));
+            String query = "select bH from BeneficiaireHistorique bH where bH.idBeneficiaireActif ="
+                            + "'" + idBeneficiaireH  
+                            + "' and ' bH.statut != "+ ConstantsDeControl.STATUT_VALIDER+"'";
+            List<BeneficiaireHistorique> bHLists = dao.getAll(query);
+            if (!bHLists.isEmpty()){
+                 BeneficiaireHistorique beneficiaireH = bHLists.get(0);
+                 formService.setEntitySessionInForm(request, beneficiaireH, "BeneficiaireHistorique");
+       
+                // Recois le id d ' un benenificiaire dans la table historique
+                // affiche les informations de son utilisateur associé à l interface
+               query = "select userH from HistoriqueUtilisateur  userH where userH.idUtilisateur ="
+                                + "'" + beneficiaireH.getIdUtilisateur()
+                                + "' and ' bH.statut != "+ ConstantsDeControl.STATUT_VALIDER+"'";
+                List<HistoriqueUtilisateur> userHistoriques = dao.getAll(query);
+                if (!userHistoriques.isEmpty()){
+                     HistoriqueUtilisateur userH = userHistoriques.get(0);
+                     formService.setEntitySessionInForm(request, userH, "HistoriqueUtilisateur");
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "beneficiaire/validate_beneficiaire";
+    }
+    /**
+     *  Cette fonction recupere les informations d ' un beneficiaire et les sauvegarde 
+     *  dans la table des beneficiaire. Si le bénéficiaire est deja un utilisateur
+     *  du systeme  sont matricule utilisateur ne sera pas generer . La fonction 
+     *  retrouve son matricule et le lui affecte.
+     * @param request
+     * @return 
+     */
+    @RequestMapping(value = "beneficiaire/validate", method = RequestMethod.POST)
+    public String validateBeneficiaire(HttpServletRequest request, HttpSession session) {
+         try {
+             //Recherche le beneficiaire dans la table des historique change son statut
+             // enregistre  le benficiaire dans la table courante
+            int idBeneficiaireH = Integer.parseInt(request.getParameter("id"));
+            int statut_flag = Integer.parseInt(request.getParameter("statut"));
+            int statut = (statut_flag == 1 ? ConstantsDeControl.STATUT_VALIDER : 
+                                ConstantsDeControl.STATUT_NON_VALIDER);
+            String query = "select bH from BeneficiaireHistorique bH where bH.idBeneficiaireActif ="
+                            + "'" + idBeneficiaireH  
+                            + "' and ' bH.statut != "+ ConstantsDeControl.STATUT_VALIDER+"'";
+            List<BeneficiaireHistorique> bHLists = dao.getAll(query);
+            if (!bHLists.isEmpty()){
+                BeneficiaireHistorique beneficiaireH = bHLists.get(0);
+                beneficiaireH.setStatut(statut);
+                dao.update(beneficiaireH);
+                if (statut == ConstantsDeControl.STATUT_NON_VALIDER){
+                    return "redirect:/beneficiaires?rowId="+session.getAttribute("rowId");
+                }
+                Beneficiaire newBeneficiaire = new Beneficiaire();
+                formService.cloneEntity(newBeneficiaire, beneficiaireH);
+                newBeneficiaire.setStatut(statut);
+                dao.create(newBeneficiaire);
+                
+                //Recherche lutilisateur dans la table des historique change son statut
+                // enregistre  l utilisateur dans la table courante
+                query = "select userH from HistoriqueUtilisateur  userH where userH.idUtilisateur ="
+                                + "'" + beneficiaireH.getIdUtilisateur()
+                                + "' and ' bH.statut != "+ ConstantsDeControl.STATUT_VALIDER+"'";
+                List<HistoriqueUtilisateur> userHistoriques = dao.getAll(query);
+                if (!userHistoriques.isEmpty()){
+                    HistoriqueUtilisateur userH = userHistoriques.get(0);
+                    query = "select S from Statuts S where S.id ='"+ statut + "'";
+                    List<Statuts> statuts = userservice.getAll(query);
+                    Statuts uStatut = null;
+                    if (!statuts.isEmpty()){
+                        uStatut = statuts.get(0);
+                    }
+                    userH.setStatuts(uStatut);
+                    dao.update(userH);
+                    
+                    Utilisateur newUser = new Utilisateur();
+                    formService.cloneEntity(newUser, userH);
+                   
+                    newUser.setStatuts(statut);
+                    //newBeneficiaire.setActive(ConstantsDeControl.ACTIVE);
+                    dao.create(newBeneficiaire);
+                    
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "redirect:/beneficiaires?rowId="+session.getAttribute("rowId");
+    }
+    
+    @RequestMapping(value = "/beneficaire/config", method = RequestMethod.GET)
+    public String modifyBeneficiaire(HttpServletRequest request, HttpSession session) {
+        userservice.setAminProfilSession(request,session);
+        try{
+            userservice.setAdminProfilSubMenu(request,session);
+        }catch(IllegalStateException ie){
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.INFO, ie.toString());
+        }
+        //Information sur la police
+        String idB = request.getParameter("id");
+        try {
+            request.setAttribute("curentrubric", "beneficiaire");
+            if (idB!= null) {
+                int id = Integer.parseInt(idB);
+                Beneficiaire beneficiaire = (Beneficiaire) dao.getById(id, Beneficiaire.class);
+                
+                // Sauvegarde des attributs
+                this.getFormValues(request,session);
+                formService.setEntitySessionInForm(request, beneficiaire, "Beneficiaire");
+                if (beneficiaire != null) {
+                   request.setAttribute("beneficiaire", beneficiaire);
+                   boolean disableForm = true;
+                   request.setAttribute("disableForm", disableForm);
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BeneficiaireController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "beneficiaire/config_beneficiaire";
+    }
+}

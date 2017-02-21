@@ -1,0 +1,221 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "produit")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Produit.findAll", query = "SELECT p FROM Produit p"),
+    @NamedQuery(name = "Produit.findById", query = "SELECT p FROM Produit p WHERE p.id = :id"),
+    @NamedQuery(name = "Produit.findByIdCategorie", query = "SELECT p FROM Produit p WHERE p.idCategorie = :idCategorie"),
+    @NamedQuery(name = "Produit.findByLibelleCourt", query = "SELECT p FROM Produit p WHERE p.libelleCourt = :libelleCourt"),
+    @NamedQuery(name = "Produit.findByLibelle", query = "SELECT p FROM Produit p WHERE p.libelle = :libelle"),
+    @NamedQuery(name = "Produit.findByTypeProduit", query = "SELECT p FROM Produit p WHERE p.typeProduit = :typeProduit"),
+    @NamedQuery(name = "Produit.findByPrix", query = "SELECT p FROM Produit p WHERE p.prix = :prix"),
+    @NamedQuery(name = "Produit.findByActive", query = "SELECT p FROM Produit p WHERE p.active = :active"),
+    @NamedQuery(name = "Produit.findByVersion", query = "SELECT p FROM Produit p WHERE p.version = :version"),
+    @NamedQuery(name = "Produit.findBySignature", query = "SELECT p FROM Produit p WHERE p.signature = :signature"),
+    @NamedQuery(name = "Produit.findByDateActivation", query = "SELECT p FROM Produit p WHERE p.dateActivation = :dateActivation"),
+    @NamedQuery(name = "Produit.findByDateFermeture", query = "SELECT p FROM Produit p WHERE p.dateFermeture = :dateFermeture"),
+    @NamedQuery(name = "Produit.findByDateModification", query = "SELECT p FROM Produit p WHERE p.dateModification = :dateModification"),
+    @NamedQuery(name = "Produit.findByDateCreation", query = "SELECT p FROM Produit p WHERE p.dateCreation = :dateCreation")})
+public class Produit implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "id_categorie")
+    private Integer idCategorie;
+    @Size(max = 30)
+    @Column(name = "libelle_court")
+    private String libelleCourt;
+    @Size(max = 254)
+    @Column(name = "libelle")
+    private String libelle;
+    @Column(name = "type_produit")
+    private Integer typeProduit;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "prix")
+    private Float prix;
+    @Column(name = "active")
+    private Integer active;
+    @Column(name = "version")
+    private Integer version;
+    @Size(max = 20)
+    @Column(name = "signature")
+    private String signature;
+    @Column(name = "date_activation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateActivation;
+    @Column(name = "date_fermeture")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFermeture;
+    @Column(name = "date_modification")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModification;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+
+    public Produit() {
+    }
+
+    public Produit(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getIdCategorie() {
+        return idCategorie;
+    }
+
+    public void setIdCategorie(Integer idCategorie) {
+        this.idCategorie = idCategorie;
+    }
+
+    public String getLibelleCourt() {
+        return libelleCourt;
+    }
+
+    public void setLibelleCourt(String libelleCourt) {
+        this.libelleCourt = libelleCourt;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public Integer getTypeProduit() {
+        return typeProduit;
+    }
+
+    public void setTypeProduit(Integer typeProduit) {
+        this.typeProduit = typeProduit;
+    }
+
+    public Float getPrix() {
+        return prix;
+    }
+
+    public void setPrix(Float prix) {
+        this.prix = prix;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public Date getDateActivation() {
+        return dateActivation;
+    }
+
+    public void setDateActivation(Date dateActivation) {
+        this.dateActivation = dateActivation;
+    }
+
+    public Date getDateFermeture() {
+        return dateFermeture;
+    }
+
+    public void setDateFermeture(Date dateFermeture) {
+        this.dateFermeture = dateFermeture;
+    }
+
+    public Date getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(Date dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Produit)) {
+            return false;
+        }
+        Produit other = (Produit) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.Produit[ id=" + id + " ]";
+    }
+    
+}

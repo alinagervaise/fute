@@ -1,0 +1,231 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "district")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "District.findAll", query = "SELECT d FROM District d"),
+    @NamedQuery(name = "District.findById", query = "SELECT d FROM District d WHERE d.id = :id"),
+    @NamedQuery(name = "District.findByCodePays", query = "SELECT d FROM District d WHERE d.codePays = :codePays"),
+    @NamedQuery(name = "District.findByLabel", query = "SELECT d FROM District d WHERE d.label = :label"),
+    @NamedQuery(name = "District.findByDepartement", query = "SELECT d FROM District d WHERE d.departement = :departement"),
+    @NamedQuery(name = "District.findByDateActivation", query = "SELECT d FROM District d WHERE d.dateActivation = :dateActivation"),
+    @NamedQuery(name = "District.findByDateFermeture", query = "SELECT d FROM District d WHERE d.dateFermeture = :dateFermeture"),
+    @NamedQuery(name = "District.findByDateModification", query = "SELECT d FROM District d WHERE d.dateModification = :dateModification"),
+    @NamedQuery(name = "District.findByDateCreation", query = "SELECT d FROM District d WHERE d.dateCreation = :dateCreation")})
+public class District implements Serializable {
+    @Column(name = "code")
+    private Integer code;
+    @Size(max = 50)
+    @Column(name = "ancien_district")
+    private String ancienDistrict;
+    @Size(max = 50)
+    @Column(name = "chef_lieux")
+    private String chefLieux;
+    @Column(name = "date_apparition")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateApparition;
+    @Column(name = "date_disparution")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateDisparution;
+    @Size(max = 50)
+    @Column(name = "region")
+    private String region;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "code_pays")
+    private Integer codePays;
+    @Size(max = 20)
+    @Column(name = "label")
+    private String label;
+    @Size(max = 20)
+    @Column(name = "departement")
+    private String departement;
+    @Column(name = "date_activation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateActivation;
+    @Column(name = "date_fermeture")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFermeture;
+    @Column(name = "date_modification")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModification;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+
+    public District() {
+    }
+
+    public District(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getCodePays() {
+        return codePays;
+    }
+
+    public void setCodePays(Integer codePays) {
+        this.codePays = codePays;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(String departement) {
+        this.departement = departement;
+    }
+
+    public Date getDateActivation() {
+        return dateActivation;
+    }
+
+    public void setDateActivation(Date dateActivation) {
+        this.dateActivation = dateActivation;
+    }
+
+    public Date getDateFermeture() {
+        return dateFermeture;
+    }
+
+    public void setDateFermeture(Date dateFermeture) {
+        this.dateFermeture = dateFermeture;
+    }
+
+    public Date getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(Date dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof District)) {
+            return false;
+        }
+        District other = (District) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.District[ id=" + id + " ]";
+    }
+
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getAncienDistrict() {
+        return ancienDistrict;
+    }
+
+    public void setAncienDistrict(String ancienDistrict) {
+        this.ancienDistrict = ancienDistrict;
+    }
+
+    public String getChefLieux() {
+        return chefLieux;
+    }
+
+    public void setChefLieux(String chefLieux) {
+        this.chefLieux = chefLieux;
+    }
+
+    public Date getDateApparition() {
+        return dateApparition;
+    }
+
+    public void setDateApparition(Date dateApparition) {
+        this.dateApparition = dateApparition;
+    }
+
+    public Date getDateDisparution() {
+        return dateDisparution;
+    }
+
+    public void setDateDisparution(Date dateDisparution) {
+        this.dateDisparution = dateDisparution;
+    }
+    
+}

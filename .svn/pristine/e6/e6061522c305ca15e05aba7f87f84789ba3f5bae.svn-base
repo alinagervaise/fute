@@ -1,0 +1,36 @@
+<%-- 
+    Document   : polices
+    Created on : 19 janv. 2015, 18:34:16
+    Author     : Nono Guy
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<script type="text/javascript">
+
+</script>
+<jsp:include page="header.jsp"/>
+<jsp:include page="top_page.jsp"/>
+<jsp:include page="menu_header.jsp"/>
+<script  type="text/javascript" src="<c:url value="/resources/js/angular.min.js"/>" ></script>
+<div id="menu-container">
+    <div class="divs">
+        <div class="content homepage" id ="menu-8">
+            <div class="container">
+                <jsp:include page="submenus.jsp"/>
+                <div class="row">
+                    <div class="col-md-2 col-sm-6">
+                        <jsp:include page="operations.jsp"/>
+                    </div>
+                    <div class="col-md-10">
+                        <jsp:include page="_div_newContract.jsp"/>
+                    </div>
+                </div>
+            </div>    
+        </div>
+
+        <jsp:include page="headcontent.jsp"/>
+    </div>
+    <jsp:include page="footer.jsp"/>

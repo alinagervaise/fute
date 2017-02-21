@@ -1,0 +1,243 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "bondepriseencharge")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "BonDePriseEnCharge.findAll", query = "SELECT b FROM BonDePriseEnCharge b"),
+    @NamedQuery(name = "BonDePriseEnCharge.findById", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.id = :id"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByIdPrestation", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.idPrestation = :idPrestation"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByIdEmploye", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.idEmploye = :idEmploye"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByDateDemande", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.dateDemande = :dateDemande"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByMontant", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.montant = :montant"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByDateEmission", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.dateEmission = :dateEmission"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByDelaiEmission", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.delaiEmission = :delaiEmission"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByStatut", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.statut = :statut"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByActive", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.active = :active"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByVersion", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.version = :version"),
+    @NamedQuery(name = "BonDePriseEnCharge.findBySignature", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.signature = :signature"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByDateActivation", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.dateActivation = :dateActivation"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByDateFermeture", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.dateFermeture = :dateFermeture"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByDateModification", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.dateModification = :dateModification"),
+    @NamedQuery(name = "BonDePriseEnCharge.findByDateCreation", query = "SELECT b FROM BonDePriseEnCharge b WHERE b.dateCreation = :dateCreation")})
+public class BonDePriseEnCharge implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "id_prestation")
+    private Integer idPrestation;
+    @Column(name = "id_employe")
+    private Integer idEmploye;
+    @Column(name = "date_demande")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateDemande;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "montant")
+    private Double montant;
+    @Column(name = "date_emission")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateEmission;
+    @Column(name = "delai_emission")
+    private Integer delaiEmission;
+    @Column(name = "statut")
+    private Integer statut;
+    @Column(name = "active")
+    private Integer active;
+    @Column(name = "version")
+    private Integer version;
+    @Size(max = 20)
+    @Column(name = "signature")
+    private String signature;
+    @Column(name = "date_activation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateActivation;
+    @Column(name = "date_fermeture")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFermeture;
+    @Column(name = "date_modification")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModification;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+
+    public BonDePriseEnCharge() {
+    }
+
+    public BonDePriseEnCharge(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getIdPrestation() {
+        return idPrestation;
+    }
+
+    public void setIdPrestation(Integer idPrestation) {
+        this.idPrestation = idPrestation;
+    }
+
+    public Integer getIdEmploye() {
+        return idEmploye;
+    }
+
+    public void setIdEmploye(Integer idEmploye) {
+        this.idEmploye = idEmploye;
+    }
+
+    public Date getDateDemande() {
+        return dateDemande;
+    }
+
+    public void setDateDemande(Date dateDemande) {
+        this.dateDemande = dateDemande;
+    }
+
+    public Double getMontant() {
+        return montant;
+    }
+
+    public void setMontant(Double montant) {
+        this.montant = montant;
+    }
+
+    public Date getDateEmission() {
+        return dateEmission;
+    }
+
+    public void setDateEmission(Date dateEmission) {
+        this.dateEmission = dateEmission;
+    }
+
+    public Integer getDelaiEmission() {
+        return delaiEmission;
+    }
+
+    public void setDelaiEmission(Integer delaiEmission) {
+        this.delaiEmission = delaiEmission;
+    }
+
+    public Integer getStatut() {
+        return statut;
+    }
+
+    public void setStatut(Integer statut) {
+        this.statut = statut;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public Date getDateActivation() {
+        return dateActivation;
+    }
+
+    public void setDateActivation(Date dateActivation) {
+        this.dateActivation = dateActivation;
+    }
+
+    public Date getDateFermeture() {
+        return dateFermeture;
+    }
+
+    public void setDateFermeture(Date dateFermeture) {
+        this.dateFermeture = dateFermeture;
+    }
+
+    public Date getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(Date dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof BonDePriseEnCharge)) {
+            return false;
+        }
+        BonDePriseEnCharge other = (BonDePriseEnCharge) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.BonDePriseEnCharge[ id=" + id + " ]";
+    }
+    
+}

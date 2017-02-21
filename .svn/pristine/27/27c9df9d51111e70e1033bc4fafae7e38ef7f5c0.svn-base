@@ -1,0 +1,197 @@
+<%-- 
+    Document   : _div_newUser
+    Created on : 24 janv. 2015, 15:07:25
+    Author     : Nono Guy
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<div class="form-group">
+    <div class="col-lg-6">
+        <label><spring:message code="form.lastName"/></label>
+        <input type="text" class="form-control" name="nom" value="${nom}" placeholder="<spring:message code="form.lastName"/>" />
+    </div>
+    <div class="col-lg-6">
+        <label><spring:message code="form.firstName"/></label>
+        <input type="text" required="" class="form-control" name="prenom" value="${prenom}" placeholder="<spring:message code="form.firstName"/>" />
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-lg-6">
+        <label for="idPaysNaissance"><spring:message code="form.user.pays.naissance"/></label>
+        <select class="form-control"  style="width: 100%" name="idPaysNaissance" id="idPaysNaissance" style="width: 100%">
+            <c:if test="${!empty CountryList}" >
+                <c:forEach var="country" items="${CountryList}">
+                    <c:if test="${!empty idPaysNaissance}" >
+                        <option value="${country.id}" class="text-justify">
+                            ${country.name}
+                        </option>
+                    </c:if>
+                    <option value="${country.id}" class="text-justify">
+                        ${country.name}
+                    </option>
+                </c:forEach>
+            </c:if>
+            <option selected  value="${idPaysNaissance}"  >-- <spring:message code="form.user.pays.naissance"/>--</option> 
+        </select>
+    </div>
+    <div class="col-lg-6">
+        <label for="idArrondissementOrigine"><spring:message code="form.user.district.naissance"/></label>
+        <select class="form-control"  style="width: 100%"  name="idArrondissementOrigine" id="idArrondissementOrigine" style="">
+            <c:if test="${!empty districts}" >
+                <c:forEach var="district" items="${districts}">
+                    <c:if test="${!empty idArrondissementOrigine}" >
+                        <option selected value="${district.id}" class="text-justify">
+                            ${district.label}
+                        </option>
+                    </c:if>
+                    <option value="${district.id}" class="text-justify">
+                        ${district.label}
+                    </option>
+                </c:forEach>
+            </c:if>
+            <option selected value="${idArrondissementOrigine}">-- <spring:message code="form.user.district.naissance"/>--</option> 
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-lg-6">
+        <label for="dateNaissance" ><spring:message code="form.dateNaissance"/></label>
+        <div id="" class="input-group" >
+            <input    class="form-control" id="dateNaissance" name="date_Naissance" type="Date" data-format="dd-MM-yyyy" value="${dateNaissance}" placeholder="<spring:message code="form.dateNaissance"/> " style="height: 30px;"/>
+            <span class="add-on input-group-addon">
+                <i class="fa fa-calendar"></i> 
+            </span>
+        </div>
+<!--        <script type="text/javascript">
+            $(function() {
+                $('#dateNaissance').datetimepicker({
+                    pickTime: false
+                });
+            });
+        </script>-->
+    </div>
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.lieu_de_naissance"/></label>
+        <div class="input-group">
+            <div class="input-group-addon">
+                <i class="fa fa-map-marker"></i> 
+            </div>
+            <input required class="form-control" id="lieuNaissance" name="lieuNaissance" type="text" value="${lieuNaissance}" placeholder="<spring:message code="form.user.lieu_de_naissance"/>" style="height: 30px"/>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.sexe"/></label>
+        <select required class="form-control"  style="width: 100%"   id="sexe" name="sexe">
+            <option  value="M"><spring:message code="sex.male"/></option>
+            <option selected value="F"><spring:message code="sex.female"/></option>   
+        </select>
+        <!--<span class="input-group-addon"><i class="fa fa-gear"></i></span>-->
+    </div>
+    <div class="col-lg-6">
+        <label for="nationalite"><spring:message code="form.user.nationalite"/></label>
+        <select class="form-control"  style="width: 100%"  name="nationalite" id="nationalite" >
+            <c:if test="${!empty CountryList}" >
+                <c:forEach var="country" items="${CountryList}">
+                    <c:if test="${!empty nationalite}" >
+                        <option selected value="${country.id}" class="text-justify">
+                            ${country.name}
+                        </option>
+                    </c:if>
+                    <option value="${country.id}" class="text-justify">
+                        ${country.name}
+                    </option>
+                </c:forEach>
+            </c:if>
+            <option selected value="">-- <spring:message code="form.user.nationalite"/>--</option> 
+        </select>
+
+    </div>
+</div>
+<script>
+    function test2()
+    {
+        var name_element = document.getElementById('sexe');
+        var name_element2 = document.getElementById('dateNaissance');
+        Session["sexe"] = name_element.value;
+        Session["dateNaissance"] = name_element2.value;
+        alert(name_element2.value);
+    }
+</script>
+<div class="form-group">
+    <div class="col-lg-12">
+        <label><spring:message code="form.user.numero_registre"/></label>
+        <input type="number" min="1" required="" class="form-control" id="numeroRegistre" name="numeroRegistre" value="${numeroRegistre}" placeholder="<spring:message code="form.user.numero_registre"/>" />
+    </div>
+</div>
+
+<div class="curam_textareabox">   
+    <h4>Contact information</h4>
+</div>
+<div class="form-group ">
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.pays"/></label>
+        <select class="form-control"  style="width: 100%" name="pays" id="pays" style="width: 100%">
+            <c:if test="${!empty CountryList}" >
+                <c:forEach var="country" items="${CountryList}">
+                    <c:if test="${!empty pays}" >
+                        <option value="${country.id}" class="text-justify">
+                            <spring:message code="country.${country.isoAlpha2Code}"/>
+                        </option>
+                    </c:if>
+                    <option value="${country.id}" class="text-justify">
+                        ${country.name}
+                    </option>
+                </c:forEach>
+
+            </c:if>
+            <option selected  value="${country.id}"  >-- <spring:message code="form.user.pays"/>--</option> 
+        </select>
+    </div>
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.region"/></label>
+        <input class="form-control" placeholder="<spring:message code='form.user.region'/> "   id="region" name="region" value="${region}" type="text"  />
+    </div>
+</div>
+<div class="form-group ">
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.ville"/></label>
+        <input class="form-control" placeholder="<spring:message code='form.user.ville'/> "   id="city" name="ville" value="${ville}" type="text"  />
+    </div>
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.rue"/></label>
+        <input class="form-control" placeholder="<spring:message code='form.user.rue'/> "   id="rue" name="rue" value="${rue}" type="text"  />
+    </div>
+</div>
+<div class="form-group ">
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.telephone"/></label>
+        <input class="form-control" placeholder="<spring:message code='form.user.telephone'/> "   id="tel" name="tel" value="${tel}" type="text"  />
+    </div>
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.bp"/></label>
+        <input class="form-control" placeholder="<spring:message code='form.user.bp'/> "   id="bp" name="bp" value="${bp}" type="text"  />
+    </div>
+</div>
+<div class="form-group ">
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.email"/></label>
+        <input class="form-control" placeholder="<spring:message code='form.user.email'/> "   id="email" name="email" value="${email}" type="text"  />
+    </div>
+    <div class="col-lg-6">
+        <label><spring:message code="form.user.site_internet"/></label>
+        <input class="form-control" placeholder="<spring:message code='form.user.site_internet'/> "   id="url" name="url" value="${website}" type="text"  />
+    </div>
+</div>
+
+<script type="text/javascript">
+//        $("#idPaysNaissance").select2({placeholder: "<spring:message code="form.user.pays.naissance"/>"});
+//        $("#idArrondissementOrigine").select2({placeholder: "<spring:message code="form.user.district.naissance"/>"});
+//        $("#sexe").select2({placeholder: "<spring:message code="form.user.sexe"/>"});
+//        $("#nationalite").select2({placeholder: "<spring:message code="form.choix"/>"});
+//        $("#nationalite").select2({placeholder: "<spring:message code="form.choix"/>"});
+//        $("#nationalite").select2({placeholder: "<spring:message code="form.choix"/>"});
+</script>

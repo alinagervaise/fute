@@ -1,0 +1,46 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.lecaddyfute.utils;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+import com.lecaddyfute.model.dao.HibernateDao;
+//mport com.celylog.curam.model.entities.Parametre;
+import com.lecaddyfute.service.DefaultService;
+
+/**
+ *
+ * @author Nono Guy
+ */
+@Component
+public class Parameters {
+
+    @Autowired
+    JdbcTemplate jt;
+    @Autowired
+    protected HibernateDao dao;
+
+    public String getAppliParameter(String code) {
+//        String valeur_parametre = "";
+//        try {
+//            List  <Parametre> lp = dao.getAll("select p from Parametre p where p.code like  '" + code + "'");
+//            if(!lp.isEmpty()){
+//                valeur_parametre=lp.get(0).getValeur();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return valeur_parametre;
+        return "";
+    }
+
+}

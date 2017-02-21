@@ -1,0 +1,56 @@
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<div class="pagecontent" id="">
+<h4><spring:message code="accountType.recepient"/></h4>
+<table class="table table-condensed table-hover table-responsive">                
+    <thead>
+        <tr>
+            <th>#</th>
+            <th><spring:message code="form.user.id" var="userid"/></th>
+            <th><spring:message code="form.beneficiaire.matricule.assurance"/></th>
+            <th><spring:message code="form.user.matricule"/></th>  
+            <th><spring:message code="form.user.nom"/></th>   
+            <th><spring:message code="form.user.prenom"/></th>
+            <th><spring:message code="form.user.sexe"/></th>
+            <th><spring:message code="form.user.date_de_naissance"/></th>
+            <th><spring:message code="form.user.lieu_de_naissance"/></th>
+            <th><spring:message code="form.user.arrondissement_d_origine"/></th>
+            <th><spring:message code="form.user.nationalite"/></th>
+
+            <th><spring:message code="form.user.actions"/></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="beneficiaire" items="${users}"> 
+
+            <tr>
+                <td>${beneficiaire.idBeneficiaire}</td>
+                <td>${beneficiaire.matriculeAssurance}</td>
+                <td>${beneficiaire.matricule}</td>
+                <td>${beneficiaire.affiniteName}</td>
+                <td>${beneficiaire.nom}</td>
+                <td>${beneficiaire.prenom}</td>
+                <td>${beneficiaire.sexe}</td>
+                <td>${beneficiaire.dateNaissance}</td>
+                <td>${beneficiaire.lieuNaissance}</td>
+                <td>${beneficiaire.idArrondissementOrigine}</td>
+                <td>${beneficiaire.nationnalite}</td>
+                <td>${beneficiaire.dateActivation}</td>
+
+
+                <td>
+                    <a class="fa fa-pencil-square-o" href="beneficiaire/edit?id=${beneficiaire.id}" title="<spring:message code="form.edit"/>"</a>
+                    <a class="fa fa-minus-square-o" href="beneficiaire/delete?id=${beneficiaire.id}" title="<spring:message code="form.del"/>"></a>
+                    <a class="fa fa-eject" href="bebeficiaire/disable?id=${beneficiaire.id}" title="<spring:message code="form.user.desactiver"/>"></a>
+                </td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
+</div>                        
+                       

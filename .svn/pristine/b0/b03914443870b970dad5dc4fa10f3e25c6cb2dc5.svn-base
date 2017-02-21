@@ -1,0 +1,1642 @@
+-- MySQL dump 10.13  Distrib 5.5.2-m2, for Win32 (ia32)
+--
+-- Host: localhost    Database: curamdb
+-- ------------------------------------------------------
+-- Server version	5.5.2-m2-community
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `adresse`
+--
+
+DROP TABLE IF EXISTS `adresse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `adresse` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `pays` int(11) DEFAULT NULL,
+  `region` int(11) DEFAULT NULL,
+  `ville` int(11) DEFAULT NULL,
+  `code_postal` varchar(254) DEFAULT NULL,
+  `tel` varchar(254) DEFAULT NULL,
+  `rue` varchar(254) DEFAULT NULL,
+  `email` varchar(254) DEFAULT NULL,
+  `website` varchar(254) DEFAULT NULL,
+  `bp` int(11) DEFAULT NULL,
+  `quartier` varchar(254) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  `utilisateur_fk` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_3vxxo035ssw5rbgw2wn2ck88r` (`utilisateur_fk`),
+  CONSTRAINT `FK_3vxxo035ssw5rbgw2wn2ck88r` FOREIGN KEY (`utilisateur_fk`) REFERENCES `utilisateur` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adresse`
+--
+
+LOCK TABLES `adresse` WRITE;
+/*!40000 ALTER TABLE `adresse` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adresse` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `agentmedical`
+--
+
+DROP TABLE IF EXISTS `agentmedical`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `agentmedical` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_utilisateur` int(11) DEFAULT NULL,
+  `id_prestataire` int(11) DEFAULT NULL,
+  `fonction` varchar(254) DEFAULT NULL,
+  `grade` char(1) DEFAULT NULL,
+  `specialite` varchar(254) DEFAULT NULL,
+  `date_debut_service` datetime DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `agentmedical`
+--
+
+LOCK TABLES `agentmedical` WRITE;
+/*!40000 ALTER TABLE `agentmedical` DISABLE KEYS */;
+/*!40000 ALTER TABLE `agentmedical` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `alerte`
+--
+
+DROP TABLE IF EXISTS `alerte`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `alerte` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_source` int(13) DEFAULT NULL,
+  `type_alerte` int(11) DEFAULT NULL,
+  `date_alerte` datetime DEFAULT NULL,
+  `description` varchar(254) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alerte`
+--
+
+LOCK TABLES `alerte` WRITE;
+/*!40000 ALTER TABLE `alerte` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alerte` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `beneficiaire`
+--
+
+DROP TABLE IF EXISTS `beneficiaire`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `beneficiaire` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_utilisateur` int(11) DEFAULT NULL,
+  `id_police` int(11) NOT NULL,
+  `type` int(11) DEFAULT NULL,
+  `matricule_assurance` varchar(20) DEFAULT NULL,
+  `statut` int(11) DEFAULT NULL,
+  `id_assure_principal` int(11) DEFAULT NULL,
+  `affinite` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_utilisateur` (`id_utilisateur`,`id_police`),
+  KEY `FK_jrfetyq42o8jafuvd3l0k0xii` (`statut`),
+  CONSTRAINT `FK_jrfetyq42o8jafuvd3l0k0xii` FOREIGN KEY (`statut`) REFERENCES `statuts` (`id`),
+  CONSTRAINT `FK_tin8len0wkln41wrd3fe3n04m` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `beneficiaire`
+--
+
+LOCK TABLES `beneficiaire` WRITE;
+/*!40000 ALTER TABLE `beneficiaire` DISABLE KEYS */;
+INSERT INTO `beneficiaire` VALUES (1,3,0,NULL,NULL,NULL,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,2,0,NULL,NULL,NULL,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `beneficiaire` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `beneficiairehistorique`
+--
+
+DROP TABLE IF EXISTS `beneficiairehistorique`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `beneficiairehistorique` (
+  `id` int(11) NOT NULL,
+  `active` int(11) DEFAULT NULL,
+  `affinite` int(11) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `id_assure_principal` int(11) DEFAULT NULL,
+  `id_utilisateur` int(11) DEFAULT NULL,
+  `id_police` int(11) NOT NULL,
+  `matricule_assurance` varchar(255) DEFAULT NULL,
+  `signature` varchar(255) DEFAULT NULL,
+  `statut` int(11) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `id_beneficiaire_actif` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_utilisateur` (`id_utilisateur`,`id_police`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `beneficiairehistorique`
+--
+
+LOCK TABLES `beneficiairehistorique` WRITE;
+/*!40000 ALTER TABLE `beneficiairehistorique` DISABLE KEYS */;
+/*!40000 ALTER TABLE `beneficiairehistorique` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `beneficiairepolice`
+--
+
+DROP TABLE IF EXISTS `beneficiairepolice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `beneficiairepolice` (
+  `id_police` int(11) NOT NULL,
+  `id_beneficiaire` int(11) NOT NULL,
+  PRIMARY KEY (`id_police`,`id_beneficiaire`),
+  KEY `FK_tu4q7sh6kko49un03j90419f` (`id_beneficiaire`),
+  CONSTRAINT `FK_g0y4a5nminn9lauveb44rfu4y` FOREIGN KEY (`id_police`) REFERENCES `police` (`id`),
+  CONSTRAINT `FK_tu4q7sh6kko49un03j90419f` FOREIGN KEY (`id_beneficiaire`) REFERENCES `beneficiaire` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `beneficiairepolice`
+--
+
+LOCK TABLES `beneficiairepolice` WRITE;
+/*!40000 ALTER TABLE `beneficiairepolice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `beneficiairepolice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `beneficiaireprofil`
+--
+
+DROP TABLE IF EXISTS `beneficiaireprofil`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `beneficiaireprofil` (
+  `id_police` int(11) NOT NULL,
+  `id_beneficiaire` int(11) NOT NULL,
+  PRIMARY KEY (`id_beneficiaire`,`id_police`),
+  KEY `FK_ilmgbf5cs7qg15kdgw4wmwdle` (`id_police`),
+  CONSTRAINT `FK_ilmgbf5cs7qg15kdgw4wmwdle` FOREIGN KEY (`id_police`) REFERENCES `police` (`id`),
+  CONSTRAINT `FK_j6iiqfv1oyd68tilqho71jc6i` FOREIGN KEY (`id_beneficiaire`) REFERENCES `beneficiaire` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `beneficiaireprofil`
+--
+
+LOCK TABLES `beneficiaireprofil` WRITE;
+/*!40000 ALTER TABLE `beneficiaireprofil` DISABLE KEYS */;
+/*!40000 ALTER TABLE `beneficiaireprofil` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `beneficiaireutilisateurview`
+--
+
+DROP TABLE IF EXISTS `beneficiaireutilisateurview`;
+/*!50001 DROP VIEW IF EXISTS `beneficiaireutilisateurview`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `beneficiaireutilisateurview` (
+  `id` varbinary(22),
+  `id_beneficiaire` int(11),
+  `id_utilisateur` int(11),
+  `type_beneficiaire` int(11),
+  `matricule_assurance` varchar(20),
+  `statut` int(11),
+  `id_assure_principal` int(11),
+  `id_affinite` int(11),
+  `affinite_name` varchar(100),
+  `active` int(11),
+  `version` int(11),
+  `signature` char(20),
+  `date_activation` datetime,
+  `date_fermeture` datetime,
+  `date_modification` datetime,
+  `date_creation` datetime,
+  `id_user` int(11),
+  `matricule` varchar(254),
+  `password` varchar(254),
+  `nom` varchar(254),
+  `prenom` varchar(254),
+  `sexe` char(1),
+  `date_naissance` date,
+  `lieu_naissance` varchar(254),
+  `id_arrondissement_origine` int(11),
+  `nationnalite` varchar(254)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `bondepriseencharge`
+--
+
+DROP TABLE IF EXISTS `bondepriseencharge`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bondepriseencharge` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_prestation` int(11) DEFAULT NULL,
+  `id_employe` int(11) DEFAULT NULL,
+  `date_demande` datetime DEFAULT NULL,
+  `montant` double DEFAULT NULL,
+  `date_emission` datetime DEFAULT NULL,
+  `delai_emission` int(11) DEFAULT NULL,
+  `statut` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bondepriseencharge`
+--
+
+LOCK TABLES `bondepriseencharge` WRITE;
+/*!40000 ALTER TABLE `bondepriseencharge` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bondepriseencharge` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `categorieproduit`
+--
+
+DROP TABLE IF EXISTS `categorieproduit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `categorieproduit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `short_name` varchar(10) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `description` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categorieproduit`
+--
+
+LOCK TABLES `categorieproduit` WRITE;
+/*!40000 ALTER TABLE `categorieproduit` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categorieproduit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `country`
+--
+
+DROP TABLE IF EXISTS `country`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `country` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `isoAlpha2Code` char(10) DEFAULT '',
+  `isoAlpha3Code` char(3) DEFAULT NULL,
+  `isoNumericCode` int(11) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `capital` char(35) DEFAULT '',
+  `continent` enum('Asia','Europe','North America','Africa','Oceania','Antarctica','South America') DEFAULT 'Africa',
+  `phoneCode` char(10) DEFAULT NULL,
+  `areaKm2` double DEFAULT NULL,
+  `population` double(11,0) DEFAULT '0',
+  `active` int(11) DEFAULT '1',
+  `isDeleteData` int(3) DEFAULT '0',
+  `date_creation` datetime DEFAULT '0000-00-00 00:00:00',
+  `lastUpdatedDateTime` datetime DEFAULT '0000-00-00 00:00:00',
+  `id_creator` int(11) DEFAULT '0',
+  `id_lastModifier` int(11) DEFAULT '0',
+  `id_universal` varchar(100) DEFAULT '0',
+  `signature` char(20) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=240 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `country`
+--
+
+LOCK TABLES `country` WRITE;
+/*!40000 ALTER TABLE `country` DISABLE KEYS */;
+INSERT INTO `country` VALUES (1,'AW','ABW',0,'Aruba','','North America','297',193,103000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(2,'AF','AFG',0,'Afghanistan','','Asia','93',652090,22720000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(3,'AO','AGO',0,'Angola','','Africa','244',1246700,12878000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(4,'AI','AIA',0,'Anguilla','','North America','1-264',96,8000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(5,'AL','ALB',0,'Albania','','Europe','355',28748,3401200,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(6,'AD','AND',0,'Andorra','','Europe','376',468,78000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(7,'AN','ANT',0,'Netherlands Antilles','','North America','',800,217000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(8,'AE','ARE',0,'United Arab Emirates','','Asia','',83600,2441000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(9,'AR','ARG',0,'Argentina','','South America','54',2780400,37032000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(10,'AM','ARM',0,'Armenia','','Asia','374',29800,3520000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(11,'AS','ASM',0,'American Samoa','','Oceania','',199,68000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(12,'AQ','ATA',0,'Antarctica','','Antarctica','',13120000,0,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(13,'TF','ATF',0,'French Southern territories','','Antarctica','',7780,0,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(14,'AG','ATG',0,'Antigua and Barbuda','','North America','1-268',442,68000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(15,'AU','AUS',0,'Australia','','Oceania','61',7741220,18886000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(16,'AT','AUT',0,'Austria','','Europe','43',83859,8091800,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(17,'AZ','AZE',0,'Azerbaijan','','Asia','994',86600,7734000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(18,'BI','BDI',0,'Burundi','','Africa','',27834,6695000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(19,'BE','BEL',0,'Belgium','','Europe','32',30518,10239000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(20,'BJ','BEN',0,'Benin','','Africa','229',112622,6097000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(21,'BF','BFA',0,'Burkina Faso','','Africa','226',274000,11937000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(22,'BD','BGD',0,'Bangladesh','','Asia','880',143998,129155000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(23,'BG','BGR',0,'Bulgaria','','Europe','1-246',110994,8190900,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(24,'BH','BHR',0,'Bahrain','','Asia','973',694,617000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(25,'BS','BHS',0,'Bahamas','','North America','1-242',13878,307000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(26,'BA','BIH',0,'Bosnia and Herzegovina','','Europe','387',51197,3972000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(27,'BY','BLR',0,'Belarus','','Europe','375',207600,10236000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(28,'BZ','BLZ',0,'Belize','','North America','501',22696,241000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(29,'BM','BMU',0,'Bermuda','','North America','1-441',53,65000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(30,'BO','BOL',0,'Bolivia','','South America','591',1098581,8329000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(31,'BR','BRA',0,'Brazil','','South America','55',8547403,170115000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(32,'BB','BRB',0,'Barbados','','North America','1-246',430,270000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(33,'BN','BRN',0,'Brunei','','Asia','673',5765,328000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(34,'BT','BTN',0,'Bhutan','','Asia','975',47000,2124000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(35,'BV','BVT',0,'Bouvet Island','','Antarctica','',59,0,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(36,'BW','BWA',0,'Botswana','','Africa','267',581730,1622000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(37,'CF','CAF',0,'Central African Republic','','Africa','',622984,3615000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(38,'CA','CAN',0,'Canada','','North America','1',9970610,31147000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(39,'CC','CCK',0,'Cocos (Keeling) Islands','','Oceania','61',14,600,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(40,'CH','CHE',0,'Switzerland','','Europe','',41284,7160400,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(41,'CL','CHL',0,'Chile','','South America','56',756626,15211000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(42,'CN','CHN',0,'China','','Asia','86',9572900,1277558000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(43,'CI','CIV',0,'CÃ´te dÂ’Ivoire','','Africa','225',322463,14786000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(44,'CM','CMR',0,'Cameroon','','Africa','237',475442,15085000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(45,'CD','COD',0,'Congo, The Democratic Republic of the','','Africa','243',2344858,51654000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(46,'CG','COG',0,'Congo','','Africa','242',342000,2943000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(47,'CK','COK',0,'Cook Islands','','Oceania','682',236,20000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(48,'CO','COL',0,'Colombia','','South America','57',1138914,42321000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(49,'KM','COM',0,'Comoros','','Africa','269',1862,578000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(50,'CV','CPV',0,'Cape Verde','','Africa','238',4033,428000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(51,'CR','CRI',0,'Costa Rica','','North America','506',51100,4023000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(52,'CU','CUB',0,'Cuba','','North America','53',110861,11201000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(53,'CX','CXR',0,'Christmas Island','','Oceania','61-8',135,2500,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(54,'KY','CYM',0,'Cayman Islands','','North America','',264,38000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(55,'CY','CYP',0,'Cyprus','','Asia','357',9251,754700,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(56,'CZ','CZE',0,'Czech Republic','','Europe','420',78866,10278100,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(57,'DE','DEU',0,'Germany','','Europe','',357022,82164700,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(58,'DJ','DJI',0,'Djibouti','','Africa','253',23200,638000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(59,'DM','DMA',0,'Dominica','','North America','1-767',751,71000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(60,'DK','DNK',0,'Denmark','','Europe','45',43094,5330000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(61,'DO','DOM',0,'Dominican Republic','','North America','1-809',48511,8495000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(62,'DZ','DZA',0,'Algeria','','Africa','',2381741,31471000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(63,'EC','ECU',0,'Ecuador','','South America','593',283561,12646000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(64,'EG','EGY',0,'Egypt','','Africa','20',1001449,68470000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(65,'ER','ERI',0,'Eritrea','','Africa','291',117600,3850000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(66,'EH','ESH',0,'Western Sahara','','Africa','',266000,293000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(67,'ES','ESP',0,'Spain','','Europe','',505992,39441700,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(68,'EE','EST',0,'Estonia','','Europe','372',45227,1439200,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(69,'ET','ETH',0,'Ethiopia','','Africa','251',1104300,62565000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(70,'FI','FIN',0,'Finland','','Europe','358',338145,5171300,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(71,'FJ','FJI',0,'Fiji Islands','','Oceania','679',18274,817000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(72,'FK','FLK',0,'Falkland Islands','','South America','500',12173,2000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(73,'FR','FRA',0,'France','','Europe','33',551500,59225700,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(74,'FO','FRO',0,'Faroe Islands','','Europe','298',1399,43000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(75,'FM','FSM',0,'Micronesia, Federated States of','','Oceania','',702,119000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(76,'GA','GAB',0,'Gabon','','Africa','241',267668,1226000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(77,'GB','GBR',0,'United Kingdom','','Europe','',242900,59623400,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(78,'GE','GEO',0,'Georgia','','Asia','995',69700,4968000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(79,'GH','GHA',0,'Ghana','','Africa','233',238533,20212000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(80,'GI','GIB',0,'Gibraltar','','Europe','350',6,25000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(81,'GN','GIN',0,'Guinea','','Africa','224',245857,7430000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(82,'GP','GLP',0,'Guadeloupe','','North America','590',1705,456000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(83,'GM','GMB',0,'Gambia','','Africa','220',11295,1305000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(84,'GW','GNB',0,'Guinea-Bissau','','Africa','245',36125,1213000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(85,'GQ','GNQ',0,'Equatorial Guinea','','Africa','',28051,453000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(86,'GR','GRC',0,'Greece','','Europe','30',131626,10545700,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(87,'GD','GRD',0,'Grenada','','North America','1-473',344,94000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(88,'GL','GRL',0,'Greenland','','North America','299',2166090,56000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(89,'GT','GTM',0,'Guatemala','','North America','502',108889,11385000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(90,'GF','GUF',0,'French Guiana','','South America','',90000,181000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(91,'GU','GUM',0,'Guam','','Oceania','1-671',549,168000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(92,'GY','GUY',0,'Guyana','','South America','592',214969,861000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(93,'HK','HKG',0,'Hong Kong','','Asia','852',1075,6782000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(94,'HM','HMD',0,'Heard Island and McDonald Islands','','Antarctica','',359,0,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(95,'HN','HND',0,'Honduras','','North America','504',112088,6485000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(96,'HR','HRV',0,'Croatia','','Europe','',56538,4473000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(97,'HT','HTI',0,'Haiti','','North America','509',27750,8222000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(98,'HU','HUN',0,'Hungary','','Europe','36',93030,10043200,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(99,'ID','IDN',0,'Indonesia','','Asia','62',1904569,212107000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(100,'IN','IND',0,'India','','Asia','91',3287263,1013662000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(101,'IO','IOT',0,'British Indian Ocean Territory','','Africa','',78,0,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(102,'IE','IRL',0,'Ireland','','Europe','353',70273,3775100,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(103,'IR','IRN',0,'Iran','','Asia','98',1648195,67702000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(104,'IQ','IRQ',0,'Iraq','','Asia','964',438317,23115000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(105,'IS','ISL',0,'Iceland','','Europe','354',103000,279000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(106,'IL','ISR',0,'Israel','','Asia','972',21056,6217000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(107,'IT','ITA',0,'Italy','','Europe','39',301316,57680000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(108,'JM','JAM',0,'Jamaica','','North America','1-876',10990,2583000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(109,'JO','JOR',0,'Jordan','','Asia','962',88946,5083000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(110,'JP','JPN',0,'Japan','','Asia','81',377829,126714000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(111,'KZ','KAZ',0,'Kazakstan','','Asia','7',2724900,16223000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(112,'KE','KEN',0,'Kenya','','Africa','254',580367,30080000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(113,'KG','KGZ',0,'Kyrgyzstan','','Asia','996',199900,4699000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(114,'KH','KHM',0,'Cambodia','','Asia','',181035,11168000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(115,'KI','KIR',0,'Kiribati','','Oceania','686',726,83000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(116,'KN','KNA',0,'Saint Kitts and Nevis','','North America','',261,38000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(117,'KR','KOR',0,'South Korea','','Asia','82',99434,46844000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(118,'KW','KWT',0,'Kuwait','','Asia','965',17818,1972000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(119,'LA','LAO',0,'Laos','','Asia','856',236800,5433000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(120,'LB','LBN',0,'Lebanon','','Asia','961',10400,3282000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(121,'LR','LBR',0,'Liberia','','Africa','231',111369,3154000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(122,'LY','LBY',0,'Libyan Arab Jamahiriya','','Africa','218',1759540,5605000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(123,'LC','LCA',0,'Saint Lucia','','North America','',622,154000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(124,'LI','LIE',0,'Liechtenstein','','Europe','423',160,32300,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(125,'LK','LKA',0,'Sri Lanka','','Asia','',65610,18827000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(126,'LS','LSO',0,'Lesotho','','Africa','266',30355,2153000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(127,'LT','LTU',0,'Lithuania','','Europe','370',65301,3698500,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(128,'LU','LUX',0,'Luxembourg','','Europe','352',2586,435700,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(129,'LV','LVA',0,'Latvia','','Europe','371',64589,2424200,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(130,'MO','MAC',0,'Macao','','Asia','853',18,473000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(131,'MA','MAR',0,'Morocco','','Africa','',446550,28351000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(132,'MC','MCO',0,'Monaco','','Europe','377',1.5,34000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(133,'MD','MDA',0,'Moldova','','Europe','373',33851,4380000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(134,'MG','MDG',0,'Madagascar','','Africa','261',587041,15942000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(135,'MV','MDV',0,'Maldives','','Asia','960',298,286000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(136,'MX','MEX',0,'Mexico','','North America','52',1958201,98881000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(137,'MH','MHL',0,'Marshall Islands','','Oceania','692',181,64000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(138,'MK','MKD',0,'Macedonia','','Europe','389',25713,2024000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(139,'ML','MLI',0,'Mali','','Africa','223',1240192,11234000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(140,'MT','MLT',0,'Malta','','Europe','356',316,380200,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(141,'MM','MMR',0,'Myanmar','','Asia','95',676578,45611000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(142,'MN','MNG',0,'Mongolia','','Asia','976',1566500,2662000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(143,'MP','MNP',0,'Northern Mariana Islands','','Oceania','',464,78000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(144,'MZ','MOZ',0,'Mozambique','','Africa','258',801590,19680000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(145,'MR','MRT',0,'Mauritania','','Africa','222',1025520,2670000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(146,'MS','MSR',0,'Montserrat','','North America','1-664',102,11000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(147,'MQ','MTQ',0,'Martinique','','North America','596',1102,395000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(148,'MU','MUS',0,'Mauritius','','Africa','230',2040,1158000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(149,'MW','MWI',0,'Malawi','','Africa','265',118484,10925000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(150,'MY','MYS',0,'Malaysia','','Asia','60',329758,22244000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(151,'YT','MYT',0,'Mayotte','','Africa','269',373,149000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(152,'NA','NAM',0,'Namibia','','Africa','264',824292,1726000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(153,'NC','NCL',0,'New Caledonia','','Oceania','687',18575,214000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(154,'NE','NER',0,'Niger','','Africa','227',1267000,10730000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(155,'NF','NFK',0,'Norfolk Island','','Oceania','672',36,2000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(156,'NG','NGA',0,'Nigeria','','Africa','234',923768,111506000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(157,'NI','NIC',0,'Nicaragua','','North America','505',130000,5074000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(158,'NU','NIU',0,'Niue','','Oceania','683',260,2000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(159,'NL','NLD',0,'Netherlands','','Europe','31',41526,15864000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(160,'NO','NOR',0,'Norway','','Europe','47',323877,4478500,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(161,'NP','NPL',0,'Nepal','','Asia','977',147181,23930000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(162,'NR','NRU',0,'Nauru','','Oceania','674',21,12000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(163,'NZ','NZL',0,'New Zealand','','Oceania','64',270534,3862000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(164,'OM','OMN',0,'Oman','','Asia','968',309500,2542000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(165,'PK','PAK',0,'Pakistan','','Asia','92',796095,156483000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(166,'PA','PAN',0,'Panama','','North America','507',75517,2856000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(167,'PN','PCN',0,'Pitcairn','','Oceania','',49,50,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(168,'PE','PER',0,'Peru','','South America','51',1285216,25662000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(169,'PH','PHL',0,'Philippines','','Asia','63',300000,75967000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(170,'PW','PLW',0,'Palau','','Oceania','680',459,19000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(171,'PG','PNG',0,'Papua New Guinea','','Oceania','675',462840,4807000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(172,'PL','POL',0,'Poland','','Europe','48',323250,38653600,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(173,'PR','PRI',0,'Puerto Rico','','North America','1-787',8875,3869000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(174,'KP','PRK',0,'North Korea','','Asia','',120538,24039000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(175,'PT','PRT',0,'Portugal','','Europe','351',91982,9997600,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(176,'PY','PRY',0,'Paraguay','','South America','595',406752,5496000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(177,'PS','PSE',0,'Palestine','','Asia','970',6257,3101000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(178,'PF','PYF',0,'French Polynesia','','Oceania','',4000,235000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(179,'QA','QAT',0,'Qatar','','Asia','974',11000,599000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(180,'RE','REU',0,'RÃ©union','','Africa','262',2510,699000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(181,'RO','ROM',0,'Romania','','Europe','40',238391,22455500,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(182,'RU','RUS',0,'Russian Federation','','Europe','7',17075400,146934000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(183,'RW','RWA',0,'Rwanda','','Africa','250',26338,7733000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(184,'SA','SAU',0,'Saudi Arabia','','Asia','996',2149690,21607000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(185,'SD','SDN',0,'Sudan','','Africa','249',2505813,29490000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(186,'SN','SEN',0,'Senegal','','Africa','221',196722,9481000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(187,'SG','SGP',0,'Singapore','','Asia','65',618,3567000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(188,'GS','SGS',0,'South Georgia and the South Sandwich Islands','','Antarctica','',3903,0,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(189,'SH','SHN',0,'Saint Helena','','Africa','290',314,6000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(190,'SJ','SJM',0,'Svalbard and Jan Mayen','','Europe','',62422,3200,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(191,'SB','SLB',0,'Solomon Islands','','Oceania','677',28896,444000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(192,'SL','SLE',0,'Sierra Leone','','Africa','232',71740,4854000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(193,'SV','SLV',0,'El Salvador','','North America','',21041,6276000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(194,'SM','SMR',0,'San Marino','','Europe','378',61,27000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(195,'SO','SOM',0,'Somalia','','Africa','252',637657,10097000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(196,'PM','SPM',0,'Saint Pierre and Miquelon','','North America','508',242,7000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(197,'ST','STP',0,'Sao Tome and Principe','','Africa','239',964,147000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(198,'SR','SUR',0,'Suriname','','South America','597',163265,417000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(199,'SK','SVK',0,'Slovakia','','Europe','421',49012,5398700,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(200,'SI','SVN',0,'Slovenia','','Europe','386',20256,1987800,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(201,'SE','SWE',0,'Sweden','','Europe','46',449964,8861400,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(202,'SZ','SWZ',0,'Swaziland','','Africa','268',17364,1008000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(203,'SC','SYC',0,'Seychelles','','Africa','248',455,77000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(204,'SY','SYR',0,'Syria','','Asia','963',185180,16125000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(205,'TC','TCA',0,'Turks and Caicos Islands','','North America','1-649',430,17000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(206,'TD','TCD',0,'Chad','','Africa','235',1284000,7651000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(207,'TG','TGO',0,'Togo','','Africa','228',56785,4629000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(208,'TH','THA',0,'Thailand','','Asia','66',513115,61399000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(209,'TJ','TJK',0,'Tajikistan','','Asia','992',143100,6188000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(210,'TK','TKL',0,'Tokelau','','Oceania','690',12,2000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(211,'TM','TKM',0,'Turkmenistan','','Asia','993',488100,4459000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(212,'TP','TMP',0,'East Timor','','Asia','',14874,885000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(213,'TO','TON',0,'Tonga','','Oceania','676',650,99000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(214,'TT','TTO',0,'Trinidad and Tobago','','North America','1-868',5130,1295000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(215,'TN','TUN',0,'Tunisia','','Africa','216',163610,9586000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(216,'TR','TUR',0,'Turkey','','Asia','90',774815,66591000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(217,'TV','TUV',0,'Tuvalu','','Oceania','688',26,12000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(218,'TW','TWN',0,'Taiwan','','Asia','886',36188,22256000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(219,'TZ','TZA',0,'Tanzania','','Africa','255',883749,33517000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(220,'UG','UGA',0,'Uganda','','Africa','256',241038,21778000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(221,'UA','UKR',0,'Ukraine','','Europe','380',603700,50456000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(222,'UM','UMI',0,'United States Minor Outlying Islands','','Oceania','',16,0,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(223,'UY','URY',0,'Uruguay','','South America','598',175016,3337000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(224,'US','USA',0,'United States','','North America','1',9363520,278357000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(225,'UZ','UZB',0,'Uzbekistan','','Asia','998',447400,24318000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(226,'VA','VAT',0,'Holy See (Vatican City State)','','Europe','',0.4,1000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(227,'VC','VCT',0,'Saint Vincent and the Grenadines','','North America','',388,114000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(228,'VE','VEN',0,'Venezuela','','South America','58',912050,24170000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(229,'VG','VGB',0,'Virgin Islands, British','','North America','1-284',151,21000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(230,'VI','VIR',0,'Virgin Islands, U.S.','','North America','1-340',347,93000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(231,'VN','VNM',0,'Vietnam','','Asia','84',331689,79832000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(232,'VU','VUT',0,'Vanuatu','','Oceania','678',12189,190000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(233,'WF','WLF',0,'Wallis and Futuna','','Oceania','681',200,15000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(234,'WS','WSM',0,'Samoa','','Oceania','',2831,180000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(235,'YE','YEM',0,'Yemen','','Asia','967',527968,18112000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(236,'YU','YUG',0,'Yugoslavia','','Europe','',102173,10640000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(237,'ZA','ZAF',0,'South Africa','','Africa','',1221037,40377000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(238,'ZM','ZMB',0,'Zambia','','Africa','260',752618,9169000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r'),(239,'ZW','ZWE',0,'Zimbabwe','','Africa','263',390757,11669000,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,'0','0\r');
+/*!40000 ALTER TABLE `country` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `district`
+--
+
+DROP TABLE IF EXISTS `district`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `district` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code_pays` int(11) DEFAULT NULL,
+  `code` int(3) DEFAULT NULL,
+  `label` varchar(50) DEFAULT NULL,
+  `ancien_district` varchar(50) DEFAULT NULL,
+  `departement` varchar(50) DEFAULT NULL,
+  `chef_lieux` varchar(50) DEFAULT NULL,
+  `region` varchar(50) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  `date_apparition` datetime DEFAULT NULL,
+  `date_disparution` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=309 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `district`
+--
+
+LOCK TABLES `district` WRITE;
+/*!40000 ALTER TABLE `district` DISABLE KEYS */;
+INSERT INTO `district` VALUES (1,44,1,'NGAOUNDAL','','DJEREM','TIBATI','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,44,2,'TIBATI','','DJEREM','TIBATI','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,44,3,'MAYO-BALEO ','KONTCHA','FARO ET DEO','TIGNERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,44,4,'TIGNERE','','FARO ET DEO','TIGNERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(5,44,5,'GALIM-TIGNERE','','FARO ET DEO','TIGNERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(6,44,6,'BANYO',' MAYO-DARLE','MAYO BANYO','BANYO','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(7,44,7,'BANKIM','','MAYO BANYO','BANYO','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(8,44,8,'MEIGANGA','','MBERE','MEIGANGA','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(9,44,9,'DJOHONG ','NGAOUI','MBERE','MEIGANGA','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(10,44,10,'DIR','','MBERE','MEIGANGA','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(11,44,11,'NGAOUNDERE 1er','','VINA','NGAOUNDERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(12,44,12,'NGAOUNDERE 2e','','VINA','NGAOUNDERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(13,44,13,'NGAOUNDERE 3e','','VINA','NGAOUNDERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(14,44,14,'BELEL','','VINA','NGAOUNDERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(15,44,15,'MBE','','VINA','NGAOUNDERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(16,44,16,'NGANHA','','VINA','NGAOUNDERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(17,44,17,'NYAMBAKA','','VINA','NGAOUNDERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(18,44,18,'MARTAP','','VINA','NGAOUNDERE','ADAMAOUA','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(19,44,19,'MBANDJOCK','BIBEY','HAUTE SANAGA','NANGA-EBOKO','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(20,44,20,'MINTA','NSEM','HAUTE SANAGA','NANGA-EBOKO','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(21,44,21,'NANGA-EBOKO','LEMBE-YEZOUM','HAUTE SANAGA','NANGA-EBOKO','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(22,44,22,'NKOTENG','','HAUTE SANAGA','NANGA-EBOKO','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(23,44,23,'EVODOULA','','LEKIE','MONATELE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(24,44,24,'MONATELE','','LEKIE','MONATELE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(25,44,25,'OBALA','BATSCHENGA','LEKIE','MONATELE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(26,44,26,'OKOLA','LOBO','LEKIE','MONATELE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(27,44,27,'SA\'A','','LEKIE','MONATELE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(28,44,28,'ELIG-MFOMO','','LEKIE','MONATELE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(29,44,29,'EBEBDA','','LEKIE','MONATELE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(30,44,30,'BAFIA','','MBAM ET INOUBOU','MBAM ET INOUBOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(31,44,31,'BOKITO','','MBAM ET INOUBOU','MBAM ET INOUBOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(32,44,32,'DEUK','','MBAM ET INOUBOU','MBAM ET INOUBOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(33,44,33,'MAKENENE','','MBAM ET INOUBOU','MBAM ET INOUBOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(34,44,34,'NDIKINIMEKI','NITOUKOU','MBAM ET INOUBOU','MBAM ET INOUBOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(35,44,35,'OMBESSA','','MBAM ET INOUBOU','MBAM ET INOUBOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(36,44,36,'KIIKI','','MBAM ET INOUBOU','MBAM ET INOUBOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(37,44,37,'KON-YAMBETTA','','MBAM ET INOUBOU','MBAM ET INOUBOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(38,44,38,'NTUI','','MBAM ET KIM','NTUI','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(39,44,39,'NGAMBE','','MBAM ET KIM','NTUI','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(40,44,40,'NGORO','','MBAM ET KIM','NTUI','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(41,44,41,'YOKO','','MBAM ET KIM','NTUI','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(42,44,42,'MBANGASSINA','','MBAM ET KIM','NTUI','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(43,44,43,'MFOU','','MEFOU ET AFAMBA','MFOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(44,44,44,'ESSE','','MEFOU ET AFAMBA','MFOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(45,44,45,'AWAE','','MEFOU ET AFAMBA','MFOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(46,44,46,'SOA','','MEFOU ET AFAMBA','MFOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(47,44,47,'NGOUMOU','','MEFOU ET AKONO','NGOUMOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(48,44,48,'AKONO','','MEFOU ET AKONO','NGOUMOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(49,44,49,'MBANKOMO','','MEFOU ET AKONO','NGOUMOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(50,44,50,'BIKOK','','MEFOU ET AKONO','NGOUMOU','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(51,44,51,'YAOUNDE I','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(52,44,52,'YAOUNDE II','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(53,44,53,'YAOUNDE III','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(54,44,54,'YAOUNDE IV','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(55,44,55,'YAOUNDE V','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(56,44,56,'YAOUNDE VI','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(57,44,57,'YAOUNDE VII','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(58,44,58,'BOT-MAKAK','NGUIBASSAL','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(59,44,59,'ESEKA','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(60,44,60,'MAKAK','BONDJOCK','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(61,44,61,'MESSONDO','BIYOUHA','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(62,44,62,'NGOG-MAPUBI','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(63,44,63,'MATOMB','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(64,44,64,'DIBANG','','MFOUNDI','YAOUNDE','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(65,44,65,'AKONOLINGA','MENGANG','NYONG ET MFOUMOU','AKONOLINGA','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(66,44,66,'AYOS','NYAKOKOMBO','NYONG ET MFOUMOU','AKONOLINGA','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(67,44,67,'ENDOM','','NYONG ET MFOUMOU','AKONOLINGA','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(68,44,68,'DZENG','','NYONG ET SO\'O','MBALMAYO','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(69,44,69,'MBALMAYO','','NYONG ET SO\'O','MBALMAYO','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(70,44,70,'NGOMEDZAP','','NYONG ET SO\'O','MBALMAYO','CENTRE','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(71,44,71,'MOLOUNDOU','SALAPOUMBE','BOUMBA ET NGOKO','YOKADOUMA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(72,44,72,'SALAPOUMBE','','BOUMBA ET NGOKO','YOKADOUMA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(73,44,73,'GARI-GOMBO','','BOUMBA ET NGOKO','YOKADOUMA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(74,44,74,'ABONG-MBANG','BEBEND, MBOUANZ, DJA','HAUT NYONG','ABONG-MBANG','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(75,44,75,'DOUME','DOUMAINTANG','HAUT NYONG','ABONG-MBANG','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(76,44,76,'LOMIE','MESSOK','HAUT NYONG','ABONG-MBANG','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(77,44,77,'MESSAMENA','SAMALOMO','HAUT NYONG','ABONG-MBANG','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(78,44,78,'NGUELEMENDOUKA','BOMA','HAUT NYONG','ABONG-MBANG','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(79,44,79,'DIMAKO','DIMAKO','HAUT NYONG','ABONG-MBANG','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(80,44,80,'NGOYLA','','HAUT NYONG','ABONG-MBANG','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(81,44,81,'BATOURI','NDEM-NAM','KADEY','BATOURI','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(82,44,82,'NDELELE','BOMBE','KADEY','BATOURI','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(83,44,83,'KETTE','MBOTORO','KADEY','BATOURI','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(84,44,84,'MBANG','','KADEY','BATOURI','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(85,44,85,'BERTOUA 1er','','LOM ET DJEREM','BERTOUA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(86,44,86,'BERTOUA 2e','','LOM ET DJEREM','BERTOUA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(87,44,87,'BETARE-OYA','NGOURA','LOM ET DJEREM','BERTOUA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(88,44,88,'BELABO','','LOM ET DJEREM','BERTOUA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(89,44,89,'GAROUA-BOULAI','','LOM ET DJEREM','BERTOUA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(90,44,90,'DIANG','','LOM ET DJEREM','BERTOUA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(91,44,91,'MANDJOU','','LOM ET DJEREM','BERTOUA','EST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(92,44,92,'BOGO','','DIAMARE','MAROUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(93,44,93,'MAROUA 1er','DARGALA, DOUKOULA','DIAMARE','MAROUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(94,44,94,'MAROUA 2e','','DIAMARE','MAROUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(95,44,95,'MAROUA 3e','','DIAMARE','MAROUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(96,44,96,'MERI','','DIAMARE','MAROUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(97,44,97,'GAZAWA','','DIAMARE','MAROUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(98,44,98,'PETTE','','DIAMARE','MAROUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(99,44,99,'KOUSSERI','','LOGONE ET CHARI','KOUSSERI','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(100,44,100,'MAKARY','','LOGONE ET CHARI','KOUSSERI','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(101,44,101,'LOGONE-BIRNI','ZINA','LOGONE ET CHARI','KOUSSERI','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(102,44,102,'GOULFEY','','LOGONE ET CHARI','KOUSSERI','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(103,44,103,'WAZA','','LOGONE ET CHARI','KOUSSERI','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(104,44,104,'FOTOKOL','','LOGONE ET CHARI','KOUSSERI','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(105,44,105,'HILE-HALIFA','','LOGONE ET CHARI','KOUSSERI','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(106,44,106,'BLANGOUA','','LOGONE ET CHARI','KOUSSERI','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(107,44,107,'DARAK','','LOGONE ET CHARI','KOUSSERI','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(108,44,108,'KAR-HAY','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(109,44,109,'DATCHEKA','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(110,44,110,'YAGOUA','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(111,44,111,'GUERE','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(112,44,112,'MAGA','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(113,44,113,'KALFOU','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(114,44,114,'WINA','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(115,44,115,'VELE','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(116,44,116,'TCHATIBALI','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(117,44,117,'GOBO','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(118,44,118,'KAI-KAI','','MAYO DANAY','YAGOUA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(119,44,119,'KAELE','','MAYO KANI','KAELE','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(120,44,120,'GUIDIGUIS','','MAYO KANI','KAELE','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(121,44,121,'MINDIF','','MAYO KANI','KAELE','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(122,44,122,'MOUTOURWA','','MAYO KANI','KAELE','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(123,44,123,'MOULVOUDAYE','','MAYO KANI','KAELE','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(124,44,124,'PORHI','','MAYO KANI','KAELE','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(125,44,125,'TAIBONG','','MAYO KANI','KAELE','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(126,44,126,'MORA','','MAYO SAVA','MORA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(127,44,127,'TOKOMBERE','','MAYO SAVA','MORA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(128,44,128,'KOLOFATA','','MAYO SAVA','MORA','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(129,44,129,'MOKOLO','SOULEDE-ROUA','MAYO TSANAGA','MOKOLO','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(130,44,130,'BOURRHA','','MAYO TSANAGA','MOKOLO','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(131,44,131,'KOZA','','MAYO TSANAGA','MOKOLO','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(132,44,132,'HINA','','MAYO TSANAGA','MOKOLO','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(133,44,133,'MOGODE','','MAYO TSANAGA','MOKOLO','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(134,44,134,'MAYO-MASKOTA','','MAYO TSANAGA','MOKOLO','EXTREME NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(135,44,135,'DIBOMBARI','ABO','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(136,44,136,'LOUM','','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(137,44,137,'MANJO','','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(138,44,138,'MBANGA','MOMBO','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(139,44,139,'MELONG','','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(140,44,140,'NKONGSAMBA 1er','','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(141,44,141,'NKONGSAMBA 2e','','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(142,44,142,'NKONGSAMBA 3e','','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(143,44,143,'NLONAKO','','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(144,44,144,'BARE-BAKEM','','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(145,44,145,'NJOMBE-PENJA','','MOUNGO','NKONGSAMBA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(146,44,146,'NKONDJOCK','NORD-MAKOMBE','NKAM','YABASSI','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(147,44,147,'YABASSI','','NKAM','YABASSI','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(148,44,148,'YINDI','','NKAM','YABASSI','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(149,44,149,'DIZANGE','','SANAGA MARITIME','EDEA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(150,44,150,'EDEA 1er','','SANAGA MARITIME','EDEA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(151,44,151,'EDEA2e','','SANAGA MARITIME','EDEA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(152,44,152,'NDOM','NYANON','SANAGA MARITIME','EDEA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(153,44,153,'NGAMBE','MASSOCK-SONGLOULOU','SANAGA MARITIME','EDEA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(154,44,154,'POUMA','','SANAGA MARITIME','EDEA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(155,44,155,'MOUANKO','','SANAGA MARITIME','EDEA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(156,44,156,'DIBAMBA','','SANAGA MARITIME','EDEA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(157,44,157,'NGWEI','','SANAGA MARITIME','EDEA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(158,44,158,'DOUALA 1er','','WOURI','DOUALA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(159,44,159,'DOUALA 2e','','WOURI','DOUALA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(160,44,160,'DOUALA 3e','','WOURI','DOUALA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(161,44,161,'DOUALA 4e','','WOURI','DOUALA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(162,44,162,'DOUALA 5e','','WOURI','DOUALA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(163,44,163,'DOUALA 6e','','WOURI','DOUALA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(164,44,164,'MANOKA','','WOURI','DOUALA','LITTORAL','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(165,44,165,'GAROUA 1er','BASHEO,DEMBO,TOUROUA','BENOUE','GAROUA','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(166,44,166,'GAROUA 2e','','BENOUE','GAROUA','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(167,44,167,'GAROUA 3e','','BENOUE','GAROUA','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(168,44,168,'BIBEMI','','BENOUE','GAROUA','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(169,44,169,'PITOA','','BENOUE','GAROUA','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(170,44,170,'LAGDO','','BENOUE','GAROUA','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(171,44,171,'DEMBO','','BENOUE','GAROUA','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(172,44,172,'TCHEBOA','','BENOUE','GAROUA','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(173,44,173,'MAYO HOURNA','','BENOUE','GAROUA','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(174,44,174,'POLI','','FARO','POLI','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(175,44,175,'BEKA','','FARO','POLI','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(176,44,176,'GUIDER','','MAYO LOUTI','GUIDER','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(177,44,177,'PAYO-OULO','','MAYO LOUTI','GUIDER','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(178,44,178,'FIGUIL','','MAYO LOUTI','GUIDER','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(179,44,179,'REY-BOUBA','','MAYO LOUTI','GUIDER','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(180,44,180,'TCHOLLIRE','MADINGRING','MAYO LOUTI','GUIDER','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(181,44,181,'TOUBORO','','MAYO LOUTI','GUIDER','NORD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(182,44,182,'JAKIRI','','BUI','KUMBO','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(183,44,183,'KUMBO','','BUI','KUMBO','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(184,44,184,'OKU','','BUI','KUMBO','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(185,44,185,'MBVEN','','BUI','KUMBO','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(186,44,186,'NONI','','BUI','KUMBO','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(187,44,187,'NKUM','','BUI','KUMBO','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(188,44,188,'FUNDONG','','BOYO','FUNDONG','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(189,44,189,'BELO','','BOYO','FUNDONG','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(190,44,190,'BUM','','BOYO','FUNDONG','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(191,44,191,'NJINIKOM','','BOYO','FUNDONG','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(192,44,192,'NKAMBE','','DONGA-MANTUNG','NKAMBE','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(193,44,193,'NWA','','DONGA-MANTUNG','NKAMBE','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(194,44,194,'AKO','','DONGA-MANTUNG','NKAMBE','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(195,44,195,'MISAJE','','DONGA-MANTUNG','NKAMBE','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(196,44,196,'NDU','','DONGA-MANTUNG','NKAMBE','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(197,44,197,'WUM','','MENCHUM','WUM','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(198,44,198,'FURU-AWA','','MENCHUM','WUM','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(199,44,199,'MENCHUMVALLEY','','MENCHUM','WUM','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(200,44,200,'FUNGOM','','MENCHUM','WUM','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(201,44,201,'BAMENDA 1er','','MEZAM','BAMENDA','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(202,44,202,'BAMENDA 2e','','MEZAM','BAMENDA','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(203,44,203,'BAMENDA 3e','','MEZAM','BAMENDA','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(204,44,204,'BALI','','MEZAM','BAMENDA','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(205,44,205,'TUBAH','','MEZAM','BAMENDA','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(206,44,206,'BAFUT','','MEZAM','BAMENDA','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(207,44,207,'SANTA','','MEZAM','BAMENDA','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(208,44,208,'BATIBO','','MOMO','MBENGWI','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(209,44,209,'MBENGWI','','MOMO','MBENGWI','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(210,44,210,'NJIKWA','','MOMO','MBENGWI','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(211,44,211,'NGIE','','MOMO','MBENGWI','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(212,44,212,'WIDIKUM-MENKA','','MOMO','MBENGWI','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(213,44,213,'NDOP','','NGO-KENTUNJIA','NDOP','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(214,44,214,'BABESSI','','NGO-KENTUNJIA','NDOP','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(215,44,215,'BALIKUMBAT','','NGO-KENTUNJIA','NDOP','NORD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(216,44,216,'MBOUDA','','BAMBOUTOS','MBOUDA','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(217,44,217,'GALIM','','BAMBOUTOS','MBOUDA','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(218,44,218,'BATCHAM','','BAMBOUTOS','MBOUDA','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(219,44,219,'BABADJOU','','BAMBOUTOS','MBOUDA','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(220,44,220,'BAFANG','','HAUT NKAM','BAFANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(221,44,221,'BANA','','HAUT NKAM','BAFANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(222,44,222,'BANDJA','','HAUT NKAM','BAFANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(223,44,223,'KEKEM','BANWA','HAUT NKAM','BAFANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(224,44,224,'BAKOU','','HAUT NKAM','BAFANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(225,44,225,'BANKA','','HAUT NKAM','BAFANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(226,44,226,'BAHAM','','HAUTS PLATEAUX','BAHAM','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(227,44,227,'BAMENDJOU','','HAUTS PLATEAUX','BAHAM','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(228,44,228,'BANGOU','','HAUTS PLATEAUX','BAHAM','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(229,44,229,'POUMOUGNE','','KOUNG KHI','BANDJOUN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(230,44,230,'BAYANGAM','DJEBEM','KOUNG KHI','BANDJOUN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(231,44,231,'DSCHANG','','MENOUA','DSCHANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(232,44,232,'PENKA-MICHEl','','MENOUA','DSCHANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(233,44,233,'FOKOUE','','MENOUA','DSCHANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(234,44,234,'NKONG-NI','','MENOUA','DSCHANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(235,44,235,'SANTCHOU','','MENOUA','DSCHANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(236,44,236,'FONGOTONGO','','MENOUA','DSCHANG','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(237,44,237,'BAFOUSSAM 1er','','MIFI','BAFOUSSAM','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(238,44,238,'BAFOUSSAM 2e','','MIFI','BAFOUSSAM','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(239,44,239,'BAFOUSSAM 3e','','MIFI','BAFOUSSAM','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(240,44,240,'BANGANGTE','BASSAMBA','NDE','BANGANGTE','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(241,44,241,'BAZOU','','NDE','BANGANGTE','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(242,44,242,'TONGA','','NDE','BANGANGTE','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(243,44,243,'FOUMBAN','','NOUN','FOUMBAN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(244,44,244,'FOUMBOT','','NOUN','FOUMBAN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(245,44,245,'MALENTOUEN','','NOUN','FOUMBAN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(246,44,246,'MASSANGAM','','NOUN','FOUMBAN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(247,44,247,'MAGBA','','NOUN','FOUMBAN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(248,44,248,'KOUTABA','','NOUN','FOUMBAN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(249,44,249,'BANGOURAIN','','NOUN','FOUMBAN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(250,44,250,'KOUOPTAMO','','NOUN','FOUMBAN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(251,44,251,'NJIMON','','NOUN','FOUMBAN','OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(252,44,252,'BENGBIS','','DJA ET LOBO','SANGMELIMA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(253,44,253,'DJOUM','','DJA ET LOBO','SANGMELIMA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(254,44,254,'SANGMELIMA','','DJA ET LOBO','SANGMELIMA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(255,44,255,'ZOETELE','','DJA ET LOBO','SANGMELIMA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(256,44,256,'OVENG','','DJA ET LOBO','SANGMELIMA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(257,44,257,'MINTOM','','DJA ET LOBO','SANGMELIMA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(258,44,258,'MEYOMESSALA','','DJA ET LOBO','SANGMELIMA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(259,44,259,'MEYOMESSI','','DJA ET LOBO','SANGMELIMA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(260,44,260,'AMBAM','','VALLEE DU NTEM','AMBAM','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(261,44,261,'MA\'AN','','VALLEE DU NTEM','AMBAM','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(262,44,262,'OLAMZE','','VALLEE DU NTEM','AMBAM','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(263,44,263,'KYEOSSI','','VALLEE DU NTEM','AMBAM','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(264,44,264,'EBOLOWA 1er','','MVILA','EBOLOWA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(265,44,265,'EBOLOWA2e','','MVILA','EBOLOWA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(266,44,266,'BIWONG-BANE','','MVILA','EBOLOWA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(267,44,267,'MVANGAN','','MVILA','EBOLOWA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(268,44,268,'MENGONG','','MVILA','EBOLOWA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(269,44,269,'NGOULEMAKONG','','MVILA','EBOLOWA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(270,44,270,'EFOULAN','','MVILA','EBOLOWA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(271,44,271,'BIWONGBULU','','MVILA','EBOLOWA','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(272,44,272,'AKOM II','','OCEAN','KRIBI','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(273,44,273,'CAMPO','NIETE','OCEAN','KRIBI','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(274,44,274,'KRIBI 1er','','OCEAN','KRIBI','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(275,44,275,'KRIBI 2e','','OCEAN','KRIBI','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(276,44,276,'LOLODORF','','OCEAN','KRIBI','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(277,44,277,'MVENGUE','','OCEAN','KRIBI','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(278,44,278,'BIPINDI','','OCEAN','KRIBI','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(279,44,279,'LOKOUNDJE','','OCEAN','KRIBI','SUD','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(280,44,280,'MUYUKA','','FAKO','LIMBE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(281,44,281,'TIKO','','FAKO','LIMBE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(282,44,282,'LIMBE 1er','WEST-COAST','FAKO','LIMBE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(283,44,283,'LIMBE 2e','','FAKO','LIMBE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(284,44,284,'LIMBE 3e','','FAKO','LIMBE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(285,44,285,'BUEA','','FAKO','LIMBE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(286,44,286,'BANGEM','','KUPEMANENGUBA','BANGEM','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(287,44,287,'NGUTI','','KUPEMANENGUBA','BANGEM','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(288,44,288,'TOMBEL','','KUPEMANENGUBA','BANGEM','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(289,44,289,'FONTEM','','LEBIALEM','MENJI','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(290,44,290,'ALOU','','LEBIALEM','MENJI','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(291,44,291,'WABANE','','LEBIALEM','MENJI','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(292,44,292,'AKWAYA','','MANYU','MAMFE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(293,44,293,'MAMFE','','MANYU','MAMFE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(294,44,294,'EYUMODJOCK','','MANYU','MAMFE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(295,44,295,'UPPER-BAYANG','','MANYU','MAMFE','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(296,44,296,'KUMBA 1er','','MEME','KUMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(297,44,297,'KUMBA 2e','','MEME','KUMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(298,44,298,'KUMBA 3e','','MEME','KUMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(299,44,299,'KONYE','','MEME','KUMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(300,44,300,'BONGE','','MEME','KUMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(301,44,301,'BAMUSSO','','NDIAN','MUNDEMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(302,44,302,'EKONDO-TITI','DIKOME-BALUE, TOKO','NDIAN','MUNDEMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(303,44,303,'ISANGUELE','','NDIAN','MUNDEMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(304,44,304,'MUNDEMBA','','NDIAN','MUNDEMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(305,44,305,'KOMBOABEDIMO','','NDIAN','MUNDEMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(306,44,306,'KOMBOIDINTI','','NDIAN','MUNDEMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(307,44,307,'IDABATO','','NDIAN','MUNDEMBA','SUD-OUEST','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),(308,-1,99,'DISTRICT EXTERIEUR','','null','null','null','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00');
+/*!40000 ALTER TABLE `district` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `document`
+--
+
+DROP TABLE IF EXISTS `document`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `document` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `titre` varchar(254) DEFAULT NULL,
+  `chemin_document` varchar(254) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `document`
+--
+
+LOCK TABLES `document` WRITE;
+/*!40000 ALTER TABLE `document` DISABLE KEYS */;
+/*!40000 ALTER TABLE `document` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `droit`
+--
+
+DROP TABLE IF EXISTS `droit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `droit` (
+  `id` int(11) NOT NULL,
+  `consulter` bit(1) DEFAULT NULL,
+  `creer` bit(1) DEFAULT NULL,
+  `modifier` bit(1) DEFAULT NULL,
+  `supprimer` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `droit`
+--
+
+LOCK TABLES `droit` WRITE;
+/*!40000 ALTER TABLE `droit` DISABLE KEYS */;
+/*!40000 ALTER TABLE `droit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `droitemploye`
+--
+
+DROP TABLE IF EXISTS `droitemploye`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `droitemploye` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_employe` int(11) DEFAULT NULL,
+  `id_droit` int(11) DEFAULT NULL,
+  `id_rubrique` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `droitemploye`
+--
+
+LOCK TABLES `droitemploye` WRITE;
+/*!40000 ALTER TABLE `droitemploye` DISABLE KEYS */;
+/*!40000 ALTER TABLE `droitemploye` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `droitprofil`
+--
+
+DROP TABLE IF EXISTS `droitprofil`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `droitprofil` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_profil` int(11) DEFAULT NULL,
+  `id_menu` int(11) DEFAULT NULL,
+  `consulter` int(1) DEFAULT NULL,
+  `modifier` int(1) DEFAULT NULL,
+  `creer` int(1) DEFAULT NULL,
+  `supprimer` int(1) DEFAULT NULL,
+  `id_droit` int(11) DEFAULT NULL,
+  `id_rubrique` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_profil` (`id_profil`),
+  KEY `id_menu` (`id_menu`),
+  CONSTRAINT `FK_ipm46njbhxeyc2acgptbitm4x` FOREIGN KEY (`id_menu`) REFERENCES `menus` (`id`),
+  CONSTRAINT `FK_nr1qsqiere24lt11pt7f8vcaw` FOREIGN KEY (`id_profil`) REFERENCES `profil` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `droitprofil`
+--
+
+LOCK TABLES `droitprofil` WRITE;
+/*!40000 ALTER TABLE `droitprofil` DISABLE KEYS */;
+INSERT INTO `droitprofil` VALUES (1,1,1,1,1,1,1,NULL,NULL),(2,1,2,1,1,1,1,NULL,NULL),(3,1,3,1,1,1,1,NULL,NULL),(4,1,4,1,1,1,1,NULL,NULL),(5,1,5,1,1,1,1,NULL,NULL),(6,1,6,1,1,1,1,NULL,NULL),(7,2,1,1,1,1,1,NULL,NULL),(8,2,3,1,1,1,1,NULL,NULL),(9,2,4,1,1,1,1,NULL,NULL),(10,2,5,1,1,1,1,NULL,NULL),(11,2,6,1,1,1,1,NULL,NULL),(12,3,1,1,1,1,1,NULL,NULL),(13,3,2,1,1,1,0,NULL,NULL),(14,3,3,1,1,1,1,NULL,NULL),(15,3,4,1,0,0,0,NULL,NULL),(16,3,5,1,1,1,1,NULL,NULL),(17,4,1,1,1,1,1,NULL,NULL),(18,4,2,1,1,1,0,NULL,NULL),(19,4,4,1,0,0,0,NULL,NULL),(20,4,5,1,1,1,0,NULL,NULL),(21,5,1,1,1,1,1,NULL,NULL),(22,5,5,1,1,1,0,NULL,NULL),(23,6,1,1,1,1,1,NULL,NULL),(24,6,2,1,0,0,0,NULL,NULL),(25,6,5,1,0,0,0,NULL,NULL),(26,7,1,1,1,1,1,NULL,NULL),(27,7,3,1,0,0,0,NULL,NULL),(28,7,5,1,0,0,0,NULL,NULL);
+/*!40000 ALTER TABLE `droitprofil` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `elementrequette`
+--
+
+DROP TABLE IF EXISTS `elementrequette`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `elementrequette` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_requete` int(11) DEFAULT NULL,
+  `id_element` int(11) DEFAULT NULL,
+  `type_element` int(2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `elementrequette`
+--
+
+LOCK TABLES `elementrequette` WRITE;
+/*!40000 ALTER TABLE `elementrequette` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elementrequette` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `employe`
+--
+
+DROP TABLE IF EXISTS `employe`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employe` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_utilisteur` int(11) DEFAULT NULL,
+  `fonction` varchar(254) DEFAULT NULL,
+  `date_emploie` datetime DEFAULT NULL,
+  `date_naissance` datetime DEFAULT NULL,
+  `lieux_naissance` varchar(254) DEFAULT NULL,
+  `cni` varchar(254) DEFAULT NULL,
+  `date_delivrance_cni` datetime DEFAULT NULL,
+  `lieux_delivrance_cni` varchar(254) DEFAULT NULL,
+  `statut` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employe`
+--
+
+LOCK TABLES `employe` WRITE;
+/*!40000 ALTER TABLE `employe` DISABLE KEYS */;
+/*!40000 ALTER TABLE `employe` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `employeprofil`
+--
+
+DROP TABLE IF EXISTS `employeprofil`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employeprofil` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_employe` int(11) DEFAULT NULL,
+  `id_profil` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employeprofil`
+--
+
+LOCK TABLES `employeprofil` WRITE;
+/*!40000 ALTER TABLE `employeprofil` DISABLE KEYS */;
+/*!40000 ALTER TABLE `employeprofil` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `facture`
+--
+
+DROP TABLE IF EXISTS `facture`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `facture` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_source` int(13) DEFAULT NULL,
+  `date_facture` datetime DEFAULT NULL,
+  `montant` double DEFAULT NULL,
+  `statut` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `facture`
+--
+
+LOCK TABLES `facture` WRITE;
+/*!40000 ALTER TABLE `facture` DISABLE KEYS */;
+/*!40000 ALTER TABLE `facture` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `garantie`
+--
+
+DROP TABLE IF EXISTS `garantie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `garantie` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_police` int(11) DEFAULT NULL,
+  `id_produit` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `garantie`
+--
+
+LOCK TABLES `garantie` WRITE;
+/*!40000 ALTER TABLE `garantie` DISABLE KEYS */;
+/*!40000 ALTER TABLE `garantie` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `groupepolice`
+--
+
+DROP TABLE IF EXISTS `groupepolice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `groupepolice` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `montant_plafond` double DEFAULT NULL,
+  `acte_plafond` double DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(100) CHARACTER SET latin1 DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `groupepolice`
+--
+
+LOCK TABLES `groupepolice` WRITE;
+/*!40000 ALTER TABLE `groupepolice` DISABLE KEYS */;
+INSERT INTO `groupepolice` VALUES (1,NULL,NULL,NULL,NULL,'8FCB1D069371F1C3AA211E24B1F35347',NULL,NULL,'2015-01-25 09:13:15','2015-01-25 09:13:15'),(2,NULL,NULL,NULL,NULL,'232014BD4C7AE3E87278418CD36A5C88',NULL,NULL,'2015-01-25 09:30:17','2015-01-25 09:30:17'),(3,NULL,NULL,NULL,NULL,'BCB2D802C26824090E7A181516D37EE7',NULL,NULL,'2015-01-25 09:33:28','2015-01-25 09:33:28'),(4,NULL,NULL,NULL,NULL,'8899E9B8096DF9628D4EF209CEC56B6C',NULL,NULL,'2015-01-25 09:34:39','2015-01-25 09:34:39'),(5,50000,12000,NULL,NULL,'63B22DC832AF386502F5D36889AF8C22',NULL,NULL,'2015-01-25 17:15:06','2015-01-25 17:15:06'),(6,50000,12000,NULL,NULL,'ABB4EDEDB92F8B73324EE9582D5E9231',NULL,NULL,'2015-01-25 19:53:37','2015-01-25 19:53:37'),(7,500000,12000,NULL,NULL,'3CBF7781859858AAB51E246CE026FE37',NULL,NULL,'2015-01-25 20:21:38','2015-01-25 20:21:38'),(8,500000,12000,NULL,NULL,'497EA760330356D48FFA78CD292115B1',NULL,NULL,'2015-01-25 20:23:45','2015-01-25 20:23:45'),(9,500000,12000,NULL,NULL,'A39867F88EFF52D1CE5D97DC098E74AF',NULL,NULL,'2015-01-25 20:37:38','2015-01-25 20:37:38'),(10,NULL,NULL,NULL,NULL,'D8AF389BD2102043BFF698EC7D5BB231',NULL,NULL,'2015-01-26 02:39:11','2015-01-26 02:39:11'),(11,NULL,NULL,NULL,NULL,'BB0EF10D121575C8B582DE56126350A7',NULL,NULL,'2015-01-26 02:40:28','2015-01-26 02:40:28'),(12,500000,1,NULL,NULL,'6A951729F0182392437903C0DF9F27DB',NULL,NULL,'2015-01-26 03:50:55','2015-01-26 03:50:55'),(13,500000,1,NULL,NULL,'194CA9E728ABD40E443FD0E497784EAC',NULL,NULL,'2015-01-26 03:51:26','2015-01-26 03:51:26'),(14,50000,12000,NULL,NULL,'364B312E2B0287BC3EEB8F84D5BD3AD0',NULL,NULL,'2015-01-26 05:12:50','2015-01-26 05:12:50'),(15,50000,12000,NULL,NULL,'69F7D8CAFF65212B5B78FF5428923C1B',NULL,NULL,'2015-01-26 05:13:12','2015-01-26 05:13:12'),(16,50000,12000,NULL,NULL,'8B4661EB017E93A357F60C1BABD612BD',NULL,NULL,'2015-01-26 05:34:11','2015-01-26 05:34:11'),(17,50000,125,NULL,NULL,'BD55A1C19FDAA33D655C1198D986AD51',NULL,NULL,'2015-01-26 05:49:09','2015-01-26 05:49:09');
+/*!40000 ALTER TABLE `groupepolice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `historiqueutilisateur`
+--
+
+DROP TABLE IF EXISTS `historiqueutilisateur`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `historiqueutilisateur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `active` int(11) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_naissance` date DEFAULT NULL,
+  `id_arrondissement_origine` int(11) DEFAULT NULL,
+  `lieu_naissance` varchar(255) DEFAULT NULL,
+  `matricule` varchar(255) DEFAULT NULL,
+  `nationnalite` varchar(255) DEFAULT NULL,
+  `nom` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `prenom` varchar(255) DEFAULT NULL,
+  `sexe` char(1) DEFAULT NULL,
+  `signature` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `adresse` int(11) DEFAULT NULL,
+  `rue` varchar(255) DEFAULT NULL,
+  `adresse_id` int(11) DEFAULT NULL,
+  `statuts` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_76p1n25qka0s84d0g2ech5bvw` (`adresse`),
+  KEY `FK_nxl49mwj2nqeov5cluplttter` (`adresse_id`),
+  KEY `FK_px4iba3jq4r4q2qxw721gchbb` (`statuts`),
+  CONSTRAINT `FK_76p1n25qka0s84d0g2ech5bvw` FOREIGN KEY (`adresse`) REFERENCES `adresse` (`id`),
+  CONSTRAINT `FK_nxl49mwj2nqeov5cluplttter` FOREIGN KEY (`adresse_id`) REFERENCES `adresse` (`id`),
+  CONSTRAINT `FK_px4iba3jq4r4q2qxw721gchbb` FOREIGN KEY (`statuts`) REFERENCES `statuts` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `historiqueutilisateur`
+--
+
+LOCK TABLES `historiqueutilisateur` WRITE;
+/*!40000 ALTER TABLE `historiqueutilisateur` DISABLE KEYS */;
+INSERT INTO `historiqueutilisateur` VALUES (1,1,NULL,'2015-01-23 10:01:00',NULL,NULL,NULL,1,'Douala','','Camerounaise','Galina','Temp1234','prenom','F','69FAEF50356E9B34D611C83FEE1E4AC1',1,NULL,NULL,NULL,3),(2,1,NULL,'2015-01-23 10:01:57',NULL,NULL,NULL,1,'Douala','','Camerounaise','Galina','Temp1234','prenom','F','C221EA407C67D1E1D66FC83E742E8697',1,NULL,NULL,NULL,3);
+/*!40000 ALTER TABLE `historiqueutilisateur` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `login_history`
+--
+
+DROP TABLE IF EXISTS `login_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `login_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `balanceAfterConnection` int(11) DEFAULT NULL,
+  `balanceBeforeConnection` int(11) DEFAULT NULL,
+  `host` varchar(255) DEFAULT NULL,
+  `loginDateTime` datetime DEFAULT NULL,
+  `logoutDateTime` datetime DEFAULT NULL,
+  `navigateur` varchar(255) DEFAULT NULL,
+  `sessionValue` varchar(255) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  `userName` varchar(255) DEFAULT NULL,
+  `userPhoneNumber` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `login_history`
+--
+
+LOCK TABLES `login_history` WRITE;
+/*!40000 ALTER TABLE `login_history` DISABLE KEYS */;
+INSERT INTO `login_history` VALUES (1,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','445E72CABCF39C24FD9B943A0ECDA33E',1,'',NULL),(2,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','89B362D0AF508BAB646EFE2DF1D8CDE3',1,'',NULL),(3,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','E9D7EC45A3B92C3F1A39EB76489C6C27',1,'',NULL),(4,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','ED24177960F7CACAABCEB7ADA823CC74',1,'',NULL),(5,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','785920A2A1AB2AB7B0BDDB0DD85500A8',1,'',NULL),(6,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','1D54CD77099A4E86DDEB4F970F2A605E',1,'Galina',NULL),(7,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','C05C8AB2C3794262B29CB3610ED73EE9',1,'Galina',NULL),(8,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','04E45F77DF1CFD18F9793AF9ACECEA99',1,'Galina',NULL),(9,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','28E385A598C26375B9D4F53B42813308',1,'Galina',NULL),(10,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','4FD7496F9CD6F45B3642B7BEFF81CA04',1,'Galina',NULL),(11,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','9B869E9E68E5E96F3AA9F60C7095CFA7',1,'Galina',NULL),(12,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','A6C3D608FA8DCED3F933CABE56A4529C',1,'Galina',NULL),(13,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','05DD3260AA8460BEDE7C194694060C63',1,'Galina',NULL),(14,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','586F391461100CE4351DE26F904F61B9',1,'Galina',NULL),(15,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','CAA7AF97053EDA2D61210A6D7509ACFE',1,'Galina',NULL),(16,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','1645401874993D32DFA3C28CA090D220',1,'Galina',NULL),(17,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','8667E354BAD655C8478744DF6A3C8B4D',1,'Galina',NULL),(18,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','CF4F53C08FFB9BBF9B926976F205560B',1,'Galina',NULL),(19,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','E6628C15E0E6251DA5CEF85063172660',1,'Galina',NULL),(20,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','667C255448ECAC93D75ADA1602DFAF68',1,'Galina',NULL),(21,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','BD8AAA6BDF743B04A8DA1C57CCE046BB',1,'Galina',NULL),(22,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','FB8788BD54EC332D427B8CCA7A2DA9FD',1,'Galina',NULL),(23,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','FA24DFD769DC35011407595E33138327',1,'Galina',NULL),(24,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','46A51D6E7FCF2DCFFD52B3FECF9175E7',1,'Galina',NULL),(25,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','B30353D4E949276F8F0074A6B4E1B096',1,'Galina',NULL),(26,NULL,NULL,'192.168.0.121:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','DF87562B3F03527D099103EE1094679B',1,'Galina',NULL),(27,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','FAAC5599C8B4403F9F63798CEB9F9231',1,'Galina',NULL),(28,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','99C5D01E3CF7FE50A380049251D6532C',1,'Galina',NULL),(29,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F99757BDA7596343B63B09002F431965',1,'Galina',NULL),(30,NULL,NULL,'192.168.0.121:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','AFB97B2B5B624EE9A6614BE70A137E50',1,'Galina',NULL),(31,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','E77E94DB9C80B0F5A1C3FA0AEEE1D0CA',1,'Galina',NULL),(32,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','A820B95DF9E02C4CBF5298F097295A38',1,'Galina',NULL),(33,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','9B7260A9F06B6C414C45297FCF14A81C',1,'Galina',NULL),(34,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','30638BF88614A1698D20CBE607CF7C69',1,'Galina',NULL),(35,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','BF15B1838D4174E48286C826AB327683',1,'Galina',NULL),(36,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','E2848362DA8FD98F62B158AC52842350',1,'Galina',NULL),(37,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','6ABD81F71A398CD5A27C18A024AA3D7E',1,'Galina',NULL),(38,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','1CE046ADF98A6993A63F4E3179467B44',1,'Galina',NULL),(39,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','71F80B22579A20AF7C872FB64DD2A768',1,'Galina',NULL),(40,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','D4EF3A36D80A5F98F616D6B87E40D618',1,'Galina',NULL),(41,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','71FB7997AE09AA20D39AE5BA11627E04',1,'Galina',NULL),(42,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','62A3CC5134DCB7CB76D7C071C5907619',1,'Galina',NULL),(43,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F41E7195D12352AC1BFF4A53E0E94128',1,'Galina',NULL),(44,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','7FC5B6F0AB6248CD9E4CA444F3763948',1,'Galina',NULL),(45,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','E9516EF3737FFC8DA842142FB38A24DA',1,'Galina',NULL),(46,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F5B04A3ADAAC3E27EA2F7BF7BC260CA8',1,'Galina',NULL),(47,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','8C3E7B12E277BEACDE956B07206CF66F',1,'Galina',NULL),(48,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','3F97C8B40E3C85AEB26DDB49F325306D',1,'Galina',NULL),(49,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','E402CF1EFEB66105206FF2BE763B76B9',1,'Galina',NULL),(50,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','71A0E19F4BCF964E1A691AC864447609',1,'Galina',NULL),(51,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','DE4DECAECFB73DB12AF1AA74E316E3D7',1,'Galina',NULL),(52,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','AAA81CEE1E636FFAC66B040C5CB2C77A',1,'Galina',NULL),(53,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','141AF5C3D625CB114729A52B7E87150F',1,'Galina',NULL),(54,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F4073338D3A29FCF73C96F65970CC338',1,'Galina',NULL),(55,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','A77D66E52FF61768B73C316A25BADDD1',1,'Galina',NULL),(56,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F69649658FDBDD47B3D70F8FFB38420A',1,'Galina',NULL),(57,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','4EF4C56347CD0BFBC2EB5352CB234D24',1,'Galina',NULL),(58,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','C1634FD3F4ACE3F0D53C231185797B7E',1,'Galina',NULL),(59,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','62586956C233E5F6F4F05D514222D306',1,'Galina',NULL),(60,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','B86FE418CE4A1590542597FCA525AFE0',1,'Galina',NULL),(61,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','3D14C0178655CF309F520EF0F7AC87D1',1,'Galina',NULL),(62,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','D38C911A6F183FFAA8071CFAF4686FBC',1,'Galina',NULL),(63,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','4E3CE047EC819260B0F431ECA2E3216C',1,'Galina',NULL),(64,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','E03A34CB2E65FE64A3E5986AA6972F39',1,'Galina',NULL),(65,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','A823F6FA00849E6809235EFC6622347E',1,'Galina',NULL),(66,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','BFB8D485A07E097D1EE1CCA7EC260311',1,'Galina',NULL),(67,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F1A816282536E89A46EC7B01849EFC38',1,'Galina',NULL),(68,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','7B13E3711AFCEAEA24FE187258AC1CE5',1,'Galina',NULL),(69,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','DCCECE27E8538046A00579A03FEA3272',1,'Galina',NULL),(70,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','5C060A7AD3A97DF46C8F29D6E1F0724A',1,'Galina',NULL),(71,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','C9BBDA697D4A74E4095F4EC8DCE5AA03',1,'Galina',NULL),(72,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','905BB31163967931D3834E11D375947B',1,'Galina',NULL),(73,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F550A1F4A62081093854EA021F1B1882',1,'Galina',NULL),(74,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','3D25E810A98A5B98C4852D9E7AA7A8C4',1,'Galina',NULL),(75,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','D6F52A85FF1A568148757A7062785AFA',1,'Galina',NULL),(76,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','2A3D9BEFC76602BE3399E7BF910B3D48',1,'Galina',NULL),(77,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','89322A1793C3965784D14147FB44B634',1,'Galina',NULL),(78,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F1D597449BD347DBF110FCEE8AD182B5',1,'Galina',NULL),(79,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','5C08A0725BAEE9FF8636B6166F9E9739',1,'Galina',NULL),(80,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','32CE14DEAD3D85489C50DE88BECFB47A',1,'Galina',NULL),(81,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','274D88DA2DF9CDBB93BA0F24F4337E23',1,'Galina',NULL),(82,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','1EB228A383452815B53BFD6A5BFF3A3E',1,'Galina',NULL),(83,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','CE4242628A9BF818987BD82DB646A4FF',1,'Galina',NULL),(84,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','833AA43B1B839CAF55BA1E028FAA6294',1,'Galina',NULL),(85,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','C8387FB195E30E2C363D26EA008EE5B1',1,'Galina',NULL),(86,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','50DB8E68E48FFA58C0904B5F119A2ACD',1,'Galina',NULL),(87,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','B21AE4494299DC065F4EDDB5D33C1269',1,'Galina',NULL),(88,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','DEFFC529CCA19B4CC0F06478794EB3C3',1,'Galina',NULL),(89,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','508799C2F791DB015FA6656271FF6061',1,'Galina',NULL),(90,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','7CF0CFCACAB94C991796C028BF899560',1,'Galina',NULL),(91,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','672BA05ADF0746A4E5F1A8A601D6E75E',1,'Galina',NULL),(92,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F8DD83168F971DEDADF2E45EF8E84D7F',1,'Galina',NULL),(93,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','84F19C8413A7707835BCECB4F6A11695',1,'Galina',NULL),(94,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','26F410D053D3CC34A4897169BEAF6595',1,'Galina',NULL),(95,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','A9CD6B80030E0E0B939F036B67FF1CF0',1,'Galina',NULL),(96,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','57D81445D64A2EA7866C0524CD5C8724',1,'Galina',NULL),(97,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','BF60545AC109BD58D7486AB7928F5CE3',1,'Galina',NULL),(98,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','D25B0361B5E7406DEAB16F6924C1F270',1,'Galina',NULL),(99,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','B948831B565E33FAB417B4470794211A',1,'Galina',NULL),(100,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','BDE9462D37BC0BF683FA808D3AAE810D',1,'Galina',NULL),(101,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','1B23E041190A99A879972928D8F3F25B',1,'Galina',NULL),(102,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','FADB5D8E60D6CD8E192F2911C03E1AA0',1,'Galina',NULL),(103,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','B10931FFD6E704097A18DB2F36BF71A1',1,'Galina',NULL),(104,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','79C7F7C57E8BCB1B0EE5EAD3253EBAA3',1,'Galina',NULL),(105,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','5A9AA1EEF817D4370AE05E4DB20058C4',1,'Galina',NULL),(106,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','A78A6EA061239853EFFD9FF3C28DB015',1,'Galina',NULL),(107,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','490D99BFC559071EA05463334A2926D4',1,'Galina',NULL),(108,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','3896ADDE192BAB52079ACB7482B9E5D0',1,'Galina',NULL),(109,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','0432FF41A1232161D064121D37270406',1,'Galina',NULL),(110,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','9F2BBCD800CA53F13C4662C64C0E0771',1,'Galina',NULL),(111,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','448ED2139D3E6EB7621D1C3CD867F1C1',1,'Galina',NULL),(112,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','4307573490F0EE51F16AE61026E8A1CB',1,'Galina',NULL),(113,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','B3F889BA3B80036F91696DFC2306BEA3',1,'Galina',NULL),(114,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','51F91839F699EADB014852A52A9F13FD',1,'Galina',NULL),(115,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','BAABDE4ABBBABD9999AB8D6B0C4C4A82',1,'Galina',NULL),(116,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','CC5171C2D247935DEDC33355DE6EAEA1',1,'Galina',NULL),(117,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','DD3D3D8289A995A09ECEE43EFD4F918F',1,'Galina',NULL),(118,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','462BCE8C091E0057CEBA3B5A356D4233',1,'Galina',NULL),(119,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','6C430B9373A57EB958B428124418B654',1,'Galina',NULL),(120,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','B7BEDB1BFD2914942A38C51FF94CB312',1,'Galina',NULL),(121,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','904CABA46511352552B3E70F1EE503EA',1,'Galina',NULL),(122,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','310313662D3C6C4A3F40C934907A8725',1,'Galina',NULL),(123,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','1279607315E59E1F8B7810F21B111FC9',1,'Galina',NULL),(124,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','0067A35389FA951417C292EE14633901',1,'Galina',NULL),(125,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','A2AEF47E0A2EB5C0542697EA1B733AE9',1,'Galina',NULL),(126,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','E0E29B90E9FE944D9D92806BBEEBA63E',1,'Galina',NULL),(127,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','0C90D1006D30D40478E894AE1E92DA0A',1,'Galina',NULL),(128,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','685F099930F24F79A66D84152A74FADB',1,'Galina',NULL),(129,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','A2DF79BD08292B6B084B7A2B96900A43',1,'Galina',NULL),(130,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','E7D07DF8E02F097CACEE8696ABF3CFAD',1,'Galina',NULL),(131,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','EA838D8AC44A80BA6791F07E9BCF197A',1,'Galina',NULL),(132,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','ECC24373075EE31794A9A0205623DA0C',1,'Galina',NULL),(133,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','409D953786FF15325C23CE6B96310BFB',1,'Galina',NULL),(134,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','EACFF238A606F6D75063F37D71F20FCE',1,'Galina',NULL),(135,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','F74216F3E1BE9DDA06A8DB6755C017A6',1,'Galina',NULL),(136,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0','4B2FB12A4E3F0D710BC57A4957251410',1,'Galina',NULL),(137,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0','EC2E91314B3A39D01A05659924E1A9FA',1,'Galina',NULL),(138,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','B3EF131AA3103A7EBEBFF92F5C16C619',1,'Galina',NULL),(139,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','A92EEE7181B3651FDF46672C12C749C8',1,'Galina',NULL),(140,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','430352BBCB0D72A8B1D0F6E52B308DD2',1,'Galina',NULL),(141,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','B584730623438C335089D98D378FED8D',1,'Galina',NULL),(142,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','C9572BE77CDFFDF4975E74D0B3777E45',1,'Galina',NULL),(143,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','A1BA731B88993E3E627746BB02F07AD0',1,'Galina',NULL),(144,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','7AC0EEA0C689666248F096FAF63E3459',1,'Galina',NULL),(145,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','A0D0819C32121A46C183E86BFF0B7262',1,'Galina',NULL),(146,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','99B36836022208B4117C5891DF594E14',1,'Galina',NULL),(147,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','975405E259E8FFE2326627511AF3C9F1',1,'Galina',NULL),(148,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','02F4844E2AC2CA223C0306D7BF30555D',1,'Galina',NULL),(149,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','7097CCFC014C531D7B448E2AE9A7264C',1,'Galina',NULL),(150,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','F4B371D2B83ED4182F2E5F255FA942FF',1,'Galina',NULL),(151,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','D0174EC2D5BABF3E0AFF3D6EE825F116',1,'Galina',NULL),(152,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','E35C0E739608C37F461E02DF66C2850A',2,'Nono',NULL),(153,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','0ED48F2B0C8D898CE566A1FDF9D835E6',2,'Nono',NULL),(154,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','A16B3A8EAB0E60A13791178D063EDA8D',1,'Galina',NULL),(155,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','EC333384F0F8B115279B494A14D38473',1,'Galina',NULL),(156,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36','30A583BF1023D49C9443F1EA828A8BA6',1,'Galina',NULL),(157,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','9DAAE70A29447871A5C0F60A654F5F98',1,'Galina',NULL),(158,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','CE7796C7625B4145D416F94D7F994C6F',1,'Galina',NULL),(159,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','7FAA679071F1244FEAE960747CDB1E31',1,'Galina',NULL),(160,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','2873D55F3267725A7E2675C7C0F8F8AE',1,'Galina',NULL),(161,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','C90E339D6870B56FC3E9183192ACB979',1,'Galina',NULL),(162,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','7B35365E11342D7E50FE3F5AE03B8B21',1,'Galina',NULL),(163,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','C291D61425637362EB1871D70E01613D',1,'Galina',NULL),(164,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','88A561034ED263F789A8B018B65CA3F6',1,'Galina',NULL),(165,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','9FE63DAF009973E3619B7C6EBE94F90B',1,'Galina',NULL),(166,NULL,NULL,'localhost:8084',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','EE12741DDD81E81A88E7163ADE365889',1,'Galina',NULL),(167,NULL,NULL,'localhost:8080',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','421502F9FD5FF6E9BF4E0C9583791297',1,'Galina',NULL),(168,NULL,NULL,'localhost:8080',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','D629A688D1E23A421E282BAB5B9035AF',1,'Galina',NULL),(169,NULL,NULL,'localhost:8080',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','056D5A442D49BE9976D5C2C71DB160FB',2,'Nono',NULL),(170,NULL,NULL,'localhost:8080',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','D234C42EB5FD325311AB0697EC6996D4',1,'Galina',NULL),(171,NULL,NULL,'localhost:8080',NULL,NULL,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36','282231644E8F88EAB7F56EBDA37C0014',1,'Galina',NULL);
+/*!40000 ALTER TABLE `login_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `menus`
+--
+
+DROP TABLE IF EXISTS `menus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `menus` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `libelle` varchar(30) DEFAULT NULL,
+  `description` varchar(80) DEFAULT NULL,
+  `action` varchar(30) DEFAULT NULL,
+  `icone` varchar(20) DEFAULT NULL,
+  `classe` varchar(10) DEFAULT NULL,
+  `parent` int(11) DEFAULT NULL,
+  `ordre` smallint(6) DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `code_libelle` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_19m8nwa1wp2kt0lh5e1e7ynku` (`parent`),
+  CONSTRAINT `FK_19m8nwa1wp2kt0lh5e1e7ynku` FOREIGN KEY (`parent`) REFERENCES `menus` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `menus`
+--
+
+LOCK TABLES `menus` WRITE;
+/*!40000 ALTER TABLE `menus` DISABLE KEYS */;
+INSERT INTO `menus` VALUES (0,'Root',NULL,'#','root','root',0,1,'2015-01-19 14:27:09','2015-01-19 14:27:09',NULL),(1,'Accueil',NULL,'homepage','home','home',0,1,'2015-01-19 14:27:09','2015-01-19 14:27:09','acceuil'),(2,'Prestations',NULL,'prestations','medkit','page1',0,2,'2015-01-19 14:27:09','2015-01-19 14:27:09','prestations'),(3,'Contrats',NULL,'polices','briefcase','page2',0,3,'2015-01-19 14:27:09','2015-01-19 14:27:09','contrats'),(4,'Finances',NULL,'finances','money','page3',0,4,'2015-01-19 14:27:09','2015-01-19 14:27:09','finances'),(5,'Ressources / Stats',NULL,'ressoures','archive','page5',0,5,'2015-01-19 14:27:09','2015-01-19 14:27:09','ressources.stats'),(6,'Administration',NULL,'admin','cogs','page6',0,6,'2015-01-19 14:27:09','2015-01-19 14:27:09','administration'),(101,'Mes Activit&eacute;s recentes',NULL,'mesactivitesrecentes','flag-o','page1',1,1,'2015-01-19 14:27:09','2015-01-19 14:27:09',NULL),(102,'Mes Alertes',NULL,'mesalertes','bell-o','page1',1,2,'2015-01-19 14:27:09','2015-01-19 14:27:09',NULL),(103,'Mes Messages',NULL,'mesmessages','envelope-o','page1',1,3,'2015-01-19 14:27:09','2015-01-19 14:27:09',NULL),(201,'Mes Prestations',NULL,'mespresatations','play-circle','page1',2,1,'2015-01-19 14:27:09','2015-01-19 14:27:09','mes.prestations'),(202,'Faire une Prestation',NULL,'faireprestation','play-circle-o','page1',2,1,'2015-01-19 14:27:09','2015-01-19 14:27:09','faire.prestation'),(203,'Mes Prescriptions',NULL,'mesprescriptions','edit','page1',2,3,'2015-01-19 14:27:09','2015-01-19 14:27:09','mes.prescriptions'),(204,'Soins',NULL,'soins','shield','page1',2,3,'2015-01-19 14:27:09','2015-01-19 14:27:09',NULL),(301,'Mes Contrats',NULL,'contracts','book','page1',3,1,'2015-01-19 14:27:09','2015-01-19 14:27:09','contracts'),(302,'B&eacute;n&eacute;ficiaires',NULL,'beneficiaires','group','page1',3,2,'2015-01-19 14:27:09','2015-01-19 14:27:09','beneficiaire'),(303,'Souscripteurs',NULL,'souscripteurs','user','page1',3,3,'2015-01-19 14:27:09','2015-01-19 14:27:09','souscripteurs'),(304,'Garanties',NULL,'garanties','hand-o-right','page1',3,4,'2015-01-19 14:27:09','2015-01-19 14:27:09','garanties'),(305,'Creer un contrat',NULL,'addcontracts','plus-square','page1',3,5,'2015-01-20 16:28:15','2015-01-20 16:28:21','addcontracts'),(401,'Factures',NULL,'factures','credit-card','page1',4,1,'2015-01-19 14:27:09','2015-01-19 14:27:09','factures'),(402,'Reglements',NULL,'reglements','pencil-square-o','page1',4,2,'2015-01-19 14:27:09','2015-01-19 14:27:09','reglements'),(403,'Remboursements',NULL,'rembourssements','pencil-square-o','page1',4,3,'2015-01-19 14:27:09','2015-01-19 14:27:09','remboursements'),(404,'Reclamations',NULL,'reclamations','shield','page1',4,4,'2015-01-19 14:27:09','2015-01-19 14:27:09','reclamations'),(501,'Statistiques',NULL,'statistiques','bar-chart-o','page1',5,1,'2015-01-19 14:27:09','2015-01-19 14:27:09','statistiques'),(502,'Documents',NULL,'docuemnets','book','page1',5,2,'2015-01-19 14:27:09','2015-01-19 14:27:09','documents'),(503,'Rapports',NULL,'reports','pencil-square-o','page1',5,3,'2015-01-19 14:27:09','2015-01-19 14:27:09','rapports'),(504,'Autres',NULL,'autres','shield','page1',5,4,'2015-01-19 14:27:09','2015-01-19 14:27:09','autres'),(601,'Utilisateurs',NULL,'users','users','page1',6,1,'2015-01-19 14:27:09','2015-01-19 14:27:09','utilisateurs'),(602,'Profils',NULL,'listprofils','tags','page1',6,2,'2015-01-19 14:27:09','2015-01-19 14:27:09','profils'),(603,'Propri&eacute;taires',NULL,'proprietaires','sitemap','page1',6,3,'2015-01-19 14:27:09','2015-01-19 14:27:09','proprietaire'),(604,'Prestataires',NULL,'prestataires','user-md','page1',6,4,'2015-01-19 14:27:09','2015-01-19 14:27:09','prestataires'),(605,'Configurations',NULL,'configs','wrench','page1',6,5,'2015-01-19 14:27:09','2015-01-19 14:27:09','configurations'),(606,'Param&egrave;tres',NULL,'params','cog','page1',6,6,'2015-01-19 14:27:09','2015-01-19 14:27:09','parametres'),(607,'Droits',NULL,'medkit','tags','page1',6,7,'2015-01-19 14:27:09','2015-01-19 14:27:09','autre1'),(608,'autre 2',NULL,'medkit','medkit','page1',6,8,'2015-01-19 14:27:09','2015-01-19 14:27:09','autre2');
+/*!40000 ALTER TABLE `menus` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `parameters`
+--
+
+DROP TABLE IF EXISTS `parameters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `parameters` (
+  `code` varchar(500) NOT NULL DEFAULT '',
+  `name` varchar(100) DEFAULT NULL,
+  `value` text NOT NULL,
+  `description` text,
+  `createdDateTime` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `lastUpdatedDateTime` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `isActiveData` int(3) DEFAULT '1',
+  `isDeleteData` int(3) DEFAULT '0',
+  `createdDate` date DEFAULT '0000-00-00',
+  `createdHour` time DEFAULT '00:00:00',
+  `creatorId` int(11) DEFAULT '0',
+  `lastModifierId` int(11) DEFAULT '0',
+  `universalId` varchar(100) DEFAULT '0',
+  `signature` varchar(100) DEFAULT '0',
+  PRIMARY KEY (`code`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `parameters`
+--
+
+LOCK TABLES `parameters` WRITE;
+/*!40000 ALTER TABLE `parameters` DISABLE KEYS */;
+INSERT INTO `parameters` VALUES ('param.entrerinfosouscripteur','entre les informations du souscripteur dans le formulaire','0',NULL,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,0,'0000-00-00','00:00:00',0,0,'0','0'),('param.validerRepresentantSouscripteur',NULL,'0',NULL,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,0,'0000-00-00','00:00:00',0,0,'0','0');
+/*!40000 ALTER TABLE `parameters` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `plafond`
+--
+
+DROP TABLE IF EXISTS `plafond`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `plafond` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_garantie` int(11) DEFAULT NULL,
+  `montant` int(11) DEFAULT NULL,
+  `nombreacte` int(11) DEFAULT NULL,
+  `duree` int(11) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `plafond`
+--
+
+LOCK TABLES `plafond` WRITE;
+/*!40000 ALTER TABLE `plafond` DISABLE KEYS */;
+/*!40000 ALTER TABLE `plafond` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `police`
+--
+
+DROP TABLE IF EXISTS `police`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `police` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_proprietaire` int(11) DEFAULT NULL,
+  `id_groupe` int(11) DEFAULT NULL,
+  `libelle` varchar(254) DEFAULT NULL,
+  `type_police` int(11) DEFAULT NULL,
+  `montant_prime` double DEFAULT NULL,
+  `montant_plafond` double DEFAULT NULL,
+  `acte_plafond` int(11) DEFAULT NULL,
+  `periodicite` int(11) DEFAULT NULL,
+  `territorialite` int(11) DEFAULT NULL,
+  `effectif` int(11) DEFAULT NULL,
+  `statut` int(11) DEFAULT NULL,
+  `date_souscription` datetime DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(100) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `police`
+--
+
+LOCK TABLES `police` WRITE;
+/*!40000 ALTER TABLE `police` DISABLE KEYS */;
+INSERT INTO `police` VALUES (10001,NULL,NULL,'Police 1',1,1000,100000,12000,NULL,2,NULL,NULL,NULL,NULL,NULL,'CEA8D22263289D3A5A772E7AC817E452',NULL,NULL,'2015-01-26 03:55:55',NULL),(10002,NULL,16,'Contrat d\'assurance sante',1,5000,5550000,120000,NULL,23,NULL,NULL,NULL,NULL,NULL,'9D03A234E544EC7BF5D297C6ED2FA0B4',NULL,NULL,'2015-01-26 05:34:50','2015-01-26 05:34:11'),(10003,NULL,17,'nono test',1,35000,50000,125,NULL,2,NULL,NULL,NULL,NULL,NULL,'2FFE88D59F9C864A7BBD4D9D51980C55',NULL,NULL,'2015-01-26 05:49:09','2015-01-26 05:49:09');
+/*!40000 ALTER TABLE `police` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `prescription`
+--
+
+DROP TABLE IF EXISTS `prescription`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `prescription` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_prestation` int(11) DEFAULT NULL,
+  `dateprescription` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `prescription`
+--
+
+LOCK TABLES `prescription` WRITE;
+/*!40000 ALTER TABLE `prescription` DISABLE KEYS */;
+/*!40000 ALTER TABLE `prescription` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `prestataire`
+--
+
+DROP TABLE IF EXISTS `prestataire`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `prestataire` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `type` int(11) DEFAULT NULL,
+  `raisonsociale` varchar(254) DEFAULT NULL,
+  `public` tinyint(1) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `prestataire`
+--
+
+LOCK TABLES `prestataire` WRITE;
+/*!40000 ALTER TABLE `prestataire` DISABLE KEYS */;
+/*!40000 ALTER TABLE `prestataire` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `prestation`
+--
+
+DROP TABLE IF EXISTS `prestation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `prestation` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_prestataire` int(11) DEFAULT NULL,
+  `id_agent_medical` int(11) DEFAULT NULL,
+  `id_beneficiaire` int(11) DEFAULT NULL,
+  `date_prestation` datetime DEFAULT NULL,
+  `date_fin` datetime DEFAULT NULL,
+  `montant` double DEFAULT NULL,
+  `nature_maladie` varchar(254) DEFAULT NULL,
+  `observation` varchar(254) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `prestation`
+--
+
+LOCK TABLES `prestation` WRITE;
+/*!40000 ALTER TABLE `prestation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `prestation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `produit`
+--
+
+DROP TABLE IF EXISTS `produit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `produit` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_categorie` int(11) DEFAULT NULL,
+  `libelle_court` varchar(30) DEFAULT NULL,
+  `libelle` varchar(254) DEFAULT NULL,
+  `type_produit` int(11) DEFAULT NULL,
+  `prix` float DEFAULT NULL,
+  `indice` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `produit`
+--
+
+LOCK TABLES `produit` WRITE;
+/*!40000 ALTER TABLE `produit` DISABLE KEYS */;
+/*!40000 ALTER TABLE `produit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `produitfacture`
+--
+
+DROP TABLE IF EXISTS `produitfacture`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `produitfacture` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `quantite` int(11) DEFAULT NULL,
+  `montant` double DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `produitfacture`
+--
+
+LOCK TABLES `produitfacture` WRITE;
+/*!40000 ALTER TABLE `produitfacture` DISABLE KEYS */;
+/*!40000 ALTER TABLE `produitfacture` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `produitprescription`
+--
+
+DROP TABLE IF EXISTS `produitprescription`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `produitprescription` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `quantite` int(11) DEFAULT NULL,
+  `posologie` varchar(254) DEFAULT NULL,
+  `observations` varchar(254) DEFAULT NULL,
+  `duree_traitement` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `produitprescription`
+--
+
+LOCK TABLES `produitprescription` WRITE;
+/*!40000 ALTER TABLE `produitprescription` DISABLE KEYS */;
+/*!40000 ALTER TABLE `produitprescription` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `profil`
+--
+
+DROP TABLE IF EXISTS `profil`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `profil` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `nom` varchar(254) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `profil`
+--
+
+LOCK TABLES `profil` WRITE;
+/*!40000 ALTER TABLE `profil` DISABLE KEYS */;
+INSERT INTO `profil` VALUES (1,'Super Aministrateur',1,0,NULL,'2015-01-14 12:16:25',NULL,'2015-01-14 12:16:25','2015-01-14 12:16:25'),(2,'Administrateur',1,0,NULL,'2015-01-14 12:16:25',NULL,'2015-01-14 12:16:25','2015-01-14 12:16:25'),(3,'Controleur',1,0,NULL,'2015-01-14 12:16:25',NULL,'2015-01-14 12:16:25','2015-01-14 12:16:25'),(4,'Medecin Conseil',1,0,NULL,'2015-01-14 12:16:25',NULL,'2015-01-14 12:16:25','2015-01-14 12:16:25'),(5,'Administratif',1,0,NULL,'2015-01-14 12:16:25',NULL,'2015-01-14 12:16:25','2015-01-14 12:16:25'),(6,'Beneficiaire',1,0,NULL,'2015-01-14 12:16:25',NULL,'2015-01-14 12:16:25','2015-01-14 12:16:25'),(7,'Souscripteur',1,0,NULL,'2015-01-14 12:16:25',NULL,'2015-01-14 12:16:25','2015-01-14 12:16:25'),(8,'Gestionnaire/Assurreur',1,0,NULL,'2015-01-14 12:16:25',NULL,'2015-01-14 12:16:25','2015-01-14 12:16:25'),(9,'Agent Medical/Prestataire',1,0,NULL,'2015-01-14 12:16:25',NULL,'2015-01-14 12:16:25','2015-01-14 12:16:25');
+/*!40000 ALTER TABLE `profil` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `profilutilisateur`
+--
+
+DROP TABLE IF EXISTS `profilutilisateur`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `profilutilisateur` (
+  `id_utilisateur` int(11) NOT NULL,
+  `id_profil` int(11) NOT NULL,
+  PRIMARY KEY (`id_utilisateur`,`id_profil`),
+  KEY `FK_j4ksnkpirga6jjolbefl7ybyu` (`id_profil`),
+  CONSTRAINT `FK_7edgg0wwn5tiyedhmmpb5a0dx` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id`),
+  CONSTRAINT `FK_j4ksnkpirga6jjolbefl7ybyu` FOREIGN KEY (`id_profil`) REFERENCES `profil` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `profilutilisateur`
+--
+
+LOCK TABLES `profilutilisateur` WRITE;
+/*!40000 ALTER TABLE `profilutilisateur` DISABLE KEYS */;
+INSERT INTO `profilutilisateur` VALUES (1,1),(1,3);
+/*!40000 ALTER TABLE `profilutilisateur` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `propositiongarantie`
+--
+
+DROP TABLE IF EXISTS `propositiongarantie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `propositiongarantie` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `typegarantie` int(11) DEFAULT NULL,
+  `id_garantie` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `propositiongarantie`
+--
+
+LOCK TABLES `propositiongarantie` WRITE;
+/*!40000 ALTER TABLE `propositiongarantie` DISABLE KEYS */;
+/*!40000 ALTER TABLE `propositiongarantie` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `proprietaire`
+--
+
+DROP TABLE IF EXISTS `proprietaire`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `proprietaire` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `raisonsociale` varchar(254) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `seuilpriseencharge` float DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `proprietaire`
+--
+
+LOCK TABLES `proprietaire` WRITE;
+/*!40000 ALTER TABLE `proprietaire` DISABLE KEYS */;
+/*!40000 ALTER TABLE `proprietaire` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rapport`
+--
+
+DROP TABLE IF EXISTS `rapport`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rapport` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_document` int(11) DEFAULT NULL,
+  `sujet` varchar(254) DEFAULT NULL,
+  `contenu` varchar(254) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rapport`
+--
+
+LOCK TABLES `rapport` WRITE;
+/*!40000 ALTER TABLE `rapport` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rapport` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reglement`
+--
+
+DROP TABLE IF EXISTS `reglement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reglement` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_facture` int(11) DEFAULT NULL,
+  `montant` double DEFAULT NULL,
+  `date_reglement` datetime DEFAULT NULL,
+  `mode_reglement` int(11) DEFAULT NULL,
+  `observation` varchar(254) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reglement`
+--
+
+LOCK TABLES `reglement` WRITE;
+/*!40000 ALTER TABLE `reglement` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reglement` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `relationship`
+--
+
+DROP TABLE IF EXISTS `relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `relationship` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `relationship`
+--
+
+LOCK TABLES `relationship` WRITE;
+/*!40000 ALTER TABLE `relationship` DISABLE KEYS */;
+INSERT INTO `relationship` VALUES (1,'moi'),(2,'conjoint'),(3,'enfant'),(4,'parent');
+/*!40000 ALTER TABLE `relationship` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `requete`
+--
+
+DROP TABLE IF EXISTS `requete`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `requete` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_utilisateur` int(11) DEFAULT NULL,
+  `type_requete` int(11) DEFAULT NULL,
+  `id_destinataire` int(11) DEFAULT NULL,
+  `motif` int(11) DEFAULT NULL,
+  `description` varchar(254) DEFAULT NULL,
+  `montant` double DEFAULT NULL,
+  `statut` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `requete`
+--
+
+LOCK TABLES `requete` WRITE;
+/*!40000 ALTER TABLE `requete` DISABLE KEYS */;
+/*!40000 ALTER TABLE `requete` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `souscripteur`
+--
+
+DROP TABLE IF EXISTS `souscripteur`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `souscripteur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_utilisateur` int(11) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `raisonsociale` varchar(254) DEFAULT NULL,
+  `statut` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(100) CHARACTER SET latin1 DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `souscripteur`
+--
+
+LOCK TABLES `souscripteur` WRITE;
+/*!40000 ALTER TABLE `souscripteur` DISABLE KEYS */;
+INSERT INTO `souscripteur` VALUES (1,2,1,'Sarl',1,0,'0','2015-01-23 18:46:37',NULL,'2015-01-23 18:46:41','2015-01-23 18:46:44',NULL),(2,NULL,NULL,'Nono ',NULL,NULL,'55BDD00F9206E5A92A6E774A6F9DB095',NULL,NULL,'2015-01-26 05:30:29','2015-01-26 05:30:29',NULL),(3,NULL,NULL,'toto',NULL,NULL,'2DBA7361523AA401BECA2FD5E4E5D466',NULL,NULL,'2015-01-26 05:30:48','2015-01-26 05:30:48',NULL);
+/*!40000 ALTER TABLE `souscripteur` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `souscripteurpolice`
+--
+
+DROP TABLE IF EXISTS `souscripteurpolice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `souscripteurpolice` (
+  `id_souscripteur` int(11) NOT NULL,
+  `id_police` int(11) NOT NULL,
+  PRIMARY KEY (`id_police`,`id_souscripteur`),
+  KEY `FK_fo1rxe69b00f17wu5m8lwin6d` (`id_souscripteur`),
+  CONSTRAINT `FK_ay4ilxw12869kf6kgg833ecsw` FOREIGN KEY (`id_police`) REFERENCES `police` (`id`),
+  CONSTRAINT `FK_fo1rxe69b00f17wu5m8lwin6d` FOREIGN KEY (`id_souscripteur`) REFERENCES `souscripteur` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `souscripteurpolice`
+--
+
+LOCK TABLES `souscripteurpolice` WRITE;
+/*!40000 ALTER TABLE `souscripteurpolice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `souscripteurpolice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `statuts`
+--
+
+DROP TABLE IF EXISTS `statuts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `statuts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(15) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `statuts`
+--
+
+LOCK TABLES `statuts` WRITE;
+/*!40000 ALTER TABLE `statuts` DISABLE KEYS */;
+INSERT INTO `statuts` VALUES (1,'Delete','2015-01-16 11:25:23',NULL,NULL,'2015-01-16 11:25:23'),(2,'Desactivate','2015-01-22 19:41:18',NULL,NULL,'2015-01-22 19:41:29'),(3,'Active','2015-01-16 11:25:23',NULL,NULL,'2015-01-16 11:25:23'),(4,'Non ValidÃ©','2015-01-24 11:25:23',NULL,NULL,'2015-01-24 11:25:23'),(5,'ValidÃ©','2015-01-24 11:25:23',NULL,NULL,'2015-01-24 11:25:23');
+/*!40000 ALTER TABLE `statuts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tauxcouverture`
+--
+
+DROP TABLE IF EXISTS `tauxcouverture`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tauxcouverture` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `id_garantie` int(11) DEFAULT NULL,
+  `affinite` int(11) DEFAULT NULL,
+  `valeur` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(20) DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tauxcouverture`
+--
+
+LOCK TABLES `tauxcouverture` WRITE;
+/*!40000 ALTER TABLE `tauxcouverture` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tauxcouverture` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `typepolice`
+--
+
+DROP TABLE IF EXISTS `typepolice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `typepolice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date_creation` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `description` longtext,
+  `label` varchar(255) DEFAULT NULL,
+  `signature` varchar(255) DEFAULT NULL,
+  `statut` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `typepolice`
+--
+
+LOCK TABLES `typepolice` WRITE;
+/*!40000 ALTER TABLE `typepolice` DISABLE KEYS */;
+INSERT INTO `typepolice` VALUES (1,'2015-01-25 19:50:51','2015-01-25 19:50:54',NULL,'sante 1',NULL,'3',NULL),(2,'2015-01-25 19:51:25','2015-01-25 19:51:28',NULL,'sante 2',NULL,'3',NULL);
+/*!40000 ALTER TABLE `typepolice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `utilisateur`
+--
+
+DROP TABLE IF EXISTS `utilisateur`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `utilisateur` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `matricule` varchar(254) DEFAULT NULL,
+  `password` varchar(254) DEFAULT NULL,
+  `nom` varchar(254) DEFAULT NULL,
+  `prenom` varchar(254) DEFAULT NULL,
+  `sexe` char(1) DEFAULT NULL,
+  `date_naissance` date DEFAULT NULL,
+  `lieu_naissance` varchar(254) DEFAULT NULL,
+  `id_arrondissement_origine` int(11) DEFAULT NULL,
+  `nationnalite` varchar(254) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `signature` char(100) CHARACTER SET latin1 DEFAULT NULL,
+  `date_activation` datetime DEFAULT NULL,
+  `date_fermeture` datetime DEFAULT NULL,
+  `date_modification` datetime DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  `id_pays_naissance` int(11) DEFAULT NULL,
+  `numero_registre` int(4) DEFAULT NULL,
+  `adresse` int(11) DEFAULT NULL,
+  `rue` varchar(255) DEFAULT NULL,
+  `statuts` int(11) DEFAULT NULL,
+  `id_utilisateur` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_57y7hr9fa070gqtgpb5pabrns` (`adresse`),
+  KEY `FK_lmfj83kyyn0bxq2e3642r2l2o` (`statuts`),
+  CONSTRAINT `FK_57y7hr9fa070gqtgpb5pabrns` FOREIGN KEY (`adresse`) REFERENCES `adresse` (`id`),
+  CONSTRAINT `FK_lmfj83kyyn0bxq2e3642r2l2o` FOREIGN KEY (`statuts`) REFERENCES `statuts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `utilisateur`
+--
+
+LOCK TABLES `utilisateur` WRITE;
+/*!40000 ALTER TABLE `utilisateur` DISABLE KEYS */;
+INSERT INTO `utilisateur` VALUES (1,'admin','@curam','Admin ','Curam','M','2015-01-26',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,3,0),(2,'CM/00/nono','nono','Nono','Guy','M','2010-07-01','Youndé',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,3,0),(3,'CM/62/33333','yyyyy','TOTO','TITI','M','2000-07-01','Yaounde',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0),(4,'CM/64/44444','xxxxx','TATA','Patience','F','2000-07-01','Yaounde',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,3,0),(5,'CM/11/11111','xxxxx','TALOM','Sergeo','M','2010-06-21','Bandjoun',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,3,0);
+/*!40000 ALTER TABLE `utilisateur` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `visitor_counter`
+--
+
+DROP TABLE IF EXISTS `visitor_counter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `visitor_counter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `anneeVisite` varchar(255) DEFAULT NULL,
+  `heureVisite` varchar(255) DEFAULT NULL,
+  `jourVisite` varchar(255) DEFAULT NULL,
+  `moiVisite` varchar(255) DEFAULT NULL,
+  `nbVisite` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `visitor_counter`
+--
+
+LOCK TABLES `visitor_counter` WRITE;
+/*!40000 ALTER TABLE `visitor_counter` DISABLE KEYS */;
+/*!40000 ALTER TABLE `visitor_counter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Final view structure for view `beneficiaireutilisateurview`
+--
+
+/*!50001 DROP TABLE IF EXISTS `beneficiaireutilisateurview`*/;
+/*!50001 DROP VIEW IF EXISTS `beneficiaireutilisateurview`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = latin1 */;
+/*!50001 SET character_set_results     = latin1 */;
+/*!50001 SET collation_connection      = latin1_swedish_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `beneficiaireutilisateurview` AS select concat(`b`.`id`,`u`.`id`) AS `id`,`b`.`id` AS `id_beneficiaire`,`b`.`id_utilisateur` AS `id_utilisateur`,`b`.`type` AS `type_beneficiaire`,`b`.`matricule_assurance` AS `matricule_assurance`,`b`.`statut` AS `statut`,`b`.`id_assure_principal` AS `id_assure_principal`,`b`.`affinite` AS `id_affinite`,`r`.`name` AS `affinite_name`,`b`.`active` AS `active`,`b`.`version` AS `version`,`b`.`signature` AS `signature`,`b`.`date_activation` AS `date_activation`,`b`.`date_fermeture` AS `date_fermeture`,`b`.`date_modification` AS `date_modification`,`b`.`date_creation` AS `date_creation`,`u`.`id` AS `id_user`,`u`.`matricule` AS `matricule`,`u`.`password` AS `password`,`u`.`nom` AS `nom`,`u`.`prenom` AS `prenom`,`u`.`sexe` AS `sexe`,`u`.`date_naissance` AS `date_naissance`,`u`.`lieu_naissance` AS `lieu_naissance`,`u`.`id_arrondissement_origine` AS `id_arrondissement_origine`,`u`.`nationnalite` AS `nationnalite` from ((`beneficiaire` `b` join `relationship` `r` on((`b`.`affinite` = `r`.`id`))) join `utilisateur` `u` on((`b`.`id_utilisateur` = `u`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2015-01-26  6:34:15

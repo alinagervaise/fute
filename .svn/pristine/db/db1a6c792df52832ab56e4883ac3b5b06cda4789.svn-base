@@ -1,0 +1,58 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.service.security;
+
+
+import com.celylog.curam.model.entities.Country;
+import com.celylog.curam.model.entities.District;
+import java.util.logging.Logger;
+import org.springframework.stereotype.Service;
+import com.celylog.curam.service.DaoService;
+import java.util.List;
+import java.util.logging.Level;
+
+
+/**
+ *
+ * @author Nono
+ */
+@Service
+public class AdministrationService extends DaoService {
+
+    private static final Logger logger = Logger.getLogger(AdministrationService.class.getName());
+
+    public boolean addCountry(String countryName) {
+          Country country = new Country();
+          country.setName(countryName);
+//        historique.setSessionValue(sessionValue);
+//        historique.setTempsCreationSession(temps_creation_session);
+//        historique.setUserId(user.getId());
+//        historique.setUserName(user.getLastName());
+//        Timestamp dateHeure = BasicFonctions.getCurrentTimeStamp();
+//        session.setAttribute("currentUserSessionId", session.getId());
+//        historique.setDateHeureCreation(dateHeure);
+//        historique.setDateHeureDerniereMaj(dateHeure);
+         dao.create(country);
+          return true;
+    }
+    
+    public District getDistrictById(String name){
+        District district = null;
+        try{
+            String query = "select d from District d where d.label='" + name+ "'";
+            List<District> districtList = this.getAll(query);
+            if(!districtList.isEmpty()){
+                district = districtList.get(0);
+            }
+        }
+        catch(Exception ex){
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+        return district;
+    }
+
+
+}

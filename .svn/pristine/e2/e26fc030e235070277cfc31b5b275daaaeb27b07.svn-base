@@ -1,0 +1,17 @@
+<%-- 
+    Document   : RembourssementApplication
+    Created on : 2 févr. 2015, 09:50:54
+    Author     : Sergeo
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<h1><spring:message code="proprietaire.add"></spring:message></h1>
+<form action="addProprietaire" method="post">    
+    <div class="curam_textbox">
+        <label><spring:message code="proprietaire.company.name"></spring:message></label>
+        <input name="raisonsociale" type="text" class="form-control" id="firstname" placeholder="Nom du profil"/>
+    </div>                                  
+</form>

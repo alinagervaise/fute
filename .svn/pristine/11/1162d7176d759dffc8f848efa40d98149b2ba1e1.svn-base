@@ -1,0 +1,398 @@
+//le ControleurBeneficiare communique directement avec la table beneficiaire
+package com.celylog.curam.web.controller;
+
+import com.celylog.curam.model.entities.Adresse;
+import com.celylog.curam.model.entities.Country;
+import com.celylog.curam.model.entities.District;
+import com.celylog.curam.model.entities.HistoriqueUtilisateur;
+import com.celylog.curam.model.entities.Statuts;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DaoService;
+import com.celylog.curam.service.security.AdministrationService;
+import com.celylog.curam.service.security.AdresseService;
+import com.celylog.curam.service.security.FormService;
+import com.celylog.curam.service.security.HistoriqueUtilisateurService;
+import com.celylog.curam.service.security.StatutService;
+import com.celylog.curam.service.security.UserService;
+import com.celylog.curam.service.security.UtilisateurService;
+import com.celylog.curam.utils.BasicFonctions;
+import com.celylog.curam.utils.DateTimeFonctions;
+import com.celylog.curam.utils.Message;
+import com.celylog.curam.utils.PasswordCuram;
+import com.celylog.curam.utils.UrlUtil;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+/**
+ *
+ * @author Administrateur
+ */
+@RequestMapping(value = "/users")
+@Controller
+public class UtilisateurController {
+
+    private static final Logger logger = Logger.getLogger(UtilisateurController.class.getName());
+    @Autowired
+    StatutService statutService;
+    @Autowired
+    AdresseService adresseService;
+    @Autowired
+    UtilisateurService userService;
+    @Autowired
+    UserService userservice;
+    
+    @Autowired
+    HistoriqueUtilisateurService historiqueUtilisateurService;
+    @Autowired
+    AdministrationService adminService;
+    @Autowired
+    FormService formService;
+    private MessageSource messageSource;
+
+    /**
+     * List of all users in the database
+     *
+     * @param uiModel
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public String list(Model uiModel) {
+        logger.info("Listing contacts");
+        Statuts statuts2 = statutService.getById(2, Statuts.class);
+        Statuts statuts3 = statutService.getById(3, Statuts.class);
+        List<Utilisateur> users = userService.getAll("from Utilisateur as user where user.statuts=" + statuts2.getId() + " or user.statuts=" + statuts3.getId());
+        uiModel.addAttribute("users", users);
+        logger.log(Level.INFO, "No. of users: {0}", users.size());
+        return "list_users";
+    }
+
+    /**
+     * Get user by id
+     *
+     * @param id
+     * @param uiModel
+     * @return
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String show(@PathVariable("id") Integer id, Model uiModel) {
+        Utilisateur user = userService.getById(id, Utilisateur.class);
+        uiModel.addAttribute("user", user);
+
+        return "show_user";
+    }
+
+    /**
+     * Partial deletion of a user, user.setActive(-1)
+     *
+     * @param id
+     * @param uiModel
+     * @return
+     */
+    @RequestMapping(value = "/{id}", params = "remove", method = RequestMethod.GET)
+    public String remove(@PathVariable("id") Integer id, Model uiModel) {
+        Utilisateur user = userService.getById(id, Utilisateur.class);
+        logger.log(Level.INFO, "remove user {0}", user.getNom());
+        Statuts statuts1 = statutService.getById(1, Statuts.class);
+        user.setStatuts(statuts1);
+        userService.update(user);
+//        uiModel.addAttribute("user", user);
+
+        return "redirect:/users";
+    }
+
+    /**
+     * Total deletion of a user
+     *
+     * @param id
+     * @param uiModel
+     * @return
+     */
+    @RequestMapping(value = "/{id}", params = "delete", method = RequestMethod.GET)
+    public String delete(@PathVariable("id") Integer id, Model uiModel) {
+        Utilisateur user = userService.getById(id, Utilisateur.class);
+        logger.log(Level.INFO, "delete user {0}", user.getNom());
+        userService.deleteById(id, Utilisateur.class);
+//        uiModel.addAttribute("user", user);
+
+        return "redirect:/users";
+    }
+
+    /**
+     * Deactivation of a user
+     *
+     * @param id
+     * @param uiModel
+     * @return
+     */
+    @RequestMapping(value = "/{id}", params = "deactivate", method = RequestMethod.GET)
+    public String deactivate(@PathVariable("id") Integer id, Model uiModel) {
+        Utilisateur user = userService.getById(id, Utilisateur.class);
+        logger.log(Level.INFO, "deactivate user {0}", user.getNom());
+        Statuts statuts2 = statutService.getById(2, Statuts.class);
+        user.setStatuts(statuts2);
+        userService.update(user);
+//        uiModel.addAttribute("user", user);
+
+        return "redirect:/users";
+    }
+
+    /**
+     * Edit a user got by his id
+     *
+     * @param user
+     * @param bindingResult
+     * @param uiModel
+     * @param httpServletRequest
+     * @param redirectAttributes
+     * @param locale
+     * @return
+     */
+    @RequestMapping(value = "/{id}", params = "form", method = RequestMethod.POST)
+    public String update(HttpServletRequest request, HttpSession session) {
+        try {
+        logger.info("Updating user");
+        Object u = formService.add(request, session, "Utilisateur", false);
+        Object a = formService.add(request, session, "Adresse", true);
+        Utilisateur user = (Utilisateur) u;
+        Adresse adresse = (Adresse) a;
+        editUser(session, request, user, adresse);
+        } catch (Exception ex) {
+            
+        }
+        return "redirect:/users";
+    }
+
+    @RequestMapping(value = "/{id}", params = "form", method = RequestMethod.GET)
+    public String updateForm(HttpServletRequest request, HttpSession session, @PathVariable("id") String id) {
+        Integer int_id = Integer.parseInt(id);
+        Utilisateur utilisateur = userService.getById(int_id, Utilisateur.class);
+        logger.log(Level.INFO, "Edit user {0}", utilisateur.getNom());
+        List<Country> country = formService.getAll("from Country");
+        List<District> district = formService.getAll("from District");
+
+        session.setAttribute("CountryList", country);
+        session.setAttribute("DistrictList", district);
+        request.setAttribute("user", utilisateur);
+        request.setAttribute("adresse", utilisateur.getAdresse());
+        return "edit_user";
+    }
+
+    @RequestMapping(value = {"/signup"}, method = RequestMethod.GET)
+    public String signin(HttpServletRequest request, HttpSession session) {
+        String idmenu_ = request.getParameter("p");
+        if (idmenu_ != null) {
+//            int idMenu = Integer.parseInt(idmenu_);
+            userservice.setAdminProfilSubMenu(request, session);
+        }
+        return "new_user";
+        
+    }
+
+    @RequestMapping(value = {"/signup"}, method = RequestMethod.POST)
+    public String insertUser(HttpServletRequest request, HttpSession session) {
+        try {
+            Object o = formService.add(request, session, "Utilisateur", false);
+            Utilisateur utilisateur = (Utilisateur) o;
+//            this.createUser(session, request, utilisateur);
+        } catch (Exception ex) {
+            Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "redirect:/login";
+    }
+
+    @RequestMapping(params = "form", method = RequestMethod.POST)
+    public String create(HttpServletRequest request, HttpSession session, Locale locale) {
+        try {
+            Object u = formService.add(request, session, "Utilisateur", false);
+            Object a = formService.add(request, session, "Adresse", true);
+            Utilisateur utilisateur = (Utilisateur) u;
+            Adresse adresse = (Adresse) a;
+            String date = (String) request.getAttribute("password");
+            logger.log(Level.INFO, "Date naissance utilisateur {0}", date);
+            logger.log(Level.INFO, "Nom utilisateur {0}", utilisateur.getNom());
+            logger.log(Level.INFO, "Pays utilisateur {0}", utilisateur.getIdPaysNaissance());
+
+            this.createUser(session, request, utilisateur, adresse);
+        } catch (Exception ex) {
+            Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "redirect:/users?form";
+    }
+
+    @RequestMapping(params = "form", method = RequestMethod.GET)
+    public String createForm(HttpServletRequest request, HttpSession session) {
+        Utilisateur user = new Utilisateur();
+        Adresse adresse = new Adresse();
+
+        List<Country> country = formService.getAll("from Country");
+        List<District> district = formService.getAll("from District");
+
+        session.setAttribute("CountryList", country);
+//        session.setAttribute("user", user);
+        session.setAttribute("DistrictList", district);
+        session.setAttribute("Adresse", adresse);
+        return "new_user";
+    }
+
+//    private void createUser(HttpSession session, HttpServletRequest request, HistoriqueUtilisateur user) {
+    public HistoriqueUtilisateur createUser(HttpSession session, HttpServletRequest request, Utilisateur user, Adresse adresse) {
+        HistoriqueUtilisateur hu = null;
+        try {
+//            List<Adresse> listAdresse = new ArrayList<Adresse>();
+            Set<Adresse> adresseSet = new HashSet<Adresse>();
+            adresseSet.add(adresse);
+//            listAdresse.add(adresse);
+            user.setAdresse(adresse);
+            SimpleDateFormat format = new SimpleDateFormat("YYYY/MM/DD");
+//            String matricule = matriculeGen(user);
+            java.sql.Date date = (java.sql.Date) session.getAttribute("dateNaissance");
+            Date dateJava = date;
+            user.setDateNaissance(dateJava);
+            Character sex = (Character) session.getAttribute("sexe");
+            user.setSexe(sex);
+            session.removeAttribute("sexe");
+//            user.setSexe('M');
+            logger.log(Level.INFO, "Date naissance utilisateur {0}", user.getDateNaissance());
+            logger.log(Level.INFO, "Sexe utilisateur {0}", user.getSexe());
+            String matricule = userservice.generateMatricule(user);
+
+            user.setMatricule(matricule);
+            user.setPassword(new PasswordCuram().getPassword());
+
+            user.setVersion(1);
+            user.setActive(1);
+            Statuts statuts = statutService.getById(3, Statuts.class);
+            user.setStatuts(statuts);
+            hu = getHistoriqueFromUtilisateur(user);
+//            formService.add(request, session, "HistoriqueUtilisateur", true);
+            historiqueUtilisateurService.create(hu);
+            logger.info("Well done historique");
+//                utilisateur = getUtilisateurFormHistorique(user);
+//            userService.create(utilisateur);
+//            historiqueUtilisateurService.create(user);
+
+//            logger.log(Level.INFO, "value {0}", createUser);
+//            if ("O".equals(createUser)) {//must be directly created
+////                Utilisateur utilisateur;
+//                user.setDateActivation(Calendar.getInstance().getTime());
+////                formService.add(request, session, "Utilisateur", true);
+//                userService.create(user);
+//                logger.info("Well done utilisateur");
+//            } else if ("N".equals(createUser)) {//historique must be created first
+//                Object h = formService.add(request, session, "HistoriqueUtilisateur", false);
+//                hu = (HistoriqueUtilisateur) h;
+//                hu = getHistoriqueFromUtilisateur(user);
+//                formService.add(request, session, "HistoriqueUtilisateur", true);
+//                logger.info("Well done historique");
+//            }
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+        return hu;
+    }
+
+    private Utilisateur editUser(HttpSession session, HttpServletRequest request, Utilisateur user, Adresse adresse) {
+        HistoriqueUtilisateur hu = null;
+        try {;
+            user.setAdresse(adresse);
+            SimpleDateFormat format = new SimpleDateFormat("YYYY/MM/DD");
+//            String matricule = matriculeGen(user);
+            java.sql.Date date = (java.sql.Date) session.getAttribute("dateNaissance");
+            Date dateJava = date;
+            user.setDateNaissance(dateJava);
+            Character sex = (Character) session.getAttribute("sexe");
+            user.setSexe(sex);
+            session.removeAttribute("sexe");
+//            user.setSexe('M');
+            logger.log(Level.INFO, "Date naissance utilisateur {0}", user.getDateNaissance());
+            logger.log(Level.INFO, "Sexe utilisateur {0}", user.getSexe());
+            String matricule = userservice.generateMatricule(user);
+            
+            user.setMatricule(matricule);
+            user.setPassword(new PasswordCuram().getPassword());
+
+            user.setVersion(1);
+            user.setActive(1);
+            Statuts statuts = statutService.getById(3, Statuts.class);
+            user.setStatuts(statuts);
+            hu = getHistoriqueFromUtilisateur(user);
+//            formService.add(request, session, "HistoriqueUtilisateur", true);
+            historiqueUtilisateurService.create(hu);
+            logger.info("Well done historique");
+
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+        return user;
+    }
+
+    public Utilisateur getUtilisateurFromHistorique(HistoriqueUtilisateur hu) {
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setActive(hu.getActive());
+        utilisateur.setDateCreation(hu.getDateCreation());
+        utilisateur.setDateNaissance(hu.getDateNaissance());
+        utilisateur.setId(hu.getId());
+        utilisateur.setIdArrondissementOrigine(hu.getIdArrondissementOrigine());
+        utilisateur.setLieuNaissance(hu.getLieuNaissance());
+        utilisateur.setMatricule(hu.getMatricule());
+        utilisateur.setNationnalite(hu.getNationnalite());
+        utilisateur.setNom(hu.getNom());
+        utilisateur.setPassword(hu.getPassword());
+        utilisateur.setPrenom(hu.getPrenom());
+        utilisateur.setSexe(hu.getSexe());
+        utilisateur.setSignature(hu.getSignature());
+        utilisateur.setVersion(hu.getVersion());
+        utilisateur.setAdresse(hu.getAdresse());
+        utilisateur.setStatuts(hu.getStatuts());
+        return utilisateur;
+    }
+
+    public HistoriqueUtilisateur getHistoriqueFromUtilisateur(Utilisateur hu) {
+        HistoriqueUtilisateur utilisateur = new HistoriqueUtilisateur();
+        utilisateur.setActive(hu.getActive());
+        utilisateur.setDateCreation(hu.getDateCreation());
+        utilisateur.setDateNaissance(hu.getDateNaissance());
+        utilisateur.setId(hu.getId());
+        utilisateur.setIdArrondissementOrigine(hu.getIdArrondissementOrigine());
+        utilisateur.setLieuNaissance(hu.getLieuNaissance());
+        utilisateur.setMatricule(hu.getMatricule());
+        utilisateur.setNationnalite(hu.getNationnalite());
+        utilisateur.setNom(hu.getNom());
+        utilisateur.setPassword(hu.getPassword());
+        utilisateur.setPrenom(hu.getPrenom());
+        utilisateur.setSexe(hu.getSexe());
+        utilisateur.setSignature(hu.getSignature());
+        utilisateur.setVersion(hu.getVersion());
+        utilisateur.setAdresse(hu.getAdresse());
+        utilisateur.setStatuts(hu.getStatuts());
+        return utilisateur;
+    }
+
+    @Autowired
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+}

@@ -1,0 +1,39 @@
+package com.celylog.curam.service.security;
+
+import com.celylog.curam.model.entities.Police;
+import com.celylog.curam.model.entities.Souscripteur;
+import com.celylog.curam.model.entities.Typepolice;
+import com.celylog.curam.service.DefaultService;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * @Document PoliceService
+ * @created on 23 janv. 2015, 11:20:55
+ * @Author Nono Guy
+ */
+@Service
+public class PoliceService {
+
+    @Autowired
+    DefaultService dao;
+
+    public void setPoliceSession(HttpSession session, HttpServletRequest request) {
+        //        List<Police> lPolice = dao.getAll("select p from Police p where p.idProprietaire = " + currentUser.getId() + " ");
+        List<Typepolice> ltype = dao.getAll("select t from Typepolice t");
+        session.setAttribute("listeTypePolice", ltype);
+
+        List<Police> lPolice = dao.getAll("select p from Police p ");
+        session.setAttribute("listePoliceUser", lPolice);
+
+        List<Souscripteur> s = (List<Souscripteur>) dao.getAll("select s from Souscripteur s");
+        session.setAttribute("souscripteurs", s);
+
+        List<Object> allMatricule = (List<Object>) dao.getAll("select u.matricule from Utilisateur u");
+        session.setAttribute("allMatriculeList", allMatricule);
+    }
+
+}

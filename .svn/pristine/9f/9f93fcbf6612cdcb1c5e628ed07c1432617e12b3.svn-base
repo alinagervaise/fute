@@ -1,0 +1,280 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "country")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Country.findAll", query = "SELECT c FROM Country c"),
+    @NamedQuery(name = "Country.findById", query = "SELECT c FROM Country c WHERE c.id = :id"),
+    @NamedQuery(name = "Country.findByIsoAlpha2Code", query = "SELECT c FROM Country c WHERE c.isoAlpha2Code = :isoAlpha2Code"),
+    @NamedQuery(name = "Country.findByIsoAlpha3Code", query = "SELECT c FROM Country c WHERE c.isoAlpha3Code = :isoAlpha3Code"),
+    @NamedQuery(name = "Country.findByIsoNumericCode", query = "SELECT c FROM Country c WHERE c.isoNumericCode = :isoNumericCode"),
+    @NamedQuery(name = "Country.findByName", query = "SELECT c FROM Country c WHERE c.name = :name"),
+    @NamedQuery(name = "Country.findByCapital", query = "SELECT c FROM Country c WHERE c.capital = :capital"),
+    @NamedQuery(name = "Country.findByContinent", query = "SELECT c FROM Country c WHERE c.continent = :continent"),
+    @NamedQuery(name = "Country.findByPhoneCode", query = "SELECT c FROM Country c WHERE c.phoneCode = :phoneCode"),
+    @NamedQuery(name = "Country.findByAreaKm2", query = "SELECT c FROM Country c WHERE c.areaKm2 = :areaKm2"),
+    @NamedQuery(name = "Country.findByPopulation", query = "SELECT c FROM Country c WHERE c.population = :population"),
+    @NamedQuery(name = "Country.findByActive", query = "SELECT c FROM Country c WHERE c.active = :active"),
+    @NamedQuery(name = "Country.findByIsDeleteData", query = "SELECT c FROM Country c WHERE c.isDeleteData = :isDeleteData"),
+    @NamedQuery(name = "Country.findByDateCreation", query = "SELECT c FROM Country c WHERE c.dateCreation = :dateCreation"),
+    @NamedQuery(name = "Country.findByLastUpdatedDateTime", query = "SELECT c FROM Country c WHERE c.lastUpdatedDateTime = :lastUpdatedDateTime"),
+    @NamedQuery(name = "Country.findByIdCreator", query = "SELECT c FROM Country c WHERE c.idCreator = :idCreator"),
+    @NamedQuery(name = "Country.findByIdlastModifier", query = "SELECT c FROM Country c WHERE c.idlastModifier = :idlastModifier"),
+    @NamedQuery(name = "Country.findByIdUniversal", query = "SELECT c FROM Country c WHERE c.idUniversal = :idUniversal"),
+    @NamedQuery(name = "Country.findBySignature", query = "SELECT c FROM Country c WHERE c.signature = :signature")})
+public class Country implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 10)
+    @Column(name = "isoAlpha2Code")
+    private String isoAlpha2Code;
+    @Size(max = 3)
+    @Column(name = "isoAlpha3Code")
+    private String isoAlpha3Code;
+    @Column(name = "isoNumericCode")
+    private Integer isoNumericCode;
+    @Size(max = 50)
+    @Column(name = "name")
+    private String name;
+    @Size(max = 35)
+    @Column(name = "capital")
+    private String capital;
+    @Size(max = 13)
+    @Column(name = "continent")
+    private String continent;
+    @Size(max = 10)
+    @Column(name = "phoneCode")
+    private String phoneCode;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "areaKm2")
+    private Double areaKm2;
+    @Column(name = "population")
+    private Double population;
+    @Column(name = "active")
+    private Integer active;
+    @Column(name = "isDeleteData")
+    private Integer isDeleteData;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+    @Column(name = "lastUpdatedDateTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdatedDateTime;
+    @Column(name = "id_creator")
+    private Integer idCreator;
+    @Column(name = "id_lastModifier")
+    private Integer idlastModifier;
+    @Size(max = 100)
+    @Column(name = "id_universal")
+    private String idUniversal;
+    @Size(max = 20)
+    @Column(name = "signature")
+    private String signature;
+
+    public Country() {
+    }
+
+    public Country(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getIsoAlpha2Code() {
+        return isoAlpha2Code;
+    }
+
+    public void setIsoAlpha2Code(String isoAlpha2Code) {
+        this.isoAlpha2Code = isoAlpha2Code;
+    }
+
+    public String getIsoAlpha3Code() {
+        return isoAlpha3Code;
+    }
+
+    public void setIsoAlpha3Code(String isoAlpha3Code) {
+        this.isoAlpha3Code = isoAlpha3Code;
+    }
+
+    public Integer getIsoNumericCode() {
+        return isoNumericCode;
+    }
+
+    public void setIsoNumericCode(Integer isoNumericCode) {
+        this.isoNumericCode = isoNumericCode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCapital() {
+        return capital;
+    }
+
+    public void setCapital(String capital) {
+        this.capital = capital;
+    }
+
+    public String getContinent() {
+        return continent;
+    }
+
+    public void setContinent(String continent) {
+        this.continent = continent;
+    }
+
+    public String getPhoneCode() {
+        return phoneCode;
+    }
+
+    public void setPhoneCode(String phoneCode) {
+        this.phoneCode = phoneCode;
+    }
+
+    public Double getAreaKm2() {
+        return areaKm2;
+    }
+
+    public void setAreaKm2(Double areaKm2) {
+        this.areaKm2 = areaKm2;
+    }
+
+    public Double getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Double population) {
+        this.population = population;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getIsDeleteData() {
+        return isDeleteData;
+    }
+
+    public void setIsDeleteData(Integer isDeleteData) {
+        this.isDeleteData = isDeleteData;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Date getLastUpdatedDateTime() {
+        return lastUpdatedDateTime;
+    }
+
+    public void setLastUpdatedDateTime(Date lastUpdatedDateTime) {
+        this.lastUpdatedDateTime = lastUpdatedDateTime;
+    }
+
+    public Integer getIdCreator() {
+        return idCreator;
+    }
+
+    public void setIdCreator(Integer idCreator) {
+        this.idCreator = idCreator;
+    }
+
+    public Integer getIdlastModifier() {
+        return idlastModifier;
+    }
+
+    public void setIdlastModifier(Integer idlastModifier) {
+        this.idlastModifier = idlastModifier;
+    }
+
+    public String getIdUniversal() {
+        return idUniversal;
+    }
+
+    public void setIdUniversal(String idUniversal) {
+        this.idUniversal = idUniversal;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Country)) {
+            return false;
+        }
+        Country other = (Country) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.Country[ id=" + id + " ]";
+    }
+    
+}

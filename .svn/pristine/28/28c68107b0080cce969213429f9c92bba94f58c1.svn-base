@@ -1,0 +1,266 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "beneficiaire")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Beneficiaire.findAll", query = "SELECT b FROM Beneficiaire b"),
+    @NamedQuery(name = "Beneficiaire.findById", query = "SELECT b FROM Beneficiaire b WHERE b.id = :id"),
+    @NamedQuery(name = "Beneficiaire.findByType", query = "SELECT b FROM Beneficiaire b WHERE b.type = :type"),
+    @NamedQuery(name = "Beneficiaire.findByMatriculeAssurance", query = "SELECT b FROM Beneficiaire b WHERE b.matriculeAssurance = :matriculeAssurance"),
+    @NamedQuery(name = "Beneficiaire.findByStatut", query = "SELECT b FROM Beneficiaire b WHERE b.statut = :statut"),
+    @NamedQuery(name = "Beneficiaire.findByIdAssurePrincipal", query = "SELECT b FROM Beneficiaire b WHERE b.idAssurePrincipal = :idAssurePrincipal"),
+    @NamedQuery(name = "Beneficiaire.findByAffinite", query = "SELECT b FROM Beneficiaire b WHERE b.affinite = :affinite"),
+    @NamedQuery(name = "Beneficiaire.findByActive", query = "SELECT b FROM Beneficiaire b WHERE b.active = :active"),
+    @NamedQuery(name = "Beneficiaire.findByVersion", query = "SELECT b FROM Beneficiaire b WHERE b.version = :version"),
+    @NamedQuery(name = "Beneficiaire.findBySignature", query = "SELECT b FROM Beneficiaire b WHERE b.signature = :signature"),
+    @NamedQuery(name = "Beneficiaire.findByDateActivation", query = "SELECT b FROM Beneficiaire b WHERE b.dateActivation = :dateActivation"),
+    @NamedQuery(name = "Beneficiaire.findByDateFermeture", query = "SELECT b FROM Beneficiaire b WHERE b.dateFermeture = :dateFermeture"),
+    @NamedQuery(name = "Beneficiaire.findByDateModification", query = "SELECT b FROM Beneficiaire b WHERE b.dateModification = :dateModification"),
+    @NamedQuery(name = "Beneficiaire.findByDateCreation", query = "SELECT b FROM Beneficiaire b WHERE b.dateCreation = :dateCreation")})
+public class Beneficiaire implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    //@GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer id;
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn (name="id_utilisateur")
+    private Utilisateur utilisateur;
+//    @Column(name = "id_police")
+//    private Integer idPolice;
+    @Column(name = "type")
+    private Integer type;
+    @Size(max = 20)
+    @Column(name = "matricule_assurance")
+    private String matriculeAssurance;
+    @Column(name = "statut")
+    private Integer statut;
+    @Column(name = "id_assure_principal")
+    private Integer idAssurePrincipal;
+    @Column(name = "affinite")
+    private Integer affinite;
+    @Column(name = "active")
+    private Integer active;
+    @Column(name = "version")
+    private Integer version;
+    @Size(max = 100)
+    @Column(name = "signature")
+    private String signature;
+    @Column(name = "date_activation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateActivation;
+    @Column(name = "date_fermeture")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFermeture;
+    @Column(name = "date_modification")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModification;
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id_police")
+    private Police police;
+   
+    public Beneficiaire() {
+    }
+
+    public Beneficiaire(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getMatriculeAssurance() {
+        return matriculeAssurance;
+    }
+
+    public void setMatriculeAssurance(String matriculeAssurance) {
+        this.matriculeAssurance = matriculeAssurance;
+    }
+
+    public Integer getStatut() {
+        return statut;
+    }
+
+    public void setStatut(Integer statut) {
+        this.statut = statut;
+    }
+
+    public Integer getIdAssurePrincipal() {
+        return idAssurePrincipal;
+    }
+
+    public void setIdAssurePrincipal(Integer idAssurePrincipal) {
+        this.idAssurePrincipal = idAssurePrincipal;
+    }
+
+    public Integer getAffinite() {
+        return affinite;
+    }
+
+    public void setAffinite(Integer affinite) {
+        this.affinite = affinite;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public Date getDateActivation() {
+        return dateActivation;
+    }
+
+    public void setDateActivation(Date dateActivation) {
+        this.dateActivation = dateActivation;
+    }
+
+    public Date getDateFermeture() {
+        return dateFermeture;
+    }
+
+    public void setDateFermeture(Date dateFermeture) {
+        this.dateFermeture = dateFermeture;
+    }
+
+    public Date getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(Date dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Beneficiaire)) {
+            return false;
+        }
+        Beneficiaire other = (Beneficiaire) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.Beneficiaire[ id=" + id + " ]";
+    }
+//    public Integer getIdPolice() {
+//        return idPolice;
+//    }
+//    public void setIdPolice(Integer idPolice) {
+//        this.idPolice = idPolice;
+//    }
+    
+
+    public Police getPolice() {
+        return police;
+    }
+
+    public void setPolice(Police police) {
+        this.police = police;
+    }
+ 
+}

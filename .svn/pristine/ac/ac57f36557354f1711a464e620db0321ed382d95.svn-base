@@ -1,0 +1,110 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "elementrequette")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "ElementRequette.findAll", query = "SELECT e FROM ElementRequette e"),
+    @NamedQuery(name = "ElementRequette.findById", query = "SELECT e FROM ElementRequette e WHERE e.id = :id"),
+    @NamedQuery(name = "ElementRequette.findByIdRequete", query = "SELECT e FROM ElementRequette e WHERE e.idRequete = :idRequete"),
+    @NamedQuery(name = "ElementRequette.findByIdElement", query = "SELECT e FROM ElementRequette e WHERE e.idElement = :idElement"),
+    @NamedQuery(name = "ElementRequette.findByTypeElement", query = "SELECT e FROM ElementRequette e WHERE e.typeElement = :typeElement")})
+public class ElementRequette implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "id_requete")
+    private Integer idRequete;
+    @Column(name = "id_element")
+    private Integer idElement;
+    @Column(name = "type_element")
+    private Integer typeElement;
+
+    public ElementRequette() {
+    }
+
+    public ElementRequette(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getIdRequete() {
+        return idRequete;
+    }
+
+    public void setIdRequete(Integer idRequete) {
+        this.idRequete = idRequete;
+    }
+
+    public Integer getIdElement() {
+        return idElement;
+    }
+
+    public void setIdElement(Integer idElement) {
+        this.idElement = idElement;
+    }
+
+    public Integer getTypeElement() {
+        return typeElement;
+    }
+
+    public void setTypeElement(Integer typeElement) {
+        this.typeElement = typeElement;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ElementRequette)) {
+            return false;
+        }
+        ElementRequette other = (ElementRequette) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.ElementRequette[ id=" + id + " ]";
+    }
+    
+}

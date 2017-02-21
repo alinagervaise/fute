@@ -1,0 +1,107 @@
+<%-- 
+    Document   : manageContact
+    Created on : 20 janv. 2015, 07:36:42
+    Author     : Nono Guy
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%--<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>--%>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+//    if(session.getAttribute("page_name")!=null) 
+%>
+
+<div class="modal-dialog">
+    <form action="<c:url value="/update" />" id="editRecord" method="post">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                <a data-dismiss="modal" class="btn pull-right"><spring:message code="retour"/></a>
+                <h4 class="modal-title"><i class="fa fa-edit">&nbsp;&nbsp;<spring:message code='label.recordEdition'/></i></h4>
+            </div>
+            
+            <div class="modal-body" style="padding: 20px 20px 20px 20px ; border:   1px solid #F0F0E9; border-radius: 10px; "> 
+            </div>
+            <div class="modal-footer clearfix">
+                
+                <input type="hidden" name="page_name" value="${page_name}"/>
+                <input type="hidden" name="entity" value="${currentEntity}"/>
+                <button type="submit" name="update" class="btn btn-primary pull-left" ><i class="fa fa-save"></i> <spring:message code="form.update"/></button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </form>
+</div>
+
+<!DOCTYPE html>
+
+
+
+<script>
+        $(".fa[data-target='#editRecord']").click(function() {
+// Get array of column Headings
+            var columnHeadings = $("thead th").map(function() {
+                return $(this).text();
+            }).get();
+            console.log("heading" + columnHeadings);
+// Get array of column Footer
+            var columnFooters = $("tfoot th").map(function() {
+                return $(this).text();
+            }).get();
+            console.log("heading" + columnFooters);
+// Remove the last column heading (for the Edit button)
+            columnHeadings.pop();
+// Get array of column values from the row where the Edit button was clicked
+            var columnValues = $(this).parent().siblings().map(function() {
+                return $(this).text();
+            }).get();
+            var modalBody = $('<div id="modalContent"></div>');
+//            var modalForm = $('<form role="form"  name="update" method="post"></form>');
+// Create the form in the modal dynamically
+            $.each(columnHeadings, function(i, columnHeader) {
+//                console.log(i + "-" + columnHeader);
+                var formGroup = $('<div class="form-group"></div>');
+
+                if ((columnFooters[i] === "rowId")) {
+                    formGroup.append('<input type="hidden" class="form-control" name="' + columnFooters[i] + '" id="' + columnFooters[i] + '" value="' + columnValues[i] + '" />');
+                } else {
+                    formGroup.append('<label for="' + columnFooters[i] + '">' + columnHeader + '</label>');
+                    if (columnValues[i].length> 160){
+                        formGroup.append('<textarea style="resize: both; height: 200px" class="form-control" name="' + columnFooters[i] + '" id="' + columnFooters[i] + '" value="' + columnValues[i] + '" >' + columnValues[i] + '</textarea>');
+                    }else{
+                        formGroup.append('<textarea style="resize: both" row="1" class="form-control" name="' + columnFooters[i] + '" id="' + columnFooters[i] + '" value="' + columnValues[i] + '" >' + columnValues[i] + '</textarea>');
+                    }
+                }
+                console.log("longueur:" + columnValues[i].length);
+                console.log("longueur>160" + (columnValues[i].length> 160));
+                console.log(i + "-" + columnValues[i]);
+                console.log(i + "footer: " + columnFooters[i]);
+                if ((columnFooters[i] !== "Id") && (columnFooters[i] !== "")) {
+                    modalBody.append(formGroup);
+                }
+
+            });
+//            $('.modal-body #rowId').val(columnValues[7]);
+//            $('.modal-body #id').val(columnValues[7]);
+//            modalBody.append(modalForm);
+            $('.modal-body#rowId').val(columnValues[0]);
+            console.log("rowId=" + columnValues[0]);
+            $('.modal-body').html(modalBody);
+        });
+//        $('.modal-footer .btn-primary').click(function() {
+//            $('form[name="modalForm"]').submit();
+//        });
+
+        $(".fa[data-target='#confirmDelete']").click(function() {
+            var columnValues = $(this).parent().siblings().map(function() {
+                return $(this).text();
+//                var modalBody = $('<div id="modalContent"></div>');
+            }).get();
+            formGroup.append('<input type="hidden" class="form-control" name="' + columnFooters[i] + '" id="' + columnFooters[i] + '" value="' + columnValues[i] + '" />');
+                
+            $('.modal-body#rowId').val(columnValues[0]);
+            console.log("rowId=" + columnValues[0]);
+            $('.modal-body').html(modalBody);
+        });
+    </script>

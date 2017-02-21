@@ -1,0 +1,126 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.service.security;
+
+import com.celylog.curam.model.entities.Proprietaire;
+import com.celylog.curam.model.entities.TypeProprietaire;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DaoService;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ *
+ * @author Sergeo
+ */
+
+@Service
+public class ProprietaireService extends DaoService<Proprietaire>{
+    @Autowired
+    FormService formService;
+    
+    public Proprietaire getAssurance(){
+        Proprietaire p = Proprietaire.getAssurance();
+        
+        return p;
+    }
+    
+    public Proprietaire getMutuelle(){
+        Proprietaire p = Proprietaire.getMutuelle();
+        
+        return p;
+    }
+    
+    public Proprietaire getByID(int id){        
+        Proprietaire p = (Proprietaire)dao.getById(id, Proprietaire.class);
+        
+        return p;
+    }
+    
+    public List<Proprietaire> getAllProprietaires(){
+        List<Proprietaire> assurances;
+        
+        String qwery = "select p from Proprietaire p";
+        assurances = (List<Proprietaire>)dao.getAll(qwery);
+        
+        return assurances;
+    } 
+    
+    public List<Proprietaire> getAllAssurances(){
+        List<Proprietaire> assurances;
+        
+        String qwery = "select m from Proprietaire where type = "+TypeProprietaire.ASSURANCE;
+        assurances = (List<Proprietaire>)dao.getAll(qwery);
+        
+        return assurances;
+    } 
+    
+    public List<Proprietaire> getAllMutuelles(){
+        List<Proprietaire> mutuelles;
+        
+        String qwery = "select m from Proprietaire where type = "+TypeProprietaire.MUTUELLE;
+        mutuelles = (List<Proprietaire>)dao.getAll(qwery);
+        
+        return mutuelles;
+    }
+    
+    public void createProprietaire(HttpServletRequest request, HttpSession session){
+        try {
+            Proprietaire p = (Proprietaire)formService.add(request, session, "Proprietaire", false);
+            String dateActivation = request.getParameter("dateActivation");
+            dateActivation+=" 00:00:00";
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy hh:mm:ss");
+            Date dateActif = sdf.parse(dateActivation);
+            p.setActive(1);
+            p.setDateActivation(dateActif);
+            dao.create(p);
+            
+        } catch (Exception e) {
+            Logger.getLogger(Proprietaire.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void addGestionnaire(int idProprietaire, Utilisateur u,  HttpSession session){
+        Proprietaire p = (Proprietaire)dao.getById(idProprietaire, Proprietaire.class);
+        List<Utilisateur> gestionnaires = p.getGestionnaires();
+        if(gestionnaires== null)
+            gestionnaires = new ArrayList<Utilisateur>(0);
+        
+        if(u!= null && u.getClass() ==Utilisateur.class){
+            gestionnaires.add(u);
+            
+        }
+        p.setGestionnaires(gestionnaires);
+        dao.update(p);
+        session.setAttribute("proprietaire", p);
+    }
+    
+    public boolean removeGestionnaire(int idProprietaire, Utilisateur u){
+        Proprietaire p = (Proprietaire)dao.getById(idProprietaire, Proprietaire.class);
+        List<Utilisateur> gestionnaires = p.getGestionnaires();
+        boolean removed =false;
+        if(!gestionnaires.isEmpty() && gestionnaires.contains(u)){
+            removed = gestionnaires.remove(u);
+            String query = "delete from gestionnaire where id_police = ";
+            
+        }
+        if(removed){
+            p.setGestionnaires(gestionnaires);
+            dao.update(p);
+        }
+        return removed;
+    }
+    
+    
+}

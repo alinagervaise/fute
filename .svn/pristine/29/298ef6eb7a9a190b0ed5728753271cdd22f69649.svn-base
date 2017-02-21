@@ -1,0 +1,36 @@
+package com.celylog.curam.web.controller;
+
+//import com.celylog.curam.model.entities.Users;
+import com.celylog.curam.service.DaoService;
+import com.celylog.curam.service.DefaultService;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * @Document ControllerServices
+ * @created on 7 janv. 2015, 09:17:38
+ * @Author Nono Guy
+ */
+@Service
+public class BusinessLayer {
+
+    @Autowired
+    DefaultService dao;
+
+    public void traiment() {
+//        List<Users> lu = dao.getAll("select u from Users u where u.lastName = 'nono'");
+//        if (!lu.isEmpty()) {
+//            Users su = lu.get(0);
+//            su.setCity("douala");
+//            dao.update(su);
+//        } else {
+//            Users user = new Users();
+//            user.setLastName("nono");
+//            user.setFirstName("Guy");
+//            user.setCity("douala");
+//            dao.create(user);
+//        }
+//        
+    }
+}

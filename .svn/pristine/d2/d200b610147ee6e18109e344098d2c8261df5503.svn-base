@@ -1,0 +1,24 @@
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<div class="modal fade" id="editRecord" tabindex="-1" role="dialog" aria-labelledby="editRecord" aria-hidden="true">
+    <div class="modal-dialog">
+    <form action="<c:url value="/update"/>" id="editRecordForm" method="post">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <a data-dismiss="modal" class="btn pull-right"><spring:message code="retour"/></a>
+                <h4 class="modal-title"><i class="fa fa-edit">&nbsp;&nbsp;<spring:message code='label.recordEdition'/></i></h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 20px 20px 20px ; border:   1px solid #F0F0E9; border-radius: 10px; ">
+            </div>
+            <div class="modal-footer clearfix">
+                <button type="submit" name="update" class="btn btn-primary pull-left" ><i class="fa fa-save"></i> <spring:message code="form.update"/></button>
+            </div>
+        </div><!-- /.modal-content -->
+    </form>
+    </div>
+</div>
+
+

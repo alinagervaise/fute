@@ -1,0 +1,783 @@
+/*==============================================================*/
+/* Nom de SGBD :  MySQL 5.0                                     */
+/* Date de création :  29/12/2014 16:39:34                      */
+/*==============================================================*/
+   
+drop table if exists adresse;
+
+drop table if exists agentmedical;
+
+drop table if exists alerte;
+
+drop table if exists beneficiaire;
+
+drop table if exists bondepriseencharge;
+
+drop table if exists categorieproduit;
+
+drop table if exists document;
+
+drop table if exists droit;
+
+drop table if exists elementalerte;
+
+drop table if exists elementrequette;
+
+drop table if exists employe;
+
+drop table if exists facture;
+
+drop table if exists garantie;
+
+drop table if exists groupepolice;
+
+drop table if exists plafond;
+
+drop table if exists police;
+
+drop table if exists prescription;
+
+drop table if exists prestataire;
+
+drop table if exists prestation;
+
+drop table if exists produit;
+
+drop table if exists produitfacture;
+
+drop table if exists produitprescription;
+
+drop table if exists profil;
+
+drop table if exists propositiongarantie;
+
+drop table if exists proprietaire;
+
+drop table if exists rapport;
+
+drop table if exists reglement;
+
+drop table if exists requete;
+
+drop table if exists souscripteur;
+
+drop table if exists tauxcouverture;
+
+drop table if exists utilisateur;
+
+drop table if exists employeprofil;
+ 
+drop table if exists droitprofil;
+
+drop table if exists droitemploye;
+
+/*==============================================================*/
+/* Table : adresse                                           */
+/*==============================================================*/
+create table adresse
+(
+   id                   int(11),
+   pays                 int,
+   region               int,
+   ville                int,
+   code_postal           varchar(254),
+   tel                  varchar(254),
+   rue                  varchar(254),
+   email                varchar(254),
+   website              varchar(254),
+   bp                   int,
+   quartier             varchar(254),
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : bondepriseencharge                                */
+/*==============================================================*/
+create table bondepriseencharge
+(
+   id                   int(11),
+   id_prestation        int(11),
+   id_employe        	int(11),
+   date_demande         datetime,
+   montant              double,
+   date_emission        datetime,
+   delai_emission       int,
+   statut               int,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation      datetime,
+   date_fermeture       datetime,
+   date_modification    datetime,
+   date_creation        datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : document                                          */
+/*==============================================================*/
+create table document
+(
+   id                   int(11),
+   titre                varchar(254),
+   chemin_document      varchar(254),
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation      datetime,
+   date_fermeture       datetime,
+   date_modification    datetime,
+   date_creation        datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : alerte                                            */
+/*==============================================================*/
+create table alerte
+(
+   id                   int(11),
+   id_source		    int(13),
+   type_alerte          int,
+   date_alerte          datetime,
+   description          varchar(254),
+   active               int,
+   version              int,
+   signature             char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : elementalerte                                     */
+/*==============================================================*/
+/* create table elementalerte
+(
+   id                   int,
+   typeelement          int,
+   constraint fk_estlacause foreign key ()
+      references alerte on delete restrict on update restrict
+); */
+
+/*==============================================================*/
+/* Table : prestation                                        */
+/*==============================================================*/
+create table prestation
+(
+   id                   int(11),
+   id_prestataire       int(11),
+   id_agent_medical     int(11),
+   id_beneficiaire      int(11),
+   date_prestation      datetime,
+   date_fin             datetime,
+   montant              double,
+   nature_maladie       varchar(254),
+   observation          varchar(254),
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : prescription                                      */
+/*==============================================================*/
+create table prescription
+(
+   id                   int(11),
+   id_prestation        int(11),
+   dateprescription     datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : reglement                                         */
+/*==============================================================*/
+create table reglement
+(
+   id                   int(11),
+   id_facture           int(11),
+   montant              double,
+   date_reglement       datetime,
+   mode_reglement       int,
+   observation          varchar(254),
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : facture                                           */
+/*==============================================================*/
+create table facture
+(
+   id                   int(11),
+   id_source            int(13),  -- ajouter un prefixe; 10, 20, 30 en fonction de la classe de provenance
+   date_facture         datetime,
+   montant              double,
+   statut               int,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : elementrequette                                   */
+/*==============================================================*/
+create table elementrequette
+(
+   id                   int(11),
+   id_requete           int(11),
+   id_element           int(11),
+   type_element         int(2),
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : requete                                           */
+/*==============================================================*/
+create table requete
+(
+   id                   int(11),
+   id_utilisateur       int(11),
+   type_requete         int,
+   id_destinataire         int(11),
+   motif                int,
+   description          varchar(254),
+   montant              double,
+   statut               int,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : utilisateur                                       */
+/*==============================================================*/
+create table utilisateur
+(
+   id                   int(11),
+   matricule            varchar(254),
+   password             varchar(254),
+   nom                  varchar(254),
+   prenom               varchar(254),
+   sexe                 char(1),
+   date_naissance        date,
+   lieu_naissance        varchar(254),
+   id_arrondissement_origine 	 int,
+   nationnalite         varchar(254),
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : agentmedical                                      */
+/*==============================================================*/
+create table agentmedical
+(
+   id                   int(11),
+   id_utilisateur       int(11),
+   id_prestataire       int(11),
+   fonction             varchar(254),
+   grade                char(1),
+   specialite           varchar(254),
+   date_debut_service   datetime,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : beneficiaire                                      */
+/*==============================================================*/
+create table beneficiaire
+(
+   id                   int(11),
+   id_utilisateur       int(11),
+   type                 int,  -- assuree principal ou ayant doit
+   matricule_assurance  varchar(20),
+   statut               int,
+   id_assure_principal  int(11),
+   affinite             int,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : plafond                                           */
+/*==============================================================*/
+create table plafond
+(
+   id                   int(11),
+   id_garantie          int(11),
+   montant              int,
+   nombreacte           int,
+   duree                int,
+   type                 int,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : tauxcouverture                                    */
+/*==============================================================*/
+create table tauxcouverture
+(
+   id                   int(11),
+   id_garantie          int(11),
+   affinite             int,
+   valeur               int,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : garantie                                          */
+/*==============================================================*/
+create table garantie
+(
+   id                   int(11),
+   id_police            int(11),
+   id_produit           int(11),
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation   	datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : produit                                           */
+/*==============================================================*/
+create table produit
+(
+   id                   int(11),
+   id_categorie         int(11),
+   libelle_court        varchar(30),
+   libelle              varchar(254),
+   type_produit         int,
+   prix                 float,
+   indice 				int,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : categorieproduit                                  */
+/*==============================================================*/
+create table categorieproduit
+(
+   id                   int(11)			auto_increment,
+   short_name           varchar(10),
+   name				 	varchar(30),
+   description          varchar(128),
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : droit                                             */
+/*==============================================================*/
+create table droit
+(
+   id                   int,
+   consulter            bool,
+   modifier             bool,
+   creer                bool,
+   supprimer            bool,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : rapport                                           */
+/*==============================================================*/
+create table rapport
+(
+   id                   int(11),
+   id_document          int(11),
+   sujet                varchar(254),
+   contenu              varchar(254),
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : employe                                           */
+/*==============================================================*/
+create table employe
+(
+   id                   int(11),
+   id_utilisteur        int(11),
+   fonction             varchar(254),
+   date_emploie          datetime,
+   date_naissance        datetime,
+   lieux_naissance       varchar(254),
+   cni                  varchar(254),
+   date_delivrance_cni    datetime,
+   lieux_delivrance_cni   varchar(254),
+   statut               int,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation   datetime,
+   date_fermeture    datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : police                                            */
+/*==============================================================*/
+create table police
+(
+   id                   int(11),
+   id_proprietaire      int(11),
+   id_groupe            int(11),
+   libelle              varchar(254),
+   type_police           int,
+   montant_prime        double,
+   montant_plafond      double,
+   acte_plafond         int,
+   periodicite          int,
+   territorialite       int,
+   effectif             int,
+   statut               int,
+   date_souscription    datetime,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation   datetime,
+   date_fermeture    datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : groupepolice                                      */
+/*==============================================================*/
+create table groupepolice
+(
+   id                   int(12),
+   montant_plafond      double,
+   acte_plafond         double,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : prestataire                                       */
+/*==============================================================*/
+create table prestataire
+(
+   id                   int(11),
+   type                 int,
+   raisonsociale        varchar(254),
+   public               bool,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : produitfacture                                    */
+/*==============================================================*/
+create table produitfacture
+(
+   id                   int(11),
+   quantite             int,
+   montant              double,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : produitprescription                               */
+/*==============================================================*/
+create table produitprescription
+(
+   id                   int(11),
+   quantite             int,
+   posologie            varchar(254),
+   observations         varchar(254),
+   duree_traitement     int,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : profil                                            */
+/*==============================================================*/
+create table profil
+(
+   id                   int,
+   nom                  varchar(254),
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : proprietaire                                      */
+/*==============================================================*/
+create table proprietaire
+(
+   id                   int(11),
+   raisonsociale        varchar(254),
+   type                 int,
+   seuilpriseencharge   float,
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : propositiongarantie                               */
+/*==============================================================*/
+create table propositiongarantie
+(
+   id                   int(11),
+   typegarantie         int,
+   id_garantie			int(11),
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : souscripteur                                      */
+/*==============================================================*/
+create table souscripteur
+(
+   id                   int(11),
+   id_utilisateur       int(11),
+   type                 int,
+   raisonsociale        varchar(254),
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : appartenir                                        */
+/*==============================================================*/
+create table employeprofil
+(
+   id               int(11),
+   id_employe		int(11),
+   id_profil		int(11),
+   primary key(id)
+);
+
+/*==============================================================*/
+/* Table : association9                                      */
+/*==============================================================*/
+-- create table produitprescription
+-- (
+--   id                   int(11),
+--   quantite             int,
+--   montant              double,
+--   primary key(id)
+-- ) ;
+
+/*==============================================================*/
+/* Table : contenir                                          */
+/*==============================================================*/
+create table droitprofil
+(
+    id              int(11),
+	id_droit		int(11),
+	id_profil		int(11),
+	id_rubrique		int(11),
+	primary key(id)
+);
+
+/*==============================================================*/
+/* Table : posseder                                          */
+/*==============================================================*/
+create table droitemploye
+(
+    id              int(11),
+	id_employe		int(11),
+	id_droit		int(11),
+	id_rubrique		int(11),
+	primary key(id)
+);
+
+
+
+/*==============================================================*/
+/* Table : district                                       */
+/*==============================================================*/
+DROP TABLE IF EXISTS `district`;
+CREATE TABLE `district` (
+  `id` 					int(11) 	NOT NULL AUTO_INCREMENT,
+  `code_pays` 			int(11) 	DEFAULT NULL,
+  `code` 				int(3) 		DEFAULT NULL,
+  `label` 				varchar(50) DEFAULT NULL,
+  `ancien_district` 	varchar(50) DEFAULT NULL,
+  `departement` 		varchar(50) DEFAULT NULL,
+  `chef_lieux` 			varchar(50) DEFAULT NULL,
+  `region` 				varchar(50) DEFAULT NULL,
+  `date_activation` 	datetime 	DEFAULT NULL,
+  `date_fermeture` 		datetime	DEFAULT NULL,
+  `date_modification` 	datetime 	DEFAULT NULL,
+  `date_creation` 		datetime 	DEFAULT NULL,
+  `date_apparition` 	datetime 	DEFAULT NULL,
+  `date_disparution` 	datetime 	DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+
+
+
+/*==============================================================*/
+/* Table : statuts                                    */
+/*==============================================================*/
+
+drop table if exists statuts;
+create table statuts
+(
+   id 					int(11) auto_increment,
+   label                varchar (15),
+   date_activation      datetime,
+   date_fermeture       datetime,
+   date_modification    datetime,
+   date_creation        datetime,
+   primary key(id)
+);/*==============================================================*/
+/* Table : country                                       */
+/*==============================================================*/
+DROP TABLE IF EXISTS `country`;
+CREATE TABLE `country` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `isoAlpha2Code` char(10) DEFAULT '',
+  `isoAlpha3Code` char(3) DEFAULT NULL,
+  `isoNumericCode` int(11) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `capital` char(35) DEFAULT '',
+  `continent` enum('Asia','Europe','North America','Africa','Oceania','Antarctica','South America') DEFAULT 'Africa',
+  `phoneCode` char(10) DEFAULT NULL,
+  `areaKm2` float DEFAULT NULL,
+  `population` double(11,0) DEFAULT '0',
+  `active` int DEFAULT '1',
+  `isDeleteData` int(3) DEFAULT '0',
+  `date_creation` datetime DEFAULT '0000-00-00 00:00:00',
+  `lastUpdatedDateTime` datetime DEFAULT '0000-00-00 00:00:00',
+  `id_creator` int(11) DEFAULT '0',
+  `id_lastModifier` int(11) DEFAULT '0',
+  `id_universal` varchar(100) DEFAULT '0',
+  `signature` char(20) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ;
+/*==============================================================*/
+/* Table : relationship (affinite)                                */
+/*==============================================================*/
+drop table if exists relationship;
+create table relationship(
+	id 			int(11) 	not null auto_increment, 
+	name 		varchar(100),
+	primary key(id)
+);

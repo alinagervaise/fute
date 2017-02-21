@@ -1,0 +1,21 @@
+<%-- 
+    Document   : actions
+    Created on : 15 janv. 2015, 21:28:33
+    Author     : Sergeo
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<div class="menu-actions">
+    <strong>Operations</strong>
+    <ul class="list-unstyled">
+        <li><a class="fa fa-file-text" id="addnew" href="add${curentrubric}">&nbsp;Ajouter</a></li>
+        <li><a class="fa fa-list-alt" href="list${curentrubric}">&nbsp;Lister</a></li>
+        <li><a class="fa fa-search" href="find${curentrubric}">&nbsp;Rechercher</a></li>
+        <li><a class="fa fa-print" href="print${curentrubric}">&nbsp;Imprimmer</a></li>
+    </ul>
+</div>
+    <script type="text/javascript">
+        
+    </script>

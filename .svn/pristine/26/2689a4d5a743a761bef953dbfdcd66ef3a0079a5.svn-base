@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="CURAMPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.celylog.curam.model.entities.Listeetudiant</class>
+    <class>com.celylog.curam.model.entities.Etudiant</class>
+    <class>com.celylog.curam.model.entities.Choixregionlaureat</class>
+    <class>com.celylog.curam.model.entities.Listechoixetudiants</class>
+    <class>com.celylog.curam.model.entities.VisitorCounter</class>
+    <class>com.celylog.curam.model.entities.Users</class>
+    <class>com.celylog.curam.model.entities.adm.Nbvisiteparan</class>
+    <class>com.celylog.curam.model.entities.adm.Nbvisiteparjour</class>
+    <class>com.celylog.curam.model.entities.adm.Nbvisiteparmoi</class>
+    <class>com.celylog.curam.model.entities.adm.Nombreconnexionmois</class>
+    <class>com.celylog.curam.model.entities.adm.Nombreconnexionjour</class>
+    <class>com.celylog.curam.model.entities.adm.Nombrechoixens</class>
+    <class>com.celylog.curam.model.entities.adm.Nombrechoixensfiliere</class>
+    <class>com.celylog.curam.model.entities.adm.Listechoixregionens</class>
+    <class>com.celylog.curam.model.entities.adm.Nombreconnexionan</class>
+    <class>com.celylog.curam.model.entities.adm.RelanceLaureatInvalide</class>
+    <class>com.celylog.curam.model.entities.Specialite</class>
+    <class>com.celylog.curam.model.entities.RelanceLaureat</class>
+    <class>com.celylog.curam.model.entities.adm.DecisionRegionale</class>
+    <class>com.celylog.curam.model.entities.adm.HistoriqueDecision</class>
+    <class>com.celylog.curam.model.entities.adm.Contrainte</class>
+    <class>com.celylog.curam.model.entities.adm.ChoixContrainte</class>
+    <class>com.celylog.curam.model.entities.adm.NiveauContrainte</class>
+    <class>com.celylog.curam.model.entities.adm.VueDecisionRegionale</class>
+    <class>com.celylog.curam.model.entities.adm.Listespecialiteetudiant</class>
+    <class>com.celylog.curam.model.entities.adm.Listechoixregioncomplet</class>
+    <class>com.celylog.curam.model.entities.adm.DistanceRegion</class>
+    <class>com.celylog.curam.model.entities.Menus</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bdcom.celylog.curam.zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
+    </properties>
+  </persistence-unit>
+</persistence>

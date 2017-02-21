@@ -1,0 +1,20 @@
+
+<h4>Ajouter un Nouveau Profil</h4>
+<form action="newProfil" id="newProfil" class="curam_form" method="post">
+    <div class="curam_textbox">
+        <label>Nom</label>
+        <input name="nom" type="text" class="form-control" id="firstname" placeholder="Nom du profil"/>
+    </div>
+    <div class="curam_textbox">
+        <label>Date activation</label>
+        <input name="dateActivation" type="text" class="date form-control" id="dateActivation" placeholder="select date"/>
+    </div> 
+
+    <div class="clear"></div>
+    <div class="curam_boutton">
+        <button type="reset" class="btn btn-default">Annuler</button>
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+    </div>
+
+ </form>
+<div class="clear"></div>

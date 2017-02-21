@@ -1,0 +1,54 @@
+/*
+ * This conroller aims to map links to police
+ */
+package com.celylog.curam.web.controller;
+
+import com.celylog.curam.model.entities.Police;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DefaultService;
+import com.celylog.curam.service.security.FormService;
+import com.celylog.curam.service.security.UserService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+
+
+/**
+ *
+ * @author xavalex
+ */
+@Controller
+public class PoliceController {
+    @Autowired
+    FormService formService;
+    @Autowired
+    DefaultService dao;
+    
+    @RequestMapping(value = {"/policy"}, method = RequestMethod.GET)
+    public String newPolicy(HttpServletRequest request, HttpSession session) {
+        return "redirect:/policy";
+    }
+    @RequestMapping(value = {"/policy"}, method = RequestMethod.POST)
+    public String createPolice(HttpServletRequest request, HttpSession session) {
+        try {
+            Object o = formService.add(request, session, false);
+            Police police = (Police) o;
+            this.createPolicy(session, request, police);
+        } catch (Exception ex) {
+            Logger.getLogger(UtilisateurController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "redirect:/policy";
+    }
+    
+    public void createPolicy(HttpSession session, HttpServletRequest request, Police policy){
+        
+        dao.create(policy);
+    }
+    
+}

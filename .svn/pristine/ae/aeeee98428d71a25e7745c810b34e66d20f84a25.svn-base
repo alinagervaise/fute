@@ -1,0 +1,70 @@
+<%-- 
+    Document   : demande de rembourssement
+    Created on : 15 janv. 2015, 18:34:16
+    Author     : user
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<script type="text/javascript">
+    
+</script>
+
+<h4><spring:message code="${proprietaire.add}"></spring:message></h4>
+<form action="addProprietaire" method="post">    
+    <div class="curam_textbox">
+        <label>Raison sociale</label>
+        <input name="raisonsociale" type="text" class="form-control" id="firstname" placeholder="Nom du profil"/>
+    </div>
+    <div class="curam_textbox">
+        <label>Type</label>
+        <input type="hidden"/>
+        <select class="curam_textbox" name="type">
+            <option value="1">Assurance</option>          
+            <option value="2">Mutuelle</option>          
+            <option value="3">Courtier</option>          
+        </select>
+    </div>
+    <div class="curam_textbox">
+        <label>Seuil de prise en charge</label>
+        <input name="seuilpriseencharge" type="text" class="form-control" id="firstname" placeholder="Nom du profil"/>
+    </div>
+    <div class="curam_textbox">
+        <label>Date activation</label>
+        <input name="dateActivation" type="text" class="date form-control" id="dateActivation" placeholder="select date"/>
+    </div>
+    
+    <div class="curam_textbox col-md-12 col-sm-12">
+        <p><hr><strong>Coordonn&eacute;es</strong></p>  
+    </div>
+    <div class="curam_textbox">
+        <label>Pays</label>
+        <input name="pays" type="text" class="form-control" id="firstname" placeholder="Pays siege"/>
+    </div>
+    <div class="curam_textbox">
+        <label>ville</label>
+        <input name="ville" type="text" class="form-control" id="firstname" placeholder="Ville siege"/>
+    </div>
+    <div class="curam_textbox">
+        <label>Quartier</label>
+        <input name="quartier" type="text" class="form-control" id="firstname" placeholder="Quartier siege"/>
+    </div>
+    <div class="curam_textbox">
+        <label>Adresse Email</label>
+        <input name="email" type="text" class="form-control" id="firstname" placeholder="Adresse Email de l&apos;entreprise"/>
+    </div>
+    <div class="curam_textbox">
+        <label>Telephone</label>
+        <input name="phone" type="text" class="form-control" id="firstname" placeholder="(+237) 88 88 88 88"/>
+    </div>
+    <div class="curam_textbox">
+        <label>B.P</label>
+        <input name="bp" type="text" class="form-control" id="firstname" placeholder="8545 Douala Cameroun"/>
+    </div>
+    <div class="btn btn-group">
+        <button type="reset" class="btn btn-default">Annuler</button>
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+    </div>                               
+</form>

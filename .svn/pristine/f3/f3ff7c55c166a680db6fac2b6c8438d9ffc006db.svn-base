@@ -1,0 +1,92 @@
+<%-- 
+    Document   : profils
+    Created on : 15 janv. 2015, 18:34:16
+    Author     : user
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<script type="text/javascript">
+    
+</script>
+<jsp:include page="header.jsp"/>
+<jsp:include page="top_page.jsp"/>
+<jsp:include page="menu_header.jsp"/>     
+<div id="menu-container">
+    <div class="divs">        
+            <div class="content homepage" id ="menu-8">
+            <div class="container">
+                <jsp:include page="submenus.jsp"/>
+                <div class="row">    
+                    <div class="col-md-2 col-sm-6">
+                        <jsp:include page="operations.jsp"/>
+                    </div>
+                    <div class="col-md-10 col-sm-6">
+                        <div class="pagecontent" id="">
+                            <h4>Configure Profil <strong>${cProfil.nom}</strong></h4>
+                            <form action="configprofil" method="post">
+                                <input type="hidden" name="profilId" value="${cProfil.id}">
+                                <table class="table table-condensed table-hover table-responsive">                
+                                    <thead>
+                                        <tr>
+                                            <th>Rubrique</th>
+                                            <th><input class="" type="checkbox" id="cst-all" value="">Consulter</th>
+                                            <th><input class="" type="checkbox" id="crt-all" value="">Creer</th>
+                                            <th><input class="" type="checkbox" id="mdf-all" value="">Modifier</th>
+                                            <th><input class="" type="checkbox" id="dlt-all" value="">Supprimer</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:set var="indice" value="${1}"></c:set>
+                                        <c:forEach var="menu" items="${cMenus}">
+                                        <tr style="background: #fbf9ee" >
+                                            <c:set var="cDroit" value="${null}"></c:set>
+                                            <c:if test="${(cDroits.containsKey(menu.id))}"><c:set var="cDroit" value="${cDroits.get(menu.id)}"></c:set> </c:if>
+                                            <td>
+                                                <input type="hidden" name="droit-${indice}" value="${menu.id}">
+                                                <spring:message code="${menu.codeLibelle}"></spring:message>
+                                            </td>
+                                            <td><input class="cst" type="checkbox" name="droit-${indice}" value="cst" <c:if test="${((cDroit!=null) && cDroit.consulter)}">checked=""</c:if> ></td>
+                                            <td><input class="crt" type="checkbox" name="droit-${indice}" value="crt" <c:if test="${((cDroit!=null) && cDroit.creer)}">checked=""</c:if> ></td>
+                                            <td><input class="mdf" type="checkbox" name="droit-${indice}" value="mdf" <c:if test="${((cDroit!=null) && cDroit.modifier)}">checked=""</c:if> ></td>
+                                            <td><input class="dlt" type="checkbox" name="droit-${indice}" value="dlt" <c:if test="${((cDroit!=null) && cDroit.supprimer)}">checked=""</c:if> ></td>
+                                        </tr>
+                                        <c:set var="indice" value="${indice+1}"></c:set>
+                                            <c:forEach var="csMenu" items="${menu.subMenus}">
+                                            <tr style>
+                                                <td style="padding-left: 2em; font-size: 13px">
+                                                    <input type="hidden" name="droit-${indice}" value="${csMenu.id}">
+                                                    <spring:message code="${csMenu.codeLibelle}"></spring:message>
+                                                </td>
+                                                <td><input class="cst" type="checkbox" name="droit-${indice}" value="cst" <c:if test="${((cDroit!=null) && cDroit.consulter)}">checked=""</c:if>></td>
+                                                <td><input class="crt" type="checkbox" name="droit-${indice}" value="crt" <c:if test="${((cDroit!=null) && cDroit.creer)}">checked=""</c:if>></td>
+                                                <td><input class="mdf" type="checkbox" name="droit-${indice}" value="mdf" <c:if test="${((cDroit!=null) && cDroit.modifier)}">checked=""</c:if>></td>
+                                                <td><input class="dlt" type="checkbox" name="droit-${indice}" value="dlt" <c:if test="${((cDroit!=null) && cDroit.supprimer)}">checked=""</c:if>></td>
+                                            </tr>
+                                            <c:set var="indice" value="${indice+1}"></c:set>
+                                            </c:forEach>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <button type="reset" class="btn btn-default">Annuler</button>
+                                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                                </div>                               
+                            </form>
+                            
+                        </div>
+                        <div class="clear"></div>
+                        <div class="form-new">
+                            <jsp:include page="newProfil.jsp"/>
+                        </div>
+                     </div>                
+                </div>
+            </div>    
+        </div>    
+        
+        <jsp:include page="headcontent.jsp"/>    
+    </div>
+
+<jsp:include page="footer.jsp"/>

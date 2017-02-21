@@ -1,0 +1,49 @@
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<jsp:include page="../header.jsp"/>
+<jsp:include page="../top_page.jsp"/>
+<jsp:include page="../menu_header.jsp"/>     
+
+
+
+<div id="menu-container">
+    
+    <div class="divs">
+        <div class="content homepage" id ="menu-8">
+            <div class="container">
+                <jsp:include page="../submenus.jsp"/>
+                <div class="row">
+                    <div class="col-md-2 col-sm-6">
+                        <jsp:include page="../operations.jsp"/>
+                    </div>
+                    <div class="col-md-10 col-sm-6">
+                        <h4><spring:message code="form.add.beneficiaire.title"/></h4>
+                        <form id="defaultForm"  action="<c:url value="/addbeneficiaire" />"  method="post">
+                            <div class="form-group">
+                                <h4><spring:message code=" titre2.informationsPersonnelles"/></h4>
+                                <div> <jsp:include page="../_div_newUser.jsp"/></div>
+                            </div> 
+
+                            <div  class="form-group col-md-12" style="margin-top: 20px">
+                               <jsp:include page="_div_newBeneficiaire.jsp"/>
+                            </div>
+
+                            <div class="form-group col-md-10 col-sm-6 text-right" style="margin-top: 10px">
+                                <span>   
+                                    <input name="entity" type="hidden" value="Beneficiaire" >
+                                    <button type="submit" name="button-add-beneficiaire"  class="btn btn-default"><spring:message code="form.add"/></button>
+                                </span>
+                             </div>
+                        </form>
+                        <div class="clear"></div>
+                        <script type="text/javascript">
+                            jQuery(document).ready(function(){$("#menu-container #menu-1").addClass("homepage"));
+                        </script>    
+                        <jsp:include page="../headcontent.jsp"/>
+
+                    </div>
+<jsp:include page="../footer.jsp"/>

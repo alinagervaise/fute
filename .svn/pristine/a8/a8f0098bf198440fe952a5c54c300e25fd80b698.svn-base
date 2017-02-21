@@ -1,0 +1,200 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author Nono Guy
+ */
+@Entity
+@Table(name = "login_history")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "LoginHistory.findAll", query = "SELECT l FROM LoginHistory l"),
+    @NamedQuery(name = "LoginHistory.findById", query = "SELECT l FROM LoginHistory l WHERE l.id = :id"),
+    @NamedQuery(name = "LoginHistory.findByUserId", query = "SELECT l FROM LoginHistory l WHERE l.userId = :userId"),
+    @NamedQuery(name = "LoginHistory.findByUserPhoneNumber", query = "SELECT l FROM LoginHistory l WHERE l.userPhoneNumber = :userPhoneNumber"),
+    @NamedQuery(name = "LoginHistory.findByUserName", query = "SELECT l FROM LoginHistory l WHERE l.userName = :userName"),
+    @NamedQuery(name = "LoginHistory.findByHost", query = "SELECT l FROM LoginHistory l WHERE l.host = :host"),
+    @NamedQuery(name = "LoginHistory.findByNavigateur", query = "SELECT l FROM LoginHistory l WHERE l.navigateur = :navigateur"),
+    @NamedQuery(name = "LoginHistory.findByBalanceBeforeConnection", query = "SELECT l FROM LoginHistory l WHERE l.balanceBeforeConnection = :balanceBeforeConnection"),
+    @NamedQuery(name = "LoginHistory.findByBalanceAfterConnection", query = "SELECT l FROM LoginHistory l WHERE l.balanceAfterConnection = :balanceAfterConnection"),
+    @NamedQuery(name = "LoginHistory.findBySessionValue", query = "SELECT l FROM LoginHistory l WHERE l.sessionValue = :sessionValue"),
+    @NamedQuery(name = "LoginHistory.findByLoginDateTime", query = "SELECT l FROM LoginHistory l WHERE l.loginDateTime = :loginDateTime"),
+    @NamedQuery(name = "LoginHistory.findByLogoutDateTime", query = "SELECT l FROM LoginHistory l WHERE l.logoutDateTime = :logoutDateTime")})
+public class LoginHistory implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "userId")
+    private long userId;
+    @Size(max = 2147483647)
+    @Column(name = "userPhoneNumber")
+    private String userPhoneNumber;
+    @Size(max = 20)
+    @Column(name = "userName")
+    private String userName;
+    @Size(max = 100)
+    @Column(name = "host")
+    private String host;
+    @Size(max = 300)
+    @Column(name = "navigateur")
+    private String navigateur;
+    @Column(name = "balanceBeforeConnection")
+    private Integer balanceBeforeConnection;
+    @Column(name = "balanceAfterConnection")
+    private Integer balanceAfterConnection;
+    @Size(max = 50)
+    @Column(name = "sessionValue")
+    private String sessionValue;
+    @Column(name = "loginDateTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date loginDateTime;
+    @Column(name = "logoutDateTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date logoutDateTime;
+
+    public LoginHistory() {
+    }
+
+    public LoginHistory(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
+    }
+
+    public void setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getNavigateur() {
+        return navigateur;
+    }
+
+    public void setNavigateur(String navigateur) {
+        this.navigateur = navigateur;
+    }
+
+    public Integer getBalanceBeforeConnection() {
+        return balanceBeforeConnection;
+    }
+
+    public void setBalanceBeforeConnection(Integer balanceBeforeConnection) {
+        this.balanceBeforeConnection = balanceBeforeConnection;
+    }
+
+    public Integer getBalanceAfterConnection() {
+        return balanceAfterConnection;
+    }
+
+    public void setBalanceAfterConnection(Integer balanceAfterConnection) {
+        this.balanceAfterConnection = balanceAfterConnection;
+    }
+
+    public String getSessionValue() {
+        return sessionValue;
+    }
+
+    public void setSessionValue(String sessionValue) {
+        this.sessionValue = sessionValue;
+    }
+
+    public Date getLoginDateTime() {
+        return loginDateTime;
+    }
+
+    public void setLoginDateTime(Date loginDateTime) {
+        this.loginDateTime = loginDateTime;
+    }
+
+    public Date getLogoutDateTime() {
+        return logoutDateTime;
+    }
+
+    public void setLogoutDateTime(Date logoutDateTime) {
+        this.logoutDateTime = logoutDateTime;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof LoginHistory)) {
+            return false;
+        }
+        LoginHistory other = (LoginHistory) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ngs.model.entities.LoginHistory[ id=" + id + " ]";
+    }
+    
+}

@@ -1,0 +1,36 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.celylog.curam.utils;
+
+/**
+ *
+ * @author Nono Guy
+ */
+public class Historisation {
+    public void login_history(){
+        try{
+//                        String navigateur=request.getHeader("user-agent");
+//                        String host=request.getHeader("host");
+//                        String code_session=session.getId();
+//                        String temps_creation_session=session.getCreationTime()+"";
+//                        String temps_fin_session=session.getLastAccessedTime()+"";
+//                        HashMap param_login=new HashMap();
+//                        param_login.put("table","login_history");
+//                        param_login.put("user_phone_number",login);
+//                        param_login.put("solde_a_la_connexion",creditSms);
+//                        param_login.put("user_name",nom+" "+prenom);
+//                        param_login.put("navigateur",navigateur);
+//                        param_login.put("host",host);
+//                        param_login.put("code_session",code_session);
+//                        param_login.put("temps_creation_session",temps_creation_session);
+//                        DataSource.insert(param_login);
+                        
+                    }catch(Exception e){
+                        
+                    }
+    }
+}

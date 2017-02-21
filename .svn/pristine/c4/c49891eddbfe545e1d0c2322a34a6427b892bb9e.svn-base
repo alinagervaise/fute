@@ -1,0 +1,216 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.service.security;
+
+import com.celylog.curam.config.HibernateConfig;
+import com.celylog.curam.config.SecurityConfig;
+import com.celylog.curam.config.WebConfig;
+import com.celylog.curam.model.entities.Menus;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.utils.enumeration.ConstantsDeControl;
+
+import java.sql.Date;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.security.core.userdetails.User;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+
+
+/**
+ *
+ * @author Gervaise
+ */
+
+@RunWith (SpringJUnit4ClassRunner.class)
+@ContextConfiguration( classes={WebConfig.class,
+                                HibernateConfig.class,
+                                SecurityConfig.class})
+@WebAppConfiguration
+
+public class UserServiceTest {
+    
+    @Autowired
+    UserService userservice;
+    
+    public UserServiceTest() {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+
+    /**
+     * Test of isAdmin method, of class UserService.
+     */
+    @Test
+    public void testIsAdmin() {
+        System.out.println("isAdmin");
+        User principal = null;
+        UserService instance = new UserService();
+        boolean expResult = false;
+        boolean result = instance.isAdmin(principal);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setUserSession method, of class UserService.
+     */
+    @Test
+    public void testSetUserSession_3args() {
+        System.out.println("setUserSession");
+        HttpSession session = null;
+        HttpServletRequest request = null;
+        User principal = null;
+        UserService instance = new UserService();
+        instance.setUserSession(session, request, principal);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getUserById method, of class UserService.
+     */
+    @Test
+    public void testGetUserById() {
+        System.out.println("getUserById");
+        String id = "";
+        UserService instance = new UserService();
+        Utilisateur expResult = null;
+        Utilisateur result = instance.getUserById(id);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of addLoginHistory method, of class UserService.
+     */
+    @Test
+    public void testAddLoginHistory() {
+        System.out.println("addLoginHistory");
+        HttpSession session = null;
+        HttpServletRequest request = null;
+        Utilisateur user = null;
+        UserService instance = new UserService();
+        instance.addLoginHistory(session, request, user);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getAllMenus method, of class UserService.
+     */
+    @Test
+    public void testGetAllMenus() {
+        System.out.println("getAllMenus");
+        String lang = "";
+        UserService instance = new UserService();
+        List<Menus> expResult = null;
+        List<Menus> result = instance.getAllMenus(lang);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getProfilMenus method, of class UserService.
+     */
+    @Test
+    public void testGetProfilMenus() {
+        System.out.println("getProfilMenus");
+        int idProfil = 0;
+        String lang = "";
+        UserService instance = new UserService();
+        List<Menus> expResult = null;
+        List<Menus> result = instance.getProfilMenus(idProfil, lang);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setUserSession method, of class UserService.
+     */
+    @Test
+    public void testSetUserSession_HttpSession_Utilisateur() {
+        System.out.println("setUserSession");
+        HttpSession session = null;
+        Utilisateur user = null;
+        UserService instance = new UserService();
+        instance.setUserSession(session, user);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of countSession method, of class UserService.
+     */
+    @Test
+    public void testCountSession() {
+        System.out.println("countSession");
+        HttpSession session = null;
+        UserService instance = new UserService();
+        instance.countSession(session);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of generateMatricule method, of class UserService.
+     */
+    @Test
+    public void testGenerateMatricule() {
+        System.out.println("generateMatricule");
+        Utilisateur user = new Utilisateur();
+        user.setIdPaysNaissance(44);
+        user.setSexe('F');
+        user.setDateNaissance(Date.valueOf("1798-11-16"));
+        user.setIdArrondissementOrigine(308);
+        user.setNumeroRegistre(0001);
+        //PP/S/J/M/AAA/ArArAr/NNNN 
+        //PP = CM
+        // S = F
+        // j=16 <=> [1-9] à [A-Z] => j=G
+        // M=11 <=> [1-9] à [A-F] => M=B
+        // AAA=798
+        // ArArAr = 099
+        //NNNN = 0001
+        String expResult = "CMFGB7980990001";
+        String result = userservice.generateMatricule(user);
+        assertEquals(ConstantsDeControl.MATRICULE_LENGTH, result.length());
+        assertEquals(expResult, result);
+        
+        // test day greater than 9 , numero de registre 1
+        user.setDateNaissance(Date.valueOf("1798-08-31"));
+        user.setIdArrondissementOrigine(284);
+        user.setNumeroRegistre(1);
+        expResult = "CMFV87982840001";
+        result = userservice.generateMatricule(user);
+        assertEquals(ConstantsDeControl.MATRICULE_LENGTH, result.length());
+        assertEquals(expResult, result);
+        
+        user.setNumeroRegistre(4815281);
+        expResult = "CMFV87982845281";
+        result = userservice.generateMatricule(user);
+        assertEquals(ConstantsDeControl.MATRICULE_LENGTH, result.length());
+        assertEquals(expResult, result);
+        
+        
+    }
+    
+}

@@ -1,0 +1,14 @@
+// le ControleurProprietaire communique directement avec la table propriétaire
+
+package com.celylog.curam.web.controller;
+
+import org.springframework.stereotype.Controller;
+
+/**
+ *
+ * @author Administrateur
+ */
+@Controller
+public class ProprietaireController {
+    
+}

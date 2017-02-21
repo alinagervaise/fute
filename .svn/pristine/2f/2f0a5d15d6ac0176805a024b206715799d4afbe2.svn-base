@@ -1,0 +1,85 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.celylog.curam.service;
+
+import com.celylog.curam.model.dao.HibernateDao;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ *
+ * @author Nono
+ * @param <T>
+ */
+
+
+public abstract  class DaoService<T>  {
+   
+    @Autowired
+   protected HibernateDao dao;
+   
+  
+   
+    
+    public T getById( final Object id,Class<T> type ){
+        if (id==null)  return null;
+      return  (T) dao.getById(id, type);
+    }
+    
+   public List< T > getAll(String query){
+     return  dao.getAll(query);
+   }
+   
+    
+   public T create( final T entity ) {
+       if (entity==null)  return null;
+      return (T) dao.create(entity);
+   }
+   
+    
+   public T update( final T entity ){
+       if (entity==null)  return null;
+    return  (T) dao.update(entity);
+   }
+   
+    
+    
+   public T refresh( final T entity ){
+       if (entity==null)  return null;
+    return  (T) dao.refresh(entity);
+   }
+   
+   
+    
+   public void deleteById( final Object entityId,Class<T> type ){
+       if(entityId==null)  return;
+    dao.deleteById(entityId, type);
+   }
+    
+    
+   public List<T>  search(Class<T> type,String[] fieldnamesearch,String searchword){ 
+      return  dao.search(type, fieldnamesearch, searchword);
+   }
+   
+   
+    public List<Object[]> getAllSQL(String query) {
+   return dao.getAllSQL(query);
+    }
+    
+//    public String getJsonAllSQL(String query,boolean addlabel) {
+//      //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//     JSONArray  array=new JSONArray();
+//        if (addlabel)
+//          array=listutils.ListToJson(getAllSQL(query));
+//        else 
+//            array=listutils.ListToJsonArray(getAllSQL(query));
+//        
+//        return  array.toJSONString();
+//    }
+//    
+   
+}

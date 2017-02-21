@@ -1,0 +1,74 @@
+<%-- 
+    Document   : listcontract
+    Created on : 25 janv. 2015, 09:40:42
+    Author     : Nono Guy
+--%>
+
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#listcontrat').dataTable({
+            "scrollX": true,
+            "dom": 'T<"clear">lfrtip',
+            tableTools: {
+                "aButtons": [
+                    "copy",
+                    "csv",
+                    "xls",
+                    {
+                        "sExtends": "pdf",
+                        "sPdfOrientation": "landscape",
+                        "sPdfMessage": "Custom message."
+                    },
+                    "print"
+                ]
+            }
+        });
+    });
+</script>
+<div class="pagecontent" id="">
+    <h4><spring:message code="label.contracts"/></h4>
+    <table class="table table-condensed table-hover table-responsive" id="listcontrat">                
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Type police</th>
+                <th>Montant Prime</th>
+                <th>Montant plafond</th>
+                <th>Active</th>
+                <!--<th>Date Activation</th>-->
+                <!--                                    <th>Date Modification</th>
+                                                    <th>Date Création</th>-->
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="police" items="${listePoliceUser}">
+                <tr>
+                    <td>${police.id}</td>
+                    <td>${police.libelle}</td>
+                    <td>${police.typePolice}</td>
+                    <td>${police.montantPrime}</td>
+                    <td>${police.montantPlafond}</td>
+                    <td>${police.active}</td>
+                    <!--<td>${police.dateActivation}</td>-->
+<!--                                        <td>${police.dateModification}</td>
+                    <td>${police.dateCreation}</td>-->
+                    <td class="text-justify">
+                        <a  class='fa fa-gear tools' href="configcontracts?rowId=${police.id}" title='Configurer'></a>
+                        <a  class='fa fa-trash-o tools' data-toggle="modal" data-target="#deleteRecord" title='Supprimer'></a>
+                    </td>
+
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+    <div class="clear"></div>
+</div>  
+

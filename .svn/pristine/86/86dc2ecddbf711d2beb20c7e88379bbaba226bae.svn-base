@@ -1,0 +1,26 @@
+<%-- 
+    Document   : menu
+    Created on : 9 janv. 2015, 18:43:10
+    Author     : user
+--%>
+
+
+<label><spring:message code="lastName"/>  = ${lastName}</label><br>
+<label><spring:message code="firstName"/>  = ${firstName}</label></br>
+<!--<a href="<c:url value="pays"/>"> <spring:message code="label.country"/></a>-->
+<a href="pays"> <spring:message code="label.country"/></a>
+<ul class="">
+    <li><a href="<c:url value="?lang=fr"/>"><img src="<c:url value="/resources/images/flags/fr.png"/>"  alt="Fran�ais"> FR</a></li>
+    <li><a href="<c:url value="?lang=en"/>"><img src="<c:url value="/resources/images/flags/gb.png"/>"  alt="English"> EN</a></li>
+</ul>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>Hello World!</h1>
+    </body>
+</html>

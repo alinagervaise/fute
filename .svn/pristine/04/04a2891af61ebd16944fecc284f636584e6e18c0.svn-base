@@ -1,0 +1,29 @@
+<%-- 
+    Document   : footer
+    Created on : 7 janv. 2015, 09:24:52
+    Author     : Sergeo
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!-- footer start -->
+
+<footer>
+    <div class="clear"></div>
+    <div class="curam_footer">
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-12">
+                Copyright © 2014 Celylog
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <!-- footer end --> 
+  <!-- curam 407 solidity -->
+  </body>
+</html>

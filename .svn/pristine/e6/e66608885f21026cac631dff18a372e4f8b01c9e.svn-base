@@ -1,0 +1,50 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<!-- /responsive_navigation -->
+<div class="site-header">
+        <div class="main-navigation">
+                <div class="container">
+        <div class="row">
+        <div class="col-md-12">
+                <!-- This one in here is responsive menu for tablet and mobiles -->
+          <div class="responsive-navigation visible-sm visible-xs">
+           <a href="#" class="menu-toggle-btn">
+            <i class="fa fa-bars fa-2x"></i>
+          </a>
+                <div class="navigation responsive_menu">
+                        <ul>
+                            <c:forEach var="menu" items="${menusUser}" >
+                                <c:if test="${menu.parent.id==0}">
+                                    <li><a class="show-${menu.ordre} curam_${menu.classe}" href=""><spring:message code="${menu.codeLibelle}"></spring:message></a></li>
+                                </c:if>                                
+                            </c:forEach>
+                        </ul>
+                </div> <!-- /.responsive_menu -->
+         </div> <!-- /responsive_navigation -->
+        </div>
+    </div>
+    </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 navigation">
+                    <div class="row main_menu">
+                        <c:forEach var="menu" items="${menusUser}" >
+                            <c:if test="${menu.parent.id==0}">
+                                <div class="col-md-2">
+                                    <a title="<spring:message code="${menu.codeLibelle}"></spring:message>" class="show-${menu.ordre} curam_${menu.classe}" href="#">
+                                        <div class="fa fa-${menu.icone}"></div>
+                                        <strong><spring:message code="${menu.codeLibelle}"></spring:message></strong>
+                                    </a>                                        
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                    </div> 
+                </div>
+            </div> 
+        </div> 
+        </div> 
+</div>
+<div id="menu-container"> 

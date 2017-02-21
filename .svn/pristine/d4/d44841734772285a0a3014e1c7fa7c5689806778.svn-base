@@ -1,0 +1,55 @@
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
+<div  class="form-group col-md-12" style="margin-top: 20px">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                     <spring:message code="form.other.info.title"/>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="col-lg-4">
+                        <label for="matriculeAssurance"><spring:message code="form.beneficiaire.matricule.assurance"/></label>
+                        <input  class="form-control" placeholder="<spring:message code='form.beneficiaire.matricule.assurance'/> " 
+                               id="matriculeAssurance" name="matriculeAssurance" value="${matriculeAssurance}" type="text"  />
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="statut"><spring:message code="form.utilisateur.statut"/></label>
+                        <input  class="form-control" placeholder="<spring:message code='form.utilisateur.statut'/> " 
+                               id="statut" name="statut" value="${statut}" type="text"  />
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="dateActivation"><spring:message code="form.user.date_d_activation"/></label>
+                        <input  class="form-control" placeholder="<spring:message code='form.user.date_d_activation'/> " 
+                               id="dateActivation" name="dateActivation" value="${dateActivation}" type="text"  />
+                    </div>  
+                    <div class="col-lg-4">
+                        <label for="dateFermeture"><spring:message code="form.user.date_de_fermeture"/></label>
+                        <input  class="form-control" placeholder="<spring:message code='form.user.date_de_fermeture'/> " 
+                               id="dateFermeture" name="dateFermeture" value="${dateFermeture}" type="text"  />
+                    </div>   
+                    <div class="col-lg-4">
+                        <label for="dateModification"><spring:message code="form.user.date_de_modification"/></label>
+                        <input  class="form-control" placeholder="<spring:message code='form.user.date_de_modification'/> " 
+                               id="dateModification" name="dateModification" value="${dateModification}" type="text"  />
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="dateCreation"><spring:message code="form.user.date_de_creation"/></label>
+                        <input  class="form-control" placeholder="<spring:message code='form.user.date_de_creation'/> " 
+                               id="dateCreation" name="dateCreation" value="${dateCreation}" type="text"  />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="clear"></div>

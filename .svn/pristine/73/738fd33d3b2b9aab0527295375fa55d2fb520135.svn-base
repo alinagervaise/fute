@@ -1,0 +1,24 @@
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+ 
+<jsp:include page="header.jsp"/>
+<jsp:include page="top_page.jsp"/>
+<jsp:include page="menu_header.jsp"/>     
+    <div class="divs">            
+        <div class="content homepage" id ="menu-0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        Bonjour je ne suis que le detail                    
+                    </div>                
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    
+        <jsp:include page="headcontent.jsp"/>
+    </div>
+<jsp:include page="footer.jsp"/>

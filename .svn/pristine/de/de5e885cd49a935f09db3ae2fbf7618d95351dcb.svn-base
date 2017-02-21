@@ -1,0 +1,123 @@
+<%-- 
+    Document   : edit
+    Created on : Jan 12, 2015, 8:25:23 PM
+    Author     : Harry Wanki
+--%>
+
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Curam users</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="" />
+        <!-- 
+        Solidity Template 
+        http://www.templatemo.com/preview/templatemo_407_solidity 
+        -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1">
+        <jsp:include page="../ressource.jsp"/>
+        <script src="<c:url value="/resources/plugins/multiple-select/jquery.multiple.select.js"/>" ></script> 
+        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/plugins/multiple-select/multiple-select.css"/>"  >
+    </head>
+    <body>
+        <!-- title start -->
+        <jsp:include page="../header.jsp"/>
+        <jsp:include page="../top_page.jsp"/>
+
+        <spring:message code="form.user.create" var="usercreate"/>
+        <spring:message code="form.user.update" var="userupdate"/>
+        <spring:message code="form.user.id" var="userid"/>
+        <spring:message code="form.user.matricule" var="usermatricule"/>
+        <spring:message code="form.user.nom" var="usernom"/>
+        <spring:message code="form.user.prenom" var="userprenom"/>
+        <spring:message code="form.user.sexe" var="usersexe"/>
+        <spring:message code="form.user.date_de_naissance" var="userdatenaissance"/>
+        <spring:message code="form.user.lieu_de_naissance" var="userlieunaissance"/>
+        <spring:message code="form.user.arrondissement_d_origine" var="userarrondissement"/>
+        <spring:message code="form.user.nationalite" var="usernationalite"/>
+        <spring:message code="form.user.date_d_activation" var="userdateactivation"/>
+        <spring:message code="form.user.date_de_fermeture" var="userdatefermeture"/>
+        <spring:message code="form.user.date_de_modification" var="userdatemodification"/>
+        <spring:message code="form.user.date_de_creation" var="userdatecreation"/>
+
+        <spring:eval expression="user.id == null ? usercreate:userupdate"
+                     var="formTitle"/>
+
+        <div class="container" style="padding-top: 60px">
+            <div class="col-md-2 col-sm-6">
+                <div class="menu-actions">
+                    <strong>Actions</strong>
+                    <ul class="list-unstyled">
+                        <li><a id="ajouter" class="fa fa-file-text" href="/Curam/users?form">&nbsp;Ajouter</a></li>
+                        <li><a class="fa fa-list-alt" href="/Curam/users">&nbsp;Lister</a></li>
+                        <li><a class="fa fa-search" href="#">&nbsp;Rechercher</a></li>
+                        <li><a class="fa fa-print" href="#">&nbsp;Imprimmer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-10 col-sm-6">
+                <legend>${formTitle}</legend>
+                <form:form modelAttribute="user" action="#" id="contact_form" class="curam_form" method="post">
+                    <c:if test="${not empty message}">
+                        <div id="message" class="${message.type}">${message.message}</div>
+                    </c:if>
+                    <div class="curam_textbox">
+                        <label>Prenom:</label>
+                        <input name="firstname" type="text" class="form-control" id="firstname" placeholder="Your First Name"/>
+                    </div>
+                    <div class="curam_textbox">
+                        <label>Nom:</label>
+                        <input name="lastname" type="text" class="form-control" id="lastname" placeholder="Your Name"/>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="curam_textbox">
+                        <label>Adresse Email</label>
+                        <input name="email" type="text" class="form-control" id="email" placeholder="Your Email"/>
+                    </div>
+                    <div class="curam_textbox">
+                        <label>Mot de passe</label>
+                        <input name="password" type="password" class="form-control" id="password" placeholder="Your PassWord"/>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="curam_textbox">
+                        <label>Date de naissance</label>
+                        <input data-provide="datepicker" name="datenaissance" type="text" class="form-control" id="datenaiss" placeholder="select date"/>
+                    </div>
+                    <div class="curam_textbox">
+                        <label>Lieu de naissance</label>
+                        <input name="borncity" type="text" class="form-control" id="borncity" placeholder="Lieu de naissance"/>
+                    </div>
+                    <div class="clear"></div>
+
+                    <div class="curam_textareabox">
+                        <label>Commentaires</label>
+                        <textarea name="message" class="form-control" id="message"  placeholder="Your message ... "></textarea>
+                    </div>   
+
+                    <div class="clear"></div>
+                    <div class="curam_boutton">
+                        <button type="reset" class="btn btn-default">Annuler</button>
+                        <button type="button" class="btn btn-success">Valider</button>
+                    </div>
+                </form:form>
+            </div>
+        </div>
+
+
+        <div class="clear"></div>
+        <footer class="templatemo_footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        Copyright © 2014 Celylog
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

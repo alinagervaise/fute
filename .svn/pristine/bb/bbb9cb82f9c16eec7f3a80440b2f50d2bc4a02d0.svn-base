@@ -1,0 +1,250 @@
+-- creation de la table de menus du projet
+drop table if exists menus;
+create table menus(
+id int(11),
+libelle varchar(30),
+description varchar(80),
+action varchar(15),
+icone varchar(20),
+classe varchar(10),
+parent int(11),
+ordre smallint,
+date_creation datetime,
+date_modification datetime,
+PRIMARY KEY(id)
+);
+
+insert into menus
+(id, libelle, action, icone, classe, parent, ordre, date_creation, date_modification)
+values
+(0, "Root", "#", "root", "root",0, 1, NOW(), NOW()),
+(1, "Accueil", "homepage",  "home", "home",0, 1, NOW(), NOW()),
+(2, "Prestations", "prestations", "medkit","page1", 0, 2, NOW(), NOW()),
+(3, "Contrats", "polices", "briefcase","page2", 0, 3, NOW(), NOW()),
+(4, "Finances", "finances", "money","page3", 0, 4, NOW(), NOW()),
+(5, "Ressources / Stats","ressoures","archive","page5", 0, 5, NOW(), NOW()),
+(6, "Administration", "admin", "cogs","page6", 0, 6, NOW(), NOW())
+;
+
+insert into menus
+(id, libelle, action, icone, classe, parent, ordre, date_creation, date_modification)
+values
+(101, "Mes Activit&eacute;s recentes", "mesactivitesrecentes", "flag-o", "page1", 1, 1, NOW(), NOW()),
+(102, "Mes Alertes", "mesalertes", "bell-o","page1", 1, 2, NOW(), NOW()),
+(103, "Mes Messages", "mesmessages", "envelope-o","page1", 1, 3, NOW(), NOW()),
+(201, "Mes Prestations", "mespresatations", "play-circle", "page1", 2, 1, NOW(), NOW()),
+(202, "Faire une Prestation", "faireprestation", "play-circle-o","page1", 2, 1, NOW(), NOW()),
+(203, "Mes Prescriptions", "mesprescriptions", "edit","page1", 2, 3, NOW(), NOW()),
+(204, "Soins", "soins", "shield","page1", 2, 3, NOW(), NOW()),
+(301, "Mes Contrats", "mescontrats", "book","page1", 3, 1, NOW(), NOW()),
+(302, "B&eacute;n&eacute;ficiaires", "beneficiaires", "group","page1", 3, 2, NOW(), NOW()),
+(303, "Souscripteurs", "souscripteurs", "user","page1", 3, 3, NOW(), NOW()),
+(304, "Garanties", "garanties", "hand-o-right","page1", 3, 4, NOW(), NOW()),
+(401, "Factures", "factures", "credit-card","page1", 4, 1, NOW(), NOW()),
+(402, "Reglements", "reglements", "pencil-square-o","page1", 4, 2, NOW(), NOW()),
+(403, "Remboursements", "rembourssements", "pencil-square-o","page1", 4, 3, NOW(), NOW()),
+(404, "Reclamations", "reclamations", "shield","page1", 4, 4, NOW(), NOW()),
+(501, "Statistiques", "statistiques", "bar-chart-o","page1", 5, 1, NOW(), NOW()),
+(502, "Documents", "docuemnets", "book","page1", 5, 2, NOW(), NOW()),
+(503, "Rapports", "reports", "pencil-square-o","page1", 5, 3, NOW(), NOW()),
+(504, "Autres", "autres", "shield","page1", 5, 4, NOW(), NOW()),
+(601, "Utilisateurs", "users", "users","page1", 6, 1, NOW(), NOW()),
+(602, "Profils", "profils", "tags","page1", 6, 2, NOW(), NOW()),
+(603, "Propri&eacute;taires", "proprietaires", "sitemap","page1", 6, 3, NOW(), NOW()),
+(604, "Prestataires", "prestataires", "user-md","page1", 6, 4, NOW(), NOW()),
+(605, "Configurations", "configs", "wrench", "page1", 6, 5, NOW(), NOW()),
+(606, "Param&egrave;tres", "params", "cog","page1", 6, 6, NOW(), NOW()),
+(607, "Droits", "medkit", "tags","page1", 6, 7, NOW(), NOW()),
+(608, "autre 2", "medkit","medkit","page1", 6, 8, NOW(), NOW())
+;
+
+-- creation des profils utilisateurs
+drop table if exists profil;
+create table profil
+(
+   id                   int,
+   nom                  varchar(254),
+   active               int,
+   version              int,
+   signature            char(20),
+   date_activation       datetime,
+   date_fermeture        datetime,
+   date_modification     datetime,
+   date_creation         datetime,
+   PRIMARY KEY(id)
+);
+
+INSERT INTO profil
+(id,nom,active,version,date_activation,date_modification,date_creation)
+VALUES
+(1,"SUPER_ADMIN",1,0,now(),now(),now()),
+(2,"ADMIN",1,0,now(),now(),now()),
+(3,"CONTROLEUR",1,0,now(),now(),now()),
+(4,"MEDECIN_CONSEIL",1,0,now(),now(),now()),
+(5,"ADMINISTRATIF",1,0,now(),now(),now()),
+(6,"BENEFICIAIRE",1,0,now(),now(),now()),
+(7,"SOUSCRIPTEUR",1,0,now(),now(),now()),
+(8,"GESTIONNAIRE",1,0,now(),now(),now()),
+(9,"PRESTATAIRE",1,0,now(),now(),now())
+;
+
+drop table if exists profilutilisateur;
+create table profilutilisateur
+(
+	id				int auto_increment,
+	id_profil		int(11),
+	id_utilisateur	int(11),
+	primary key(id),
+	key(id_utilisateur),
+	key(id_profil)
+);
+
+insert into profilutilisateur
+(id_profil,id_utilisateur)
+values
+(1,1),
+(2,3),
+(2,1),
+(6,2),
+(6,4),
+(7,2),
+(3,1);
+
+insert into utilisateur
+(id, matricule, password, nom, prenom, sexe, date_naissance, lieu_naissance)
+values
+(1,"11111","xxxxx","TALOM", "Sergeo", "M", "2010-06-21","Bandjoun"),
+(2,"22222","yyyyy","TALA", "PAUL", "M", "2010-07-01","Bangante"),
+(3,"33333","yyyyy","TOTO", "TITI", "M", "2000-","Yaounde")
+(4,"44444","xxxxx","TATA", "Patience", "F", "2000-","Yaounde")
+;
+
+drop table if exists droitprofil;
+create table droitprofil
+(
+    id              int(11) auto_increment,
+	id_profil		int(11),
+	id_menu			int(11),
+	consulter       int(1),
+    modifier        int(1),
+    creer           int(1),
+    supprimer       int(1),
+	primary key(id),
+	key(id_profil),
+	key(id_menu)
+);
+
+insert into droitprofil
+(id_profil, id_menu, consulter, modifier, creer, supprimer)
+values
+(1,1,1,1,1,1),
+(1,2,1,1,1,1),
+(1,3,1,1,1,1),
+(1,4,1,1,1,1),
+(1,5,1,1,1,1),
+(1,6,1,1,1,1),
+(2,1,1,1,1,1),
+(2,3,1,1,1,1),
+(2,4,1,1,1,1),
+(2,5,1,1,1,1),
+(2,6,1,1,1,1),
+(3,1,1,1,1,1),
+(3,2,1,1,1,0),
+(3,3,1,1,1,1),
+(3,4,1,0,0,0),
+(3,5,1,1,1,1),
+(4,1,1,1,1,1),
+(4,2,1,1,1,0),
+(4,4,1,0,0,0),
+(4,5,1,1,1,0),
+(5,1,1,1,1,1),
+(5,5,1,1,1,0),
+(6,1,1,1,1,1),
+(6,2,1,0,0,0),
+(6,5,1,0,0,0),
+(7,1,1,1,1,1),
+(7,3,1,0,0,0),
+(7,5,1,0,0,0)
+;
+
+
+-- alter table menus add column  icone varchar(20);
+-- alter table menus add column  classe varchar(10);
+-- alter table menus add column  parent int(11);
+-- alter table menus add column  ordre smallint;
+
+-- Ajout de la colonne code_libelle qui renseigne les code .properties pour la traduction des menus
+alter table menus add column code_libelle varchar(100) ;
+-- Ajout des values existantes dans le fichier messages.properties
+update menus  set  code_libelle="acceuil" where id=1;
+update menus  set  code_libelle="prestations"   where id=2;
+update menus  set  code_libelle="contrats"   where id=3;
+update menus  set  code_libelle="finances"   where id=4;
+update menus  set  code_libelle="ressources.stats"   where id=5;
+update menus  set  code_libelle="administration"   where id=6;
+update menus  set  code_libelle="home"   where id=7;
+update menus  set  code_libelle="care.delivery"   where id=8;
+update menus  set  code_libelle="insurance.contract"   where id=9;
+update menus  set  code_libelle="finances.en"   where id=10;
+update menus  set  code_libelle="resources.stats.en"   where id=11;
+update menus  set  code_libelle="administration.en"   where id=12;
+update menus  set  code_libelle="mes.prestations"   where id=201;
+update menus  set  code_libelle="faire.prestation"   where id=202;
+update menus  set  code_libelle="mes.prescriptions"   where id=203;
+update menus  set  code_libelle="mes.contrats"   where id=301;
+update menus  set  code_libelle="beneficiaire"   where id=302;
+update menus  set  code_libelle="souscripteurs"   where id=303;
+update menus  set  code_libelle="garanties"   where id=304;
+update menus  set  code_libelle="factures"   where id=401;
+update menus  set  code_libelle="reglements"   where id=402;
+update menus  set  code_libelle="remboursements"   where id=403;
+update menus  set  code_libelle="reclamations"   where id=404;
+update menus  set  code_libelle="statistiques"   where id=501;
+update menus  set  code_libelle="documents"   where id=502;
+update menus  set  code_libelle="rapports"   where id=503;
+update menus  set  code_libelle="autres"   where id=504;
+update menus  set  code_libelle="utilisateurs"   where id=601;
+update menus  set  code_libelle="profils"   where id=602;
+update menus  set  code_libelle="proprietaire"   where id=603;
+update menus  set  code_libelle="prestataires"   where id=604;
+update menus  set  code_libelle="configurations"   where id=605;
+update menus  set  code_libelle="parametres"   where id=606;
+update menus  set  code_libelle="autre1"   where id=607;
+update menus  set  code_libelle="autre2"  where id=608;
+
+
+
+-- Add column info pays de naissance dans la table utilisateurs 
+alter table utilisateur add column id_pays_naissance int(11);
+
+-- Add column info  numéro de registre dans la table utilisateurs
+alter table utilisateur add column numero_registre int(4);
+
+-- Add column code  for district with code assigned manually
+alter table district add column code char(3);
+
+-- Add column region  for province in Cameroun for example
+alter table district add column region varchar(50);
+
+-- Create table beneficiairepolice
+drop table if exists beneficiairepolice;
+create table beneficiairepolice
+(
+	id				int auto_increment,
+	id_beneficiaire		int(11),
+	id_police int(11),
+	primary key(id),
+	key(id_beneficiaire),
+	key(id_police)
+);
+
+drop view if exists beneficiaireutilisateurview;
+create view beneficiaireutilisateurview as 
+select concat(b.id, u.id) as id, b.id as id_beneficiaire,b.id_utilisateur,b.type  type_beneficiaire,  -- assuree principal ou ayant doit
+b.matricule_assurance,b.statut,b.id_assure_principal,b.affinite as id_affinite,
+r.name as affinite_name,b.active,b.version,b.signature,b.date_activation,b.date_fermeture,
+b.date_modification,b.date_creation,u.id as id_user ,u.matricule,u.password,u.nom,u.prenom,u.sexe,
+u.date_naissance,u.lieu_naissance,u.id_arrondissement_origine,u.nationnalite
+from beneficiaire b
+join relationship r  on b.affinite = r.id
+join  utilisateur u on b.id_utilisateur = u.id;

@@ -1,0 +1,156 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "droitprofil")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "DroitProfil.findAll", query = "SELECT d FROM DroitProfil d"),
+    @NamedQuery(name = "DroitProfil.findById", query = "SELECT d FROM DroitProfil d WHERE d.id = :id"),
+    @NamedQuery(name = "DroitProfil.findByConsulter", query = "SELECT d FROM DroitProfil d WHERE d.consulter = :consulter"),
+    @NamedQuery(name = "DroitProfil.findByModifier", query = "SELECT d FROM DroitProfil d WHERE d.modifier = :modifier"),
+    @NamedQuery(name = "DroitProfil.findByCreer", query = "SELECT d FROM DroitProfil d WHERE d.creer = :creer"),
+    @NamedQuery(name = "DroitProfil.findBySupprimer", query = "SELECT d FROM DroitProfil d WHERE d.supprimer = :supprimer")})
+public class DroitProfil implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
+    @ManyToOne
+    @JoinColumn (name="id_profil")
+    private Profil profil;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_menu")
+    private Menus rubrique;
+    @Column(name = "consulter")
+    private Boolean consulter;
+    @Column(name = "modifier")
+    private Boolean modifier;
+    @Column(name = "creer")
+    private Boolean creer;
+    @Column(name = "supprimer")
+    private Boolean supprimer;
+
+    public DroitProfil() {
+        this.consulter = false;
+        this.creer = false;
+        this.modifier = false;
+        this.supprimer = false;
+    }
+
+    public DroitProfil(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Profil getProfil() {
+        return profil;
+    }
+
+    public void setProfil(Profil profil) {
+        this.profil = profil;
+    }
+
+    public Menus getRubrique() {
+        return rubrique;
+    }
+
+    public void setRubrique(Menus rubrique) {
+        this.rubrique = rubrique;
+    }
+
+    public Boolean getConsulter() {
+        return consulter;
+    }
+
+    public void setConsulter(Boolean consulter) {
+        this.consulter = consulter;
+    }
+
+    public Boolean getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(Boolean modifier) {
+        this.modifier = modifier;
+    }
+
+    public Boolean getCreer() {
+        return creer;
+    }
+
+    public void setCreer(Boolean creer) {
+        this.creer = creer;
+    }
+
+    public Boolean getSupprimer() {
+        return supprimer;
+    }
+
+    public void setSupprimer(Boolean supprimer) {
+        this.supprimer = supprimer;
+    }
+
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof DroitProfil)) {
+            return false;
+        }
+        DroitProfil other = (DroitProfil) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.DroitProfil[ id=" + id + " ]";
+    }
+    
+}

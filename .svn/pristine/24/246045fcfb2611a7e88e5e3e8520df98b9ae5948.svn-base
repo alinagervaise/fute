@@ -1,0 +1,78 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.web.controller;
+
+//import com.celylog.curam.model.entities.Users;
+import com.celylog.curam.service.DaoService;
+import com.celylog.curam.service.DefaultService;
+import com.celylog.curam.service.security.UserService;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+/**
+ *
+ * @author Nono Guy
+ */
+@Controller
+public class MainControler {
+
+    @Autowired
+    UserService userservice;
+
+    @Autowired
+    DefaultService service;
+    
+    @Autowired
+    BusinessLayer bl;
+
+    @RequestMapping(value = {"/example"}, method = RequestMethod.GET)
+    public String home_(@RequestParam(value = "message", required = false) String message,
+            Model m, HttpSession session) {
+        return "index";
+    }
+
+    @RequestMapping(value = {"/insertUser"}, method = RequestMethod.GET)
+    public String insertUser(@RequestParam(value = "message", required = false) String message,
+            Model m, HttpSession session) {
+        bl.traiment();
+        return "index";
+    }
+    @RequestMapping(value = {"/connect_test"}, method = RequestMethod.POST)
+    public String login_test(HttpServletRequest request, HttpSession session) {
+//        userservice.countSession(session);
+//        //connect_test?login=nono&password=nono;
+//        String login=request.getParameter("login");
+//        String password=request.getParameter("password");
+//        List<Users>  luser = service.getAll("select u from Users u where u.login ='"+login+"' and u.password='"+password+"'");
+//        if(!luser.isEmpty()){
+//            Users u = luser.get(0); 
+//            
+//            session.setAttribute("lastName", u.getLastName());
+//            session.setAttribute("firstName", u.getFirstName());
+//            
+//        }else{
+//            request.setAttribute("errorMessage", "login.badCredential");
+//            return "login";
+//        }
+//        if(login.length()<6){
+//            request.setAttribute("errorMessage", "login.loginLengthShort");
+//            
+//        }
+//        
+        return "index";
+    }
+
+}

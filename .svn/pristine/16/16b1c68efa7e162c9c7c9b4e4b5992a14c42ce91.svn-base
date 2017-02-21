@@ -1,0 +1,15 @@
+DELETE FROM `curamdb`.`statuts` 
+
+INSERT INTO `curamdb`.`statuts` (`id`, `date_activation`, `date_creation`, `date_fermeture`, `date_modification`, `label`) VALUES ('2', '2015-01-16 11:25:23', '2015-01-16 11:25:23', NULL, NULL, 'Deactivate');
+INSERT INTO `curamdb`.`statuts` (`id`, `date_activation`, `date_creation`, `date_fermeture`, `date_modification`, `label`) VALUES ('3', '2015-01-16 11:25:23', '2015-01-16 11:25:23', NULL, NULL, 'Active');
+INSERT INTO `curamdb`.`statuts` (`id`, `date_activation`, `date_creation`, `date_fermeture`, `date_modification`, `label`) VALUES ('1', '2015-01-16 11:25:23', '2015-01-16 11:25:23', NULL, NULL, 'Delete');
+-- 24/01/2015   Alina ---
+INSERT INTO `curamdb`.`statuts` (`id`, `date_activation`, `date_creation`, `date_fermeture`, `date_modification`, `label`) VALUES ('4', '2015-01-24 11:25:23', '2015-01-24 11:25:23', NULL, NULL, 'Non Validé');
+INSERT INTO `curamdb`.`statuts` (`id`, `date_activation`, `date_creation`, `date_fermeture`, `date_modification`, `label`) VALUES ('5', '2015-01-24 11:25:23', '2015-01-24 11:25:23', NULL, NULL, 'Validé');
+
+
+-- 28/01/2015   Alina ---
+INSERT INTO `curamdb`.`statuts` (`id`, `date_activation`, `date_creation`, `date_fermeture`, `date_modification`, `label`) VALUES ('6', '2015-01-28 11:25:23', '2015-01-28 11:25:23', NULL, NULL, 'New');
+INSERT INTO `curamdb`.`statuts` (`id`, `date_activation`, `date_creation`, `date_fermeture`, `date_modification`, `label`) VALUES ('7', '2015-01-28 11:25:23', '2015-01-28 11:25:23', NULL, NULL, 'Modifié');
+-- 29/01/2015   Alina ---
+INSERT INTO `curamdb`.`statuts` (`id`, `date_activation`, `date_creation`, `date_fermeture`, `date_modification`, `label`) VALUES ('8', '2015-01-29 11:25:23', '2015-01-29 11:25:23', NULL, NULL, 'Rejeter');

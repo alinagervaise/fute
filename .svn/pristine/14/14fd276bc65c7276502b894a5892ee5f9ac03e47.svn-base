@@ -1,0 +1,19 @@
+<%-- 
+    Document   : actions
+    Created on : 15 janv. 2015, 21:28:33
+    Author     : Sergeo
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<div class="menu-actions">
+    <strong>Operations</strong>
+    <ul class="list-unstyled">
+        <li><a class="fa fa-file-text" href="addcontracts">&nbsp;Nouveau contrat</a></li>
+        <li><a class="fa fa-file-text" href="editcontracts?rowId=${id}">&nbsp;Modifier contrat</a></li>
+        <li><a class="fa fa-file-text" href="souscripteurs?rowId=${id}">&nbsp;Souscripteur</a></li>
+        <li><a class="fa fa-file-text" href="beneficiaires?rowId=${id}">&nbsp;beneficiaire</a></li>
+        <li><a class="fa fa-print" href="print${curentrubric}">&nbsp;Imprimmer</a></li>
+    </ul>
+</div>

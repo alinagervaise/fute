@@ -1,0 +1,71 @@
+<%-- 
+    Document   : RembourssementApplication
+    Created on : 2 févr. 2015, 09:50:54
+    Author     : Sergeo
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<h1><spring:message code="requete.application"></spring:message></h1>
+<form action="addProprietaire" method="post">    
+    <div id="formRequestApplication" class="curam_textbox">
+        <label><spring:message code="police.numero.assure"></spring:message>:</label>
+        <input name="raisonsociale" type="text" class="form-control" id="firstname" placeholder="<spring:message code="police.numero.assure"></spring:message>"/>
+        <div id="documents"> 
+            <input title="document 1" type="file" name="document"/>
+        </div> 
+        <a href="#" title="<spring:message code="form.add.newDocument"></spring:message>" onclick="newFileInput()"><i class="fa fa-plus-square"></i>&nbsp;<strong><spring:message code="form.add.newDocument"></spring:message></strong> </a>
+    </div>                                  
+    <div id="formApplicationInfos" class="curam_textbox">
+        <label>Donneur d'ordre:</label>
+        <input title="donneurOrdre" value="${currentUser.id}" type="hidden" name="donneurOrdre"/>
+        <input disabled name="demandeur" type="text" class="form-control" id="demandeur"
+        <c:if test="${!empty(currentUser)}"> value="${currentUser.nom} ${currentUser.prenom}"</c:if>
+               placeholder="<spring:message code=""></spring:message>"/>
+        <br/>
+        <label>B&eacute;n&eacute;ficiaire:</label>
+        <input title="idBeneficiaire" value="${currentUser.id}" type="hidden" name="beneficiaire"/>
+        <input disabled type="text" class="form-control" <c:if test="${!empty(currentUser)}"> value="${currentUser.nom} ${currentUser.prenom}"</c:if> placeholder="<spring:message code=""></spring:message>"/>
+        <label>Choisir une police:</label><br/>
+        <div class="col-md-3">
+            Police N1            
+            <input title="donneurOrdre" checked="" value="${currentUser.id}" type="radio" name="policeId"/>
+        </div>
+        <div class="col-md-3">
+            Police N2            
+            <input title="donneurOrdre" value="${currentUser.id}" type="radio" name="policeId"/>
+        </div>
+        <div class="col-md-3">
+            Police N3           
+            <input title="donneurOrdre" value="${currentUser.id}" type="radio" name="policeId"/>
+        </div>
+        <div class="col-md-3">
+            Police N4           
+            <input title="donneurOrdre" value="${currentUser.id}" type="radio" name="policeId"/>
+        </div>
+        <div class="col-md-3">
+            Police N5           
+            <input title="donneurOrdre" value="${currentUser.id}" type="radio" name="policeId"/>
+        </div>
+        <div class="col-md-3">
+            Police N6           
+            <input title="donneurOrdre" value="${currentUser.id}" type="radio" name="policeId"/>
+        </div>
+        <div class="col-md-3">
+            Police N7           
+            <input title="donneurOrdre" value="${currentUser.id}" type="radio" name="policeId"/>
+        </div>
+        <div class="col-md-3">
+            Police N8          
+            <input title="donneurOrdre" value="${currentUser.id}" type="radio" name="policeId"/>
+        </div>
+            
+    </div>                                  
+</form>
+
+<script src="<c:url value="/resources/js/curamAjaxRembourssment.js"/>">
+        
+</script>       
+        

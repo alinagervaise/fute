@@ -1,0 +1,705 @@
+/* 
+Solidity Template 
+http://www.curam.com/preview/curam_407_solidity 
+*/
+
+body {  font: 14px/1.85em 'Open Sans', Arial, Helvetice Neue, sans-serif; color: #888888; font-weight: 300; font-style: normal; -webkit-font-smoothing: antialiased; /* Fix for webkit rendering */ -webkit-text-size-adjust: 100%; }
+
+a, a:hover, a:focus { 
+	text-decoration: none; 
+	-webkit-transition: all 150ms ease-in; 
+	-moz-transition: all 150ms ease-in; 
+	-o-transition: all 150ms ease-in; 
+	transition: all 150ms ease-in;
+}
+
+h1, h2, h3, h4, h5, h6 { 
+	font-family: 'Open Sans', Arial, Helvetice Neue, sans-serif; 
+}
+
+h1 { 
+	text-transform: uppercase; width: 100%; border-bottom: 1px solid #3cb04a; font-size: 24px; color: #333333; padding-bottom: 10px; font-weight: bold; 
+}
+
+.clear { 
+	clear: both;
+}
+
+.content { 
+ 	display: none; 
+	height: auto;
+}
+
+.homepage { 
+ 	display: block;
+}
+
+.curam_title { 
+	float: left; 
+	width: 100%; 
+	font-size: 46px; 
+	color: #3cb04a;
+	font-weight: 400; 
+	margin-top: 10px;
+}
+.curam_lang { 
+	float: left; 
+	width: 100%; 
+	font-size: 15px; 
+	color: #3cb04a;
+	font-weight: 400; 
+	margin-top: 10px;
+}
+.curam_lang a:hover{ 
+	
+}
+
+.curam_lang ul li.active{ 
+	border-bottom: 4px solid #999999;
+}
+.curam_lang ul li{ 
+    padding: 0 0 0 0;
+    margin-right: .5em;
+}
+
+.curam_lang img{ 
+	width: 20px;
+        height: 16px;
+}
+
+.curam_acount{ 
+	float: left; 
+	width: 100%; 
+	font-size: 15px; 
+	color: #3cb04a;
+	font-weight: 400; 
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+.curam_acount span{  
+	font-size: 15px; 
+}
+
+.curam_title a { 
+	color: #3cb04a; 
+}
+
+.curam_subtitle { 
+	float: left; 
+	margin-top: 5px; 
+}
+
+.curam_search { 
+ 	float: left; 
+	width: 100%;
+}
+.curam_search input { 
+ 	border: 1px solid #cccccc; 
+	padding: 7px; 
+	width: 100%; 
+	font-style: italic; 
+	color: #999999;
+}
+
+::-webkit-input-placeholder { 
+ /* WebKit browsers */
+    color: #999999;
+}
+:-moz-placeholder { 
+ /* Mozilla Firefox 4 to 18 */
+    color: #999999;
+}
+::-moz-placeholder { 
+ /* Mozilla Firefox 19+ */
+    color: #999999;
+}
+:-ms-input-placeholder { 
+ /* Internet Explorer 10+ */
+    color: #999999;
+}
+
+.responsive-navigation { 
+ 	background: #3cb04a; 
+	float: left; 
+	padding: 10px 0px; 
+	margin-bottom: 30px;
+}
+.menu-toggle-btn { 
+	 margin-left: 20px;
+}
+
+a.menu-toggle-btn { 
+	 color: #ffffff;
+}
+
+.curam_menu { 
+ 	text-align: center;
+}
+
+.responsive_menu ul { 
+ 	padding: 0; 
+	margin: 0; 
+	list-style: none;
+}
+
+.main_menu { 
+ 	text-align: center; 
+	margin-top: 20px; 
+	margin-bottom: 10px;
+}
+.main_menu div.col-md-2 { 
+ 	margin-bottom: 1px; 
+	/*font-size: 16px;*/
+}
+.main_menu div.col-md-2 div.fa { 
+	font-size: 50px;
+}
+.main_menu div.col-md-2 a { 
+ 	color: white; 
+	text-transform: uppercase; 
+	display: block; 
+        padding-top: 5px;
+	background-color: #3cb04a; 
+	-webkit-transition: all 150ms ease-in; 
+	-moz-transition: all 150ms ease-in; 
+	-o-transition: all 150ms ease-in; 
+	transition: all 150ms ease-in; 
+}
+
+.menu-actions ul li a{
+    border: 1px solid #9bd3a2;
+    width: 10em;
+    font-size: 15px;
+    padding: 4px 2px 4px 2px;
+    margin: 1px;
+}
+
+.menu-actions ul li a:hover{
+    border: 1px solid #9bd3a2;
+    width: 10em;
+    padding: 4px 2px 4px 2px;
+    margin-left: 4px;
+    background-color: #d9edf7;
+}
+
+.main_menu div.col-md-2 a strong{ 
+    display: block 
+}
+
+.main_menu div.col-md-2 a:hover { 
+	background-color: #1c8b2a; 
+}
+
+.main_menu div.col-md-2 a#prev { 
+	width: 70px; 
+	height: 70px; 
+	line-height: 70px; 
+	font-weight: 400; 
+	cursor: pointer; 
+}
+.main_menu div.col-md-2 a#next { 
+ 	width: 70px;
+	height: 70px; 
+	line-height: 70px; 
+	float: right; 
+	font-weight: 400; 
+	cursor: pointer;
+}
+
+a.menu_toggle-btn { 
+	width: 100%; 
+	height: 60px; 
+	background-color: #3cb04a; 
+	text-align: center; 
+	line-height: 60px; 
+	display: block; 
+	color: white; 
+	}
+a.menu_toggle-btn i { 
+	line-height: 60px; 
+	}
+
+.responsive-navigation { 
+	position: relative; 
+	width: 100%; 
+	display: block; 
+	z-index: 9999; 
+}
+
+.responsive_menu { 
+	display: none; 
+	background-color: #38a345; 
+}
+.responsive_menu ul li a { 
+	color: white; 
+	text-transform: uppercase; 
+	display: block; 
+	padding: 10px 20px; 
+	border-bottom: 1px solid #9bd3a2; 
+}
+
+.main-slider { 
+	width: 100%; 
+	height: 570px;
+	margin-top: 30px;
+}
+
+.flexslider .slides { 
+	height: 570px;
+}
+
+.slider-caption { 
+	position: absolute; 
+	vertical-align: middle; 
+	width: 100%; 
+	text-align: center; 
+	height: 100px; 
+	z-index: 8; 
+	color: white; 
+	top: 200px; 
+}
+
+.slider-caption h2 { 
+	font-size: 48px; 
+	text-transform: uppercase; 
+	font-weight: 800; 
+	margin-bottom: 30px; 
+}
+
+.slider-caption p { 
+	font-size: 16px; 
+	text-transform: uppercase; 
+	letter-spacing: 2px; 
+	width: 50%; 
+	margin: 0 auto 30px auto; 
+	line-height: 1.8em; 
+}
+
+.flexslider { 
+	background-color: black; 
+	height: 570px; 
+	overflow: hidden; 
+	margin: 0;
+}
+
+.flexslider img { 
+	position: relative; 
+	opacity: 0.5; 
+	width: 100%; 
+	z-index: 7; 
+}
+
+.flex-control-nav { 
+	bottom: 15px; 
+	z-index: 9;
+}
+
+.flex-control-paging li a { 
+	background-color: white; 
+	border: 2px solid black; 
+	opacity: 0.6;
+}
+
+.flex-control-paging li a:hover { 
+	opacity: 1; 
+	background: white; 
+}
+
+.flex-control-paging li a.flex-active { 
+	opacity: 1; 
+	background: white; 
+}
+
+.curam_icon { 
+	float: left; 
+	font-size: 40px; 
+	color: #3cb04a; 
+	text-align: center; 
+	padding-bottom: 3px; 
+	border-bottom: 2px solid #cccccc;
+}
+
+.curam_greentitle { 
+	float: left; 
+	/*font-size: 20px;*/ 
+	color: #3cb04a; 
+	font-weight: bold; 
+	text-transform: uppercase; 
+	margin-left: 10px; 
+	margin-top: 5px;
+}
+.curam_servicegap { 
+	margin: 40px 0px 0px 0px;
+}
+.curam_servicegap img { 
+	width: 100%;
+}
+
+.curam_email { 
+	 width: 40px; 
+	 height: 40px; 
+	 border-radius: 20px; 
+	 background: #3cb04a; 
+	 text-align: center;  
+	 left:50%;  
+	 margin-left:-20px; 
+	 margin-top: -20px; 
+	 position: absolute;
+	-webkit-transition-duration: 1.5s;
+    -moz-transition-duration: 1.5s;
+    -o-transition-duration: 1.5s;
+    transition-duration: 1.5s;
+     
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    transition-property: transform;
+    overflow:hidden;
+}
+
+.curam_email div.fa { 
+	font-size: 16px; 
+	color: #ffffff; 
+	line-height: 40px;
+}
+
+.curam_email:hover	{ 
+	-webkit-transform: rotate(360deg);    
+	-moz-transform: rotate(360deg);   
+	 -o-transform: rotate(360deg);
+}
+
+.curam_teamtext { 
+	 float: left;
+	 width: 100%;
+	 margin: 20px 0px;
+}
+.curam_teamname { 
+	float: left;
+	width: 50%;
+}
+.curam_teamtitle { 
+	float: left; 
+	font-size: 18px; 
+	color: #3cb04a; 
+	font-weight: bold; 
+	text-transform: uppercase;
+	width: 100%; 
+}
+
+.curam_teampost { 
+	float: left; 
+	text-transform: uppercase; 
+	font-style: italic;
+}
+
+.curam_teamsocial { 
+	float: right; 
+	width: 50%; 
+	text-align: right;
+}
+.curam_teamsocial .fa { 
+	margin-left: 5px;
+	color: #cccccc; 
+	font-size: 16px;
+}
+.curam_teamsocial .fa:hover{ color: #3cb04a; }
+
+.curam_portfolio img { 
+	width: 100%; 
+	margin-top: 30px;
+}
+
+.fadeInDown	{ 
+}
+
+/*------------------------------------------------------
+	Gallery Styles 
+--------------------------------------------------------*/
+.gallery-item { 
+	margin-bottom: 0px;
+ 	position: relative;
+	overflow: hidden;
+}
+.gallery-item .content-gallery { 
+	text-align: center;
+}
+.gallery-item .content-gallery h3 { 
+	  color: #b10021;
+	  font-size: 16px;
+	  font-weight: 300;
+	  margin-top: 5px;
+	  padding-bottom: 5px;
+	  display: inline-block;
+}
+.gallery-item img { 
+ width: 100%;
+}
+.gallery-item .overlay { 
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: block;
+  -webkit-transition: all 50ms ease-in-out;
+  -moz-transition: all 50ms ease-in-out;
+  -ms-transition: all 50ms ease-in-out;
+  -o-transition: all 50ms ease-in-out;
+  transition: all 50ms ease-in-out;
+}
+.gallery-item .overlay a { 
+  color: #ffffff;
+  text-align: center;
+  line-height: 32px;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  margin-top: -16px;
+  margin-left: -16px;
+  font-size: 24px;
+}
+
+#curam_map	{ 
+    width: 100%;
+	height: 300px;
+	border: 1px solid #cccccc;
+	margin: 40px 0px;
+}
+
+.curam_form{
+    
+}
+
+.curam_form >div{
+    margin-bottom: 5px;
+}
+
+.curam_form .curam_boutton{
+    margin: 0em 5em;
+    padding: 0em 0em;
+    font-size: 15px;
+}
+.curam_form .curam_boutton button{
+    margin-left: 1em;
+    font-size: 15px;
+}
+
+.curam_textbox	{ 
+ 	width: 50%; 
+	float: left; 
+	margin-top: 0px;
+}
+.curam_textbox	input { 
+	width: 95%; 
+	border-radius: 0px; 
+	padding: 7px;
+}
+.curam_textbox	select { 
+	width: 95%;
+        border-width: 2px;
+	border-radius: 1px; 
+	padding: 7px;
+}
+.curam_textareabox	{ 
+	width: 100%; 
+	float: left;
+}
+.curam_textareabox	textarea { 
+	border-radius: 0px;
+	padding: 7px; 
+	height: 130px; 
+	width: 97.5%; 
+	/*margin-top: 20px;*/
+}
+.curam_textareabox button { 
+	border-radius: 0px; 
+	background: #3cb04b; 
+	padding: 7px 15px; 
+	text-transform: uppercase; 
+	font-weight: 400; 
+	font-size: 16px;
+	margin-top: 20px;
+}
+.curam_address ul { 
+	float: left; 
+	margin: 0px; 
+	padding: 0px; 
+}
+.curam_address	li { 
+	padding: 0px 0px 10px 0px; 
+	margin: 0px; 
+	list-style: none; 
+	float: left;
+}
+.curam_address	li.fa { 
+	width: 10%; 
+	color:#3cb04b; 
+	font-size: 20px;
+}
+.curam_address	li.text { 
+	width: 90%;
+	font-size: 16px;
+}
+
+/*@media (min-width: 930px) { 
+    footer{
+        position: fixed;
+        bottom: 1px;
+        left: 7em;
+        z-index: -155;
+    }
+}*/
+
+.curam_footer { 
+	background: #3cb04b; 
+	margin-top: 25px; 
+	padding: 10px 0px; 
+	text-align: center; 
+	color:#ffffff;
+}
+
+.curam_footer a { 
+	color: #ffffff;
+}
+
+@media (max-width: 767px) { 
+	.slider-caption a, .slider-caption p { 
+	display: none; 
+	top: 50px !important; } 
+	.curam_servicegap {
+	float: left;
+	width: 100%;
+	}
+	}
+@media (max-width: 581px) { 
+ .slider-caption { 
+ display: none; } }
+@media (max-width: 991px) { 
+ .navigation	{ 
+ display: none;}
+	 #main-content { 
+ width: 100%; }
+ 	.first-footer { 
+ border-left: 0; }
+	.flexslider .slides, .flexslider, .main-slider { 
+ height: auto; }
+	.service-item { 
+ margin-bottom: 30px; }
+	.progess-bars { 
+ margin-top: 40px; }
+ }
+
+ @media (min-width: 332px)	{ 
+ .curam_address	{ 
+	margin-top: 30px; 
+	}
+	.curam_search	{ 
+	margin: 20px 0px;
+	}
+ }
+ @media (min-width: 768px) {
+ 	.curam_search	{ 
+	margin-top: 10px;}
+ }
+ @media (min-width: 768px) and (max-width: 991px) {
+ 	.main-navigation { margin-top: 20px;}
+ }
+ @media (min-width: 992px) { 
+	/*.main_menu div.col-md-2 div.fa	{ line-height: 100px;}*/
+	.main_menu div.col-md-2 a{ 
+/* 	height: 128px; 
+	line-height: 128px;*/
+	}
+	.main_menu div.col-md-2 a#prev	{ 
+	margin-top: 22%;
+	}
+	.main_menu div.col-md-2 a#next	{ 
+	margin-top: 22%;
+	}
+	.curam_imagecontrol { 
+	height: 118px; 
+	overflow: hidden;
+	}
+	.curam_imagecontrol .gallery-item .overlay a{ 
+ top: 20%;}
+	.curam_address	{ 
+ margin-top: 0px;}
+
+ }
+ 
+@media (min-width: 1200px) { 
+	.main_menu div.col-md-2 div.fa	{ 
+	/*line-height: 160px;*/
+	}
+	.main_menu div.col-md-2 a{ 
+	 /*height: 160px;*/ 
+	 /*line-height: 160px;*/
+	 }
+	.main_menu div.col-md-2 a#prev	{ 
+	margin-top: 27%;
+	}
+	.main_menu div.col-md-2 a#next	{ 
+ 	margin-top: 27%;
+	}
+	.curam_imagecontrol { 
+	height: 140px; 
+	overflow: hidden;
+	}
+	.curam_imagecontrol .gallery-item .overlay a { 
+	top: 22%;
+	}
+ }
+
+ul.sub-menu {
+    margin-top: .5em;
+    text-align: center;    
+}
+@media (min-width: 1200px) {
+    ul.sub-menu {
+        margin-top: .5em;
+        text-align: center;    
+        height: 3em;    
+    }
+}
+
+ul.sub-menu li{
+    padding: 1px 0px;
+    color: #ffffff;
+    width: 9em;
+    background-color: menu;
+}
+
+ul.sub-menu li a{
+    display: block;
+    width: 9em;
+    height: 2em;
+    text-align: center;
+    border: 1px solid #d9edf7;
+    
+}
+ul.sub-menu li.active{
+    border-bottom: 3px solid skyblue;
+    background-color: #d9edf7;
+}
+
+ul.sub-menu li a:hover{
+    background-color: #d9edf7;
+    font-size: 14.1px;
+    height: 2.1em;
+}
+
+.curam_sub_menu {
+    border-bottom: 1px solid #c0c0c0;
+    margin-bottom: 1em;
+}
+
+.curam_profil button{
+    font-size: 14px;
+    font-weight: bold;
+    height: 3em;
+}
+

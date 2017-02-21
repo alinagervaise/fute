@@ -1,0 +1,248 @@
+<%-- 
+    Document   : polices
+    Created on : 15 janv. 2015, 18:34:16
+    Author     : user
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<jsp:include page="header.jsp"/>
+<jsp:include page="top_page.jsp"/>
+<jsp:include page="menu_header.jsp"/>   
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#mesprestations').dataTable({
+            "scrollX": true,
+            "dom": 'T<"clear">lfrtip',
+            tableTools: {
+                "aButtons": [
+                    "copy",
+                    "csv",
+                    "xls",
+                    {
+                        "sExtends": "pdf",
+                        "sPdfOrientation": "landscape",
+                        "sPdfMessage": "Custom message."
+                    },
+                    "print"
+                ]
+            }
+        });
+    });
+</script>
+<div id="menu-container">
+    <div class="divs">
+        <div class="content homepage" id ="menu-8">
+            <div class="container">
+                <jsp:include page="submenus.jsp"/>
+                <div class="row">
+                    <div class="col-md-2 col-sm-6">
+                        <jsp:include page="operations.jsp"/>
+                    </div>
+                    <div class="col-md-10 col-sm-6 ">
+                        <h2><spring:message code="label.findContract"/></h2>
+                        <c:if test="${!empty successMessage }">
+                            <div class="alert alert-success">
+                                <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
+                                <img src="<c:url value="/resources/images/icon/valid.png" />" >
+                                ${nbItemFound} <spring:message code="message.successMessage.itemFound"/>
+                                ${nbItemFound}  <spring:message code="${successMessage}"/>
+                            </div>
+                        </c:if>
+                        <c:if test="${!empty errorMessage }">
+                            <div class="alert alert-danger">
+                                <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
+                                <img src="<c:url value="/resources/images/icon/alert.png" />" >
+                                ${nbItemFound} <spring:message code="${errorMessage}"/>
+                            </div>
+                        </c:if>
+                        <h4><spring:message code="${label.findContracts}"/></h4>
+                        <form id="defaultForm"  action="<c:url value="/findcontracts" />"  method="post">
+                            <div class="col-lg-12 form-group" style="margin-top: 10px">
+
+                                <div class="col-lg-3 " style="">
+                                    <label for="searchAttribute"><spring:message code="label.searchAttribute"/></label>
+                                    <select class="form-control" name="searchAttribute" id="searchAttribute" style="width: 100%">
+                                        <option value="libelle" class="text-justify">
+                                            <spring:message code="form.libelle"/>
+                                        </option>
+                                        <option value="id" class="text-justify">
+                                            <spring:message code="label.numeroPolice"/>
+                                        </option>
+                                        <option value="montantPrime" class="text-justify">
+                                            <spring:message code="form.montantPrime"/>
+                                        </option>
+                                        <option value="montantPlafond" class="text-justify">
+                                            <spring:message code="form.montantPlafond"/>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 " style="">
+                                    <label for="searchOperator"><spring:message code="label.searchOperator"/></label>
+                                    <select class="form-control" name="searchOperator" id="searchAttribute" style="width: 100%">
+                                        <option value="=" class="text-justify"> = </option>
+                                        <option value="=" class="text-justify"> < </option>
+                                        <option value="<=" class="text-justify"> <= </option>
+                                        <option value=">" class="text-justify"> > </option>
+                                        <option value=">=" class="text-justify"> >= </option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 " style="">
+                                    <label for="searchValue"><spring:message code="label.searchValue"/></label>
+                                    <input required class="form-control" id="searchValue" name="searchValue" type="search" />
+                                </div>
+                                <div class="col-lg-2" style="">
+                                    <label for="search">&nbsp;</label>
+                                    <div class="input-group" style="">
+                                        <button type="submit" name="findcontracts"  class="form-control btn btn-primary"><spring:message code="form.submit"/></button>
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <c:if test="${!empty resultList}">
+                            <table class="table table-condensed table-hover table-responsive" id="mesprestations">                
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nom</th>
+                                        <th>Type police</th>
+                                        <th>Montant Prime</th>
+                                        <th>Montant plafond</th>
+                                        <th>Active</th>
+                                        <!--<th>Date Activation</th>-->
+                                        <th>Date Modification</th>
+                                        <th>Date Création</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="police" items="${resultList}">
+                                        <tr>
+                                            <td>${police.id}</td>
+                                            <td>${police.libelle}</td>
+                                            <td>${police.typePolice}</td>
+                                            <td>${police.montantPrime}</td>
+                                            <td>${police.montantPlafond}</td>
+                                            <td>${police.active}</td>
+                                            <!--<td>${police.dateActivation}</td>-->
+                                            <td>${police.dateModification}</td>
+                                            <td>${police.dateCreation}</td>
+                                            <td class="text-justify">
+                                                <a  class='fa fa-gear tools' href="configcontracts?rowId=${police.id}" title='Configurer'></a>
+                                                <a  class='fa fa-trash-o tools' data-toggle="modal" data-target="#deleteRecord" title='Supprimer'></a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </c:if>
+                        <div class="clear"></div>
+                    </div>                
+                </div>
+            </div>    
+        </div>    
+        <div class="modal fade" id="editRecord" tabindex="-1" role="dialog" aria-labelledby="editRecord" aria-hidden="true">
+            <%--<jsp:include page="_editRecord.jsp"/>--%>
+            <div class="modal-dialog">
+                <form action="<c:url value="/update" />" id="editRecord" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                            <a data-dismiss="modal" class="btn pull-right"><spring:message code="retour"/></a>
+                            <h4 class="modal-title"><i class="fa fa-edit">&nbsp;&nbsp;<spring:message code='label.recordEdition'/></i></h4>
+                        </div>
+
+                        <div class="modal-body" style="padding: 20px 20px 20px 20px ; border:   1px solid #F0F0E9; border-radius: 10px; "> 
+                        </div>
+                        <div class="modal-footer clearfix">
+
+                            <input type="hidden" name="page_name" value="${page_name}"/>
+                            <input type="hidden" name="entity" value="${currentEntity}"/>
+                            <button type="submit" name="update" class="btn btn-primary pull-left" ><i class="fa fa-save"></i> <spring:message code="form.update"/></button>
+                        </div>
+
+                    </div><!-- /.modal-content -->
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="editContactLabel" aria-hidden="true">
+            <jsp:include page="_deleteRecord.jsp"/>
+        </div>
+        <jsp:include page="headcontent.jsp"/>
+
+    </div>
+    <jsp:include page="footer.jsp"/>
+    <script>
+        $(document).ready(function() {
+            $(".fa[data-target='#editRecord']").click(function() {
+                // Get array of column Headings
+                var columnHeadings = $("thead th").map(function() {
+                    return $(this).text();
+                }).get();
+                console.log("heading" + columnHeadings);
+                // Get array of column Footer
+                var columnFooters = $("tfoot th").map(function() {
+                    return $(this).text();
+                }).get();
+                console.log("heading" + columnFooters);
+                // Remove the last column heading (for the Edit button)
+                columnHeadings.pop();
+                // Get array of column values from the row where the Edit button was clicked
+                var columnValues = $(this).parent().siblings().map(function() {
+                    return $(this).text();
+                }).get();
+                var modalBody = $('<div id="modalContent"></div>');
+                //            var modalForm = $('<form role="form"  name="update" method="post"></form>');
+                // Create the form in the modal dynamically
+                $.each(columnHeadings, function(i, columnHeader) {
+                    //                console.log(i + "-" + columnHeader);
+                    var formGroup = $('<div class="form-group"></div>');
+
+                    if ((columnFooters[i] === "rowId")) {
+                        formGroup.append('<input type="hidden" class="form-control" name="' + columnFooters[i] + '" id="' + columnFooters[i] + '" value="' + columnValues[i] + '" />');
+                    } else {
+                        formGroup.append('<label for="' + columnFooters[i] + '">' + columnHeader + '</label>');
+                        if (columnValues[i].length > 160) {
+                            formGroup.append('<textarea style="resize: both; height: 200px" class="form-control" name="' + columnFooters[i] + '" id="' + columnFooters[i] + '" value="' + columnValues[i] + '" >' + columnValues[i] + '</textarea>');
+                        } else {
+                            formGroup.append('<textarea style="resize: both" row="1" class="form-control" name="' + columnFooters[i] + '" id="' + columnFooters[i] + '" value="' + columnValues[i] + '" >' + columnValues[i] + '</textarea>');
+                        }
+                    }
+                    console.log("longueur:" + columnValues[i].length);
+                    console.log("longueur>160" + (columnValues[i].length > 160));
+                    console.log(i + "-" + columnValues[i]);
+                    console.log(i + "footer: " + columnFooters[i]);
+                    if ((columnFooters[i] !== "Id") && (columnFooters[i] !== "")) {
+                        modalBody.append(formGroup);
+                    }
+
+                });
+                //            $('.modal-body #rowId').val(columnValues[7]);
+                //            $('.modal-body #id').val(columnValues[7]);
+                //            modalBody.append(modalForm);
+                $('.modal-body#rowId').val(columnValues[0]);
+                console.log("rowId=" + columnValues[0]);
+                $('.modal-body').html(modalBody);
+            });
+            //        $('.modal-footer .btn-primary').click(function() {
+            //            $('form[name="modalForm"]').submit();
+            //        });
+
+            $(".fa[data-target='#confirmDelete']").click(function() {
+                var columnValues = $(this).parent().siblings().map(function() {
+                    return $(this).text();
+                    //                var modalBody = $('<div id="modalContent"></div>');
+                }).get();
+                formGroup.append('<input type="hidden" class="form-control" name="' + columnFooters[i] + '" id="' + columnFooters[i] + '" value="' + columnValues[i] + '" />');
+
+                $('.modal-body#rowId').val(columnValues[0]);
+                console.log("rowId=" + columnValues[0]);
+                $('.modal-body').html(modalBody);
+            });
+        });
+    </script>

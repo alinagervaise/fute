@@ -1,0 +1,96 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.service.security;
+
+import com.celylog.curam.model.entities.Adresse;
+import com.celylog.curam.model.entities.Beneficiaire;
+import com.celylog.curam.model.entities.BeneficiaireHistorique;
+import com.celylog.curam.model.entities.Police;
+import com.celylog.curam.model.entities.Profil;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DaoService;
+import com.celylog.curam.utils.enumeration.ConstantsDeControl;
+import com.celylog.curam.web.controller.BeneficiaireController;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ *
+ * @author Harry Wanki
+ */
+@Service
+public class BeneficiaireService extends DaoService<Beneficiaire> {
+    
+    @Autowired
+    FormService formService;
+    
+    public List <Beneficiaire> getBeneficiaireByMatriculeAssurance(String matriculeAssure){
+        List <Beneficiaire> beneficiaires = new ArrayList();
+        String query = "select b from Beneficiaire b where b.matriculeAssurance='"+
+                        matriculeAssure+ "'";
+        beneficiaires = dao.getAll(query);
+        return beneficiaires;
+    }
+    public List <Beneficiaire> getBeneficiaireByIdPolice(int idPolice){
+        String query = "select b from Beneficiaire b where b.idPolice = '"+idPolice + "'";
+        List<Beneficiaire> beneficiaires = dao.getAll(query);
+        return beneficiaires;
+    }
+    
+    public Beneficiaire createBeneficaire(int idPolice, 
+            Utilisateur user, BeneficiaireHistorique beneficiaireH, HttpSession session ){
+                   
+            Beneficiaire beneficiaire = new Beneficiaire();
+            int idUser = user.getId();
+            // Creer profil beneficiaire
+            Profil profil = (Profil)dao.getById(ConstantsDeControl.BENEFICIAIRE, Profil.class);
+            Set userSet = profil.getUtilisateurs();
+            userSet.add(user);
+            dao.update(profil);
+            
+            //enregistrer le beneficiaire
+            beneficiaireH.setType(ConstantsDeControl.ASSURE_PRINCIPAL);
+            beneficiaireH.setIdPolice(idPolice);
+            beneficiaireH.setStatut(ConstantsDeControl.STATUT_NEW);
+            beneficiaireH.setIdUtilisateur(idUser);
+            try{
+                formService.cloneEntity(beneficiaire, beneficiaireH);
+            }
+            catch(Exception ex){
+                Logger.getLogger(BeneficiaireService.class.getName()).log(Level.INFO, ex.getMessage());
+            }
+            beneficiaire.setUtilisateur(user);
+            beneficiaire.setStatut(ConstantsDeControl.STATUT_NON_VALIDER);
+            formService.setAllAutomatiqueFields(session,"Beneficiaire", true, beneficiaire);
+            beneficiaire = (Beneficiaire)dao.create(beneficiaire);
+            beneficiaire = (Beneficiaire)dao.refresh(beneficiaire);
+                
+            //enregistrer historique beneficiaire
+            beneficiaireH.setIdBeneficiaireActif(beneficiaire.getId());
+            formService.setAllAutomatiqueFields(session,"BeneficiaireHistorique", true, beneficiaireH);
+            dao.create(beneficiaireH); 
+            dao.refresh(beneficiaireH);
+            
+            return beneficiaire;
+    }
+    
+    public boolean isBeneficiaireofPolice(Utilisateur user, int idPolice){
+        // Recherche si  Beneficiaire  est enregistre dans cette police
+        String query = "select b from Beneficiaire b where b.utilisateur.id ="
+                    + "'"+user.getId() +"' and ' b.idPolice"+ idPolice +"'";
+        List<Police> pList = dao.getAll(query);
+        if (!pList.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+}

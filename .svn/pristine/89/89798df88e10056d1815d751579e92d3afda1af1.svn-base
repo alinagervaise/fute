@@ -1,0 +1,95 @@
+ALTER TABLE `utilisateur`
+MODIFY COLUMN `id`  int(11) NOT NULL AUTO_INCREMENT FIRST ;
+
+ALTER TABLE `utilisateur`
+MODIFY COLUMN `signature`  char(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `version`;
+
+-- 20/01/2015 -- nono
+ALTER TABLE `police`
+MODIFY COLUMN `id`  int(11) NOT NULL AUTO_INCREMENT FIRST ;
+INSERT INTO `menus` (`id`, `action`, `classe`, `code_libelle`, `date_creation`, `date_modification`) VALUES ('305', 'addcontrats', 'page1', 'addcontrats', '2015-01-20 16:28:15', '2015-01-20 16:28:21');
+UPDATE `menus` SET `icone`='plus-square', `libelle`='Ajouter police', `ordre`='5', `parent`='3' WHERE (`id`='305');
+UPDATE `menus` SET `action`='addmescontrats' WHERE (`id`='305');
+UPDATE `menus` SET `code_libelle`='addmescontrats', `libelle`='Creer un contrat' WHERE (`id`='305');
+
+--  liaison entre souscripteur et police
+drop table if exists souscripteurpolice;
+create table souscripteurpolice
+(
+	id int auto_increment,
+	id_souscripteur	int(11),
+	id_police int(11),
+	primary key(id),
+	key(id_souscripteur),
+	key(id_police)
+);
+
+
+-- 21/01/2015 -- NOno
+ALTER TABLE `groupepolice`
+MODIFY COLUMN `acte_plafond`  int NULL DEFAULT NULL AFTER `montant_plafond`;
+
+ALTER TABLE `police`
+MODIFY COLUMN `signature`  char(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `version`;
+
+
+-- 22/01/2015 -- Nono
+ALTER TABLE `groupepolice`
+MODIFY COLUMN `id`  int(12) NOT NULL AUTO_INCREMENT FIRST ;
+
+ALTER TABLE `groupepolice`
+MODIFY COLUMN `signature`  char(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `version`;
+
+
+-- 23/01/2015 -- Nono
+UPDATE `menus` SET `action`='contracts' WHERE (`id`='301');
+UPDATE `menus` SET `action`='addcontracts' WHERE (`id`='305');
+
+-- mise àjour des chamsp classicss
+ALTER TABLE `souscripteur`
+MODIFY COLUMN `id`  int(11) NOT NULL AUTO_INCREMENT FIRST ,
+MODIFY COLUMN `signature`  char(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `version`;
+
+INSERT INTO `menus` (`id`, `action`, `classe`, `code_libelle`, `date_creation`, `date_modification`, `icone`, `libelle`, `ordre`, `parent`) VALUES ('306', 'findcontracts', 'page1', 'label.findcontracts', '2015-01-23 11:43:16', '2015-01-23 11:43:20', 'search', 'Consulter un contrat', '6', '3');
+
+UPDATE `menus` SET `action`='contracts', `code_libelle`='contracts' WHERE (`id`='301');
+
+-- 24/01/2015 -- nono
+INSERT INTO `souscripteur` (`id`, `id_utilisateur`, `type`, `raisonsociale`, `active`, `version`, `signature`, `date_activation`, `date_modification`, `date_creation`) VALUES ('1', '2', '1', 'Sarl', '1', '0', '0', '2015-01-23 18:46:37', '2015-01-23 18:46:41', '2015-01-23 18:46:44');
+DELETE FROM `menus` WHERE (`id`='306');
+
+-- table contenant les paramètres de l'applications
+CREATE TABLE `parameters` (
+  `code` varchar(500) NOT NULL DEFAULT '',
+  `name` varchar(100) DEFAULT NULL,
+  `value` text NOT NULL,
+  `description` text,
+  `createdDateTime` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `lastUpdatedDateTime` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `isActiveData` int(3) DEFAULT '1',
+  `isDeleteData` int(3) DEFAULT '0',
+  `createdDate` date DEFAULT '0000-00-00',
+  `createdHour` time DEFAULT '00:00:00',
+  `creatorId` int(11) DEFAULT '0',
+  `lastModifierId` int(11) DEFAULT '0',
+  `universalId` varchar(100) DEFAULT '0',
+  `signature` varchar(100) DEFAULT '0',
+  PRIMARY KEY (`code`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+INSERT INTO `parameters` (`code`, `name`, `value`) VALUES ('param.entrerinfosouscripteur', 'entre les informations du souscripteur dans le formulaire', '0')
+
+-- mise à jour de la table souscripteur
+ALTER TABLE `souscripteur`
+CHANGE COLUMN `active` `statut`  int(11) NULL DEFAULT NULL AFTER `type`,
+ADD COLUMN `nom`  varchar(100) NULL AFTER `id_utilisateur`,
+ADD COLUMN `prenom`  varchar(100) NULL AFTER `nom`,
+ADD COLUMN `nationalite`  varchar(100) NULL AFTER `raisonsociale`;
+
+
+-- 28/01/2015  alina ----
+ALTER TABLE `beneficiaire`
+MODIFY COLUMN `id`  int(11) NOT NULL AUTO_INCREMENT FIRST ;
+
+ALTER TABLE `beneficiairehistorique`
+MODIFY COLUMN `id`  int(11) NOT NULL AUTO_INCREMENT FIRST ;

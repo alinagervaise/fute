@@ -1,0 +1,433 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.service.security;
+
+import com.celylog.curam.model.dao.DefaultEntityModel;
+import com.celylog.curam.utils.security.MacCrypto;
+import com.celylog.curam.model.entities.Country;
+import com.celylog.curam.model.entities.District;
+import com.celylog.curam.model.entities.LoginHistory;
+import com.celylog.curam.model.entities.Menus;
+import com.celylog.curam.model.entities.Profil;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.model.entities.VisitorCounter;
+import com.celylog.curam.service.DaoService;
+import com.celylog.curam.utils.BasicFonctions;
+import com.celylog.curam.utils.DateTimeFonctions;
+import com.celylog.curam.utils.GenericParamName;
+import com.celylog.curam.utils.ObjectUtils;
+import static com.celylog.curam.utils.ObjectUtils.setFieldValue;
+import com.celylog.curam.utils.SmsUTF8Codification;
+import com.celylog.curam.utils.enumeration.ConstantsDeControl;
+import java.lang.reflect.Field;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Service;
+import com.celylog.curam.web.controller.exception.MatriculeException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.util.FieldUtils;
+
+/**
+ *
+ * @author Nono
+ */
+@Service
+public class UserService extends DaoService {
+
+//    private static final Logger logger = Logger.getLogger(UserService.class.getName());
+    public boolean isAdmin(User principal) {
+        boolean result = false;
+        for (GrantedAuthority ga : principal.getAuthorities()) {
+            if (ga.getAuthority().equalsIgnoreCase("ADMIN")) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+//    
+//    
+
+    @Autowired
+    UtilisateurService utilisateurService;
+
+    public void setUserSession(HttpSession session, HttpServletRequest request, User principal) {
+        try {
+            List<Utilisateur> leut = getAll("select u  from Utilisateur u where  u.matricule like  '" + principal.getUsername() + "' ");
+            Utilisateur user = leut.get(0);
+
+            setUserSession(session, user);
+            session.setAttribute(GenericParamName.RESULT_SQLSEARCH_ENTITY + "Utilisateur", leut);
+            session.setAttribute("currentUser", user);
+
+            //on recupere les profils de lutilisateur pour afficher le menu correspondant
+            List<Profil> profils = new ArrayList<Profil>(user.getProfils());
+            if (profils.size() == 1) {
+                setUserProfilSessionMenus(user, profils.get(0).getId(), session);
+            } else if (profils.size() > 1) {
+                session.setAttribute("currentUserProfils", profils);
+            }
+
+//            List<Utilisateur> lleut = getAll("select u  from Utilisateur u where  u.login like  '" + principal.getUsername() + "' ");
+//            Utilisateur luser = lleut.get(0);
+//            session.setAttribute("userLevel", luser.getUserLevel());
+//            session.setAttribute(GenericParamName.RESULT_SQLSEARCH_ENTITY + "Utilisateur", luser);
+            // on enregistre la trace de la connexion dans la base de donnée    
+            addLoginHistory(session, request, user);
+        } catch (Exception ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+    }
+
+    public List<Profil> getProfils(HttpSession session, HttpServletRequest request) {
+        Utilisateur user = (Utilisateur) session.getAttribute("currentUser");
+        List<Profil> profils = new ArrayList<Profil>(user.getProfils());
+
+        return profils;
+    }
+
+    public Utilisateur getUserById(String id) {
+        String query = "select r from Utilisateur r where r.id='" + id + "'";
+        List<Utilisateur> l = dao.getAll(query);
+        if (!l.isEmpty()) {
+            return l.get(0);
+        } else {
+            return null;
+        }
+    }
+//
+
+    public void addLoginHistory(HttpSession session, HttpServletRequest request, Utilisateur user) {
+        String navigateur = request.getHeader("user-agent");
+        String host = request.getHeader("host");
+        String sessionValue = session.getId();
+        String temps_creation_session = session.getCreationTime() + "";
+        String temps_fin_session = session.getLastAccessedTime() + "";
+
+        LoginHistory historique = new LoginHistory();
+        historique.setNavigateur(navigateur);
+        historique.setHost(host);
+        historique.setSessionValue(sessionValue);
+        historique.setUserId(user.getId());
+        historique.setUserName(user.getNom());
+        Timestamp dateHeure = BasicFonctions.getCurrentTimeStamp();
+        session.setAttribute("currentUserSessionId", session.getId());
+        dao.create(historique);
+    }
+
+    public List<Menus> getAllMenus(String lang) {
+        List<Menus> menus = getAll("select m from Menus m where m.parent='0'");
+        return menus;
+    }
+
+    public List<Menus> getProfilMenus(int idProfil, String lang) {
+        List<Menus> menus = new ArrayList<Menus>();
+
+        return menus;
+    }
+
+    public List<Menus> getUserMenus(Utilisateur u) {
+        List<Menus> menus;
+        Set<Profil> profils = u.getProfils();
+
+        Set<Menus> setMenus = new HashSet<Menus>();
+
+        for (Profil p : profils) {
+            Set<Menus> sm = p.getMenus();
+            if (!sm.isEmpty()) {
+                setMenus.addAll(sm);
+            }
+        }
+
+        menus = new ArrayList<Menus>(setMenus);
+
+        Collections.sort(menus, new Comparator<Menus>() {
+            @Override
+            public int compare(Menus m1, Menus m2) {
+                return m1.getOrdre().compareTo(m2.getOrdre());
+            }
+        });
+
+        return menus;
+    }
+
+    public void setUserProfilSessionMenus(Utilisateur user, int idProfil, HttpSession session) {
+        List<Menus> menus;
+        Set<Profil> profils = user.getProfils();
+
+        Set<Menus> setMenus = new HashSet<Menus>();
+
+        for (Profil p : profils) {
+            Set<Menus> sm = p.getMenus();
+            if ((!sm.isEmpty()) && (p.getId() == idProfil)) {
+                setMenus.addAll(sm);
+            }
+        }
+
+        menus = new ArrayList<Menus>(setMenus);
+        session.setAttribute("menusUser", menus);
+    }
+
+    public Utilisateur getSessionUser(HttpSession session) {
+        Utilisateur user = (Utilisateur) session.getAttribute("currentUser");
+
+        return user;
+    }
+
+    public void setAminProfilSession(HttpServletRequest request, HttpSession session) {
+
+        try {
+            List<Profil> profils = getAll("select prof from Profil prof");
+            // on charge le resultat dans la session
+            request.setAttribute("listProfils", profils);
+            //faut definir cette rubrique comme rubrique en cours pour personnaliser les actions
+            session.setAttribute("curentrubric", "profils");
+        } catch (Exception ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void setUserSession(HttpSession session, Utilisateur user) {
+        try {
+            String categorie = "Utilisateur";
+            // on récupère tous les champs de la table user pour les charger automatiquement dans la session
+            List<Field> listfields = DefaultEntityModel.getfields(categorie);
+            for (Field f : listfields) {
+//                        listfields.stream().forEach((f) -> {
+                Object val = ObjectUtils.getFieldValue(f, user);
+//                            String lib = (String) ObjectUtils.getLibelle(user);
+                // on formate le contenu de la chaine s'il s'agit de l'un des chaines contenant les mots clés suivant
+                if (f.getName().contains("nom") || f.getName().contains("lieu") || f.getName().contains("ville") || f.getName().contains("libelle") || f.getName().contains("libelle")) {
+                    val = SmsUTF8Codification.specialCaracterFormater(val + "");
+                }
+                setFieldValue(f, user, val);
+                session.setAttribute(f.getName(), val);
+            }
+            //... éléments à mettre à jour dans la session,
+        } catch (Exception ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+//
+
+    public void countSession(HttpSession session) {
+        try {
+//            String nbTotalSession = (String) application.getAttribute("nbTotalSession");
+//            System.out.println("nbTotalSession prec =" + nbTotalSession); 
+            String currentUserSessionId = session.getAttribute("currentUserSessionId") + "";
+            if (!(session.getId()).equals(currentUserSessionId)) {
+//                application.setAttribute("nbTotalSession", (Integer.parseInt(nbTotalSession) + 1) + "");
+                session.setAttribute("currentUserSessionId", session.getId());
+                String query = "select v from VisitorCounter v where v.anneeVisite='" + BasicFonctions.getCurrentYear() + "' and v.moiVisite='" + BasicFonctions.getCurrentMonth() + "' and v.jourVisite='" + BasicFonctions.getCurrentDayId() + "' and v.heureVisite='" + BasicFonctions.getCurrentHourId() + "'";
+                List<VisitorCounter> lSession = dao.getAll(query);
+                VisitorCounter vc;
+                if (!lSession.isEmpty()) {
+                    vc = lSession.get(0);
+                    vc.setNbVisite(vc.getNbVisite() + 1);
+                    dao.update(vc);
+                } else {
+                    vc = new VisitorCounter();
+                    vc.setAnneeVisite(BasicFonctions.getCurrentYear());
+                    vc.setMoiVisite(BasicFonctions.getCurrentMonth());
+                    vc.setJourVisite(BasicFonctions.getCurrentDayId());
+                    vc.setHeureVisite(BasicFonctions.getCurrentHourId());
+                    vc.setNbVisite(1);
+                    dao.create(vc);
+                }
+//                System.out.println("nbTotalSession suiv =" + application.getAttribute("nbTotalSession"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Given an object Utilisateur generate an id in terms of Utilisateur's
+     * attributes the length of the matricule is fixed matricile =
+     * PP/S/J/M/AAA/ArArAr/NNNN
+     *
+     * P: Pays de naissance S: Sexe J: Jour M: Mois A: Année Ar: Arrondissement
+     * N: Numéro de Registre
+     *
+     * PP = CM S = F j=16 <=> [1-9] à [A-Z] => j=G M=11 <=> [1-9] à [A-F] => M=B
+     * AAA=798 ArArAr = 099 NNNN = 0001
+     *
+     * @param user: Any object of type Utilisateur
+     * @return String
+     */
+    public String generateMatricule(Utilisateur user) {
+        String id_curam = "";
+        String isoAlpha2Code = "";
+        char sex = '\u0000';
+        String dayBirth = "";
+        String monthBirth = "";
+        String yearBirth = "";
+        String districtCode = "";
+        String register_number;
+        String pattern = "0";
+        try {
+            // recuperation Code Iso Alpha2 du pays de naissance de l'utilisateur 
+            String queryCountry = "select c from Country c where c.id = '"
+                    + user.getIdPaysNaissance() + "'";
+            List<Country> country = dao.getAll(queryCountry);
+            if (!country.isEmpty()) {
+                isoAlpha2Code = country.get(0).getIsoAlpha2Code().trim();
+            }
+            if (isoAlpha2Code.length() != ConstantsDeControl.ISOALPHA2CODE) {
+                String errMsg = "Expect Length of ISO Alpha 2 CODE of district "
+                        + " equals " + ConstantsDeControl.ISOALPHA2CODE
+                        + " found " + isoAlpha2Code.length();
+                throw new MatriculeException(errMsg);
+            }
+
+            //Recuperation de l' arrondissement de naissance de l'utilisateur
+            String queryDistrict = "select d from District d where d.id = '"
+                    + user.getIdArrondissementOrigine() + "'";
+            List<District> districts = dao.getAll(queryDistrict);
+            if (!districts.isEmpty()) {
+                districtCode = districts.get(0).getCode() + "";
+                if (districtCode == null) {
+                    districtCode = "";
+                }
+                districtCode = BasicFonctions.tranformString(pattern,
+                        ConstantsDeControl.DISTRICT_CODE_LENGTH,
+                        districtCode.trim());
+            }
+
+            //recuperation de la date de naissance
+            Timestamp timeStamp = new Timestamp(user.getDateNaissance().getTime());
+            yearBirth = DateTimeFonctions.getYearMatricule(timeStamp);
+            monthBirth = DateTimeFonctions.getMonthMatricule(timeStamp);
+            dayBirth = DateTimeFonctions.getDayMatricule(timeStamp);
+
+            //Recuperation du numero de registre
+            register_number = Integer.toString(user.getNumeroRegistre());
+            if (register_number == null) {
+                register_number = "";
+            }
+            register_number = BasicFonctions.tranformString(pattern,
+                    ConstantsDeControl.NUMERO_REGISTRE_LENGTH,
+                    register_number.trim());
+
+            // Recuperation du sexe de l'utilisateur
+            sex = user.getSexe();
+
+            // Generation du matricule
+            id_curam = isoAlpha2Code.trim()
+                    + sex + dayBirth + monthBirth + yearBirth
+                    + districtCode + register_number;
+
+        } catch (Exception ex) {
+            System.out.println("EXCEPTION    " + ex);
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id_curam;
+    }
+
+    public void setAdminProfilSubMenu(HttpServletRequest request, HttpSession session) {
+        int idMenu = 0;
+        try {
+            idMenu = Integer.parseInt(request.getParameter("p"));
+        } catch (Exception ex) {
+            System.out.print(ex.toString());
+        }
+<<<<<<< .mine
+        Menus m =null;
+        if(idMenu != 0){
+            m = (Menus)getById(idMenu, Menus.class);
+=======
+        if (idMenu != 0) {
+            Menus m = (Menus) getById(idMenu, Menus.class);
+>>>>>>> .r327
+            List<Menus> mBrothter = new ArrayList<Menus>(m.getParent().getSubMenus());
+            for (Menus b : mBrothter) {
+                if (b.getId().equals(m.getId())) {
+                    b.setClasse("active");
+                } else {
+                    b.setClasse("");
+                }
+            }
+
+        if(m!=null)
+            session.setAttribute("curentrubric", m.getAction());
+        session.setAttribute("SubMenusUser", mBrothter);
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public void setAminProfilAdd(HttpServletRequest request, HttpSession session) {
+
+    }
+
+    /**
+     * Cette méthode permet de retrouver une liste d ' utilisateurs ayant le
+     * meme matricule CURAM.
+     *
+     * @param matricule: Matricule Curam qui permet de retrouver un utilisateur
+     * dans la base de données
+     * @return
+     */
+    public List<Utilisateur> getUserByMatricule(String matricule) {
+        List<Utilisateur> users = new ArrayList();
+        try {
+            String query = "select u from utilisateur u where u.matricule ='"
+                    + matricule + "'";
+            users = dao.getAll(query);
+            if (users.size() > 1) {
+                String errMsg = "Found multiple users with the same CURAM ID";
+                Logger.getLogger(UserService.class.getName()).log(Level.INFO, null, errMsg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    /**
+     * Compute the user matricule and check whether this user exists
+     *
+     * @param user
+     * @return true: if the user is found
+     */
+    public boolean findUtilisateurByMatricule(Utilisateur user) {
+        String matricule = this.generateMatricule(user);
+        List<Utilisateur> users = this.getUserByMatricule(matricule);
+        if (users.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<Utilisateur> getUtilisateurByMatricule(Utilisateur user) {
+        List<Utilisateur> users = new ArrayList();
+        try {
+            String matricule = this.generateMatricule(user);
+            users = this.getUserByMatricule(matricule);
+//            if (users.isEmpty()) {
+//                return null;
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+}

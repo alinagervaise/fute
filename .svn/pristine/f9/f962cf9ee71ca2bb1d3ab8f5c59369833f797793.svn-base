@@ -1,0 +1,22 @@
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<h4><spring:message code="form.add.beneficiaire.title"/></h4>
+<form id="defaultForm"  action="<c:url value="/submitbeneficiaire" />"  method="post">
+    <div class="form-group">
+        <h4><spring:message code=" titre2.informationsPersonnelles"/></h4>
+        <div> <jsp:include page="../_div_newUser.jsp"/></div>
+        
+        <div class="form-group col-md-10 col-sm-6 text-right" style="margin-top: 10px">
+            <span>   
+                <input name="entity" type="hidden" value="Beneficiaire" >
+                <button type="submit" name="button-add-beneficiaire"  class="btn btn-default"><spring:message code="form.add"/></button>
+            </span>
+         </div>
+    </div>
+    
+</form>
+<div class="clear"></div>

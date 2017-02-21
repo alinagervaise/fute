@@ -1,0 +1,121 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.model.entities;
+
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author xavalex
+ */
+@Entity
+@Table(name = "droit")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Droit.findAll", query = "SELECT d FROM Droit d"),
+    @NamedQuery(name = "Droit.findById", query = "SELECT d FROM Droit d WHERE d.id = :id"),
+    @NamedQuery(name = "Droit.findByConsulter", query = "SELECT d FROM Droit d WHERE d.consulter = :consulter"),
+    @NamedQuery(name = "Droit.findByModifier", query = "SELECT d FROM Droit d WHERE d.modifier = :modifier"),
+    @NamedQuery(name = "Droit.findByCreer", query = "SELECT d FROM Droit d WHERE d.creer = :creer"),
+    @NamedQuery(name = "Droit.findBySupprimer", query = "SELECT d FROM Droit d WHERE d.supprimer = :supprimer")})
+public class Droit implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "consulter")
+    private Boolean consulter;
+    @Column(name = "modifier")
+    private Boolean modifier;
+    @Column(name = "creer")
+    private Boolean creer;
+    @Column(name = "supprimer")
+    private Boolean supprimer;
+
+    public Droit() {
+    }
+
+    public Droit(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Boolean getConsulter() {
+        return consulter;
+    }
+
+    public void setConsulter(Boolean consulter) {
+        this.consulter = consulter;
+    }
+
+    public Boolean getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(Boolean modifier) {
+        this.modifier = modifier;
+    }
+
+    public Boolean getCreer() {
+        return creer;
+    }
+
+    public void setCreer(Boolean creer) {
+        this.creer = creer;
+    }
+
+    public Boolean getSupprimer() {
+        return supprimer;
+    }
+
+    public void setSupprimer(Boolean supprimer) {
+        this.supprimer = supprimer;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Droit)) {
+            return false;
+        }
+        Droit other = (Droit) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.celylog.curam.model.entities.Droit[ id=" + id + " ]";
+    }
+    
+}

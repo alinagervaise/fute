@@ -1,0 +1,106 @@
+// le ControleurProprietaire communique directement avec la table propriétaire
+
+package com.celylog.curam.web.controller;
+
+import com.celylog.curam.model.entities.Proprietaire;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.security.ProprietaireService;
+import com.celylog.curam.service.security.UserService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ *
+ * @author Administrateur
+ */
+@Controller
+public class ProprietaireController {
+    @Autowired
+    UserService userservice;
+    
+    @Autowired
+    ProprietaireService proprietaireservice;
+
+
+    @RequestMapping(value = {"/proprietaires"}, method = RequestMethod.GET)
+    public String homeProprietaires(HttpServletRequest request, HttpSession session) {
+        userservice.setAdminProfilSubMenu(request, session);
+        request.setAttribute("listProprietaire", proprietaireservice.getAllProprietaires());
+        
+        return "listProprietaires";
+    }
+
+    @RequestMapping(value = {"/listproprietaires"}, method = RequestMethod.GET)
+    public String homeListProprietaires(HttpServletRequest request, HttpSession session) {
+        request.setAttribute("listProprietaire", proprietaireservice.getAllProprietaires());
+        
+        return "listProprietaires";
+    }
+
+    // pour afficher le detail d'un proprietaire
+    @RequestMapping(value = {"/proprietaire"}, method = RequestMethod.GET)
+    public String homeProprietaire(HttpServletRequest request, HttpSession session) {
+        
+        return "displayProprietaire";
+    }
+
+    @RequestMapping(value = {"/manageGestionnaire"}, method = RequestMethod.POST)
+    public String addGestionnaire(HttpServletRequest request, HttpSession session) {
+        try{
+            String action = request.getParameter("action");
+            String identUser = request.getParameter("userIdentifier");
+            int idOwner = Integer.parseInt(request.getParameter("proprietaire"));
+            int iduser = Integer.parseInt(identUser);
+            Utilisateur user =null;            
+            if(iduser>0)
+                    user = userservice.getUserById(identUser);
+                else
+                    user = userservice.getUserByMatricule(identUser).get(0);
+            
+            if(action.equalsIgnoreCase("add")){            
+                proprietaireservice.addGestionnaire(idOwner, user, session);
+            }else{
+                if(action.equalsIgnoreCase("delete")){
+                    proprietaireservice.removeGestionnaire(idOwner, user, session);
+                }
+            }
+            
+        }catch(Exception e){
+            Logger.getLogger(ProprietaireController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        return "_listGestionnaires";
+    }
+
+    @RequestMapping(value = {"/addProprietaire"}, method = RequestMethod.POST)
+    public String createProprietaire(
+            Model m,HttpServletRequest request, HttpSession session) {
+//        String idProprietaire = request.getParameter("id");
+        proprietaireservice.createProprietaire(request, session);
+        return "redirect:/listProprietaires";
+    }
+
+    @RequestMapping(value = {"/confProprietaire"}, method = RequestMethod.GET)
+    public String confProprietaire(
+            Model m,HttpServletRequest request, HttpSession session) {
+        String idProprietaire = request.getParameter("id");
+        
+        Proprietaire p = proprietaireservice.getByID(Integer.parseInt(idProprietaire));
+        session.setAttribute("proprietaire", p);
+        return "redirect:/configProprietaire";
+    }
+
+    @RequestMapping(value = {"/configProprietaire"}, method = RequestMethod.GET)
+    public String confRedirectProprietaire(
+            Model m, HttpServletRequest request, HttpSession session) {
+        
+        return "/confProprietaire";
+    }
+}

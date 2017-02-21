@@ -1,0 +1,9 @@
+I- Nomenclature on Active table values:
+
+a- 3 (active) = The user is activated, can be use every where
+b- 1 (delete) = present in the database but cannot be used and see even by the administrator (partial deletion)
+c- 2 (deactivate) = can only be use by the administrator.
+
+type_beneficiaire 
+1 = assuré principal
+2 = ayant-droit

@@ -1,0 +1,75 @@
+<%-- 
+    Document   : demande de rembourssement
+    Created on : 23 janv. 2015, 18:34:16
+    Author     : user
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<script type="text/javascript">
+    
+</script>
+<jsp:include page="header.jsp"/>
+<jsp:include page="top_page.jsp"/>
+<jsp:include page="menu_header.jsp"/>     
+<div id="menu-container">
+    <div class="divs">        
+            <div class="content homepage" id ="menu-8">
+            <div class="container">
+                <jsp:include page="submenus.jsp"/>
+                <div class="row">    
+                    <div class="col-md-2 col-sm-6">
+                        <jsp:include page="operations.jsp"/>
+                    </div>
+                    <div class="col-md-10 col-sm-6">
+                        <div class="pagecontent" id="">
+                            <h4><spring:message code="${prestataire.add}"></spring:message></h4>
+                            <table class="table table-condensed table-hover table-responsive">                
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Raison Sociale</th>
+                                        <th>Type</th>
+                                        <th>Statut</th>
+                                        <th>Date Activation</th>
+                                        <th>Date Modification</th>
+                                        <th>Date C&eacute;ation</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="proprietaire" items="${listProprietaire}">
+                                    <tr>
+                                        <td>${profil.id}</td>
+                                        <td>${profil.nom}</td>
+                                        <td>${profil.active}</td>
+                                        <td>${profil.dateActivation}</td>
+                                        <td>${profil.dateModification}</td>
+                                        <td>${profil.dateCreation}</td>
+                                        <td>
+                                            <a class="fa fa-edit" data-toggle="modal" data-target="#editRecord" href="#" title="Edit"></a>
+                                            <a class="fa fa-minus-square-o" href="deleteprofil?id=${profil.id}" title="Delete"></a>
+                                            <a class="fa fa-cog" href="configprofil?id=${profil.id}" title="Configure"></a>
+                                            <a class="fa fa-eject" href="disableprofil?id=${profil.id}" title="Disable"></a>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                                                        
+                        </div>
+                        <div class="clear"></div>
+                        <div class="form-new">
+                            <jsp:include page="newProprietaire.jsp"/>
+                        </div>
+                     </div>                
+                </div>
+            </div>    
+        </div>    
+        
+        <jsp:include page="headcontent.jsp"/>    
+    </div>
+
+<jsp:include page="footer.jsp"/>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="Lecaddyfute-0.2PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.lecaddyfute.model.entities.ShopBillingAccount</class>
+    <class>com.lecaddyfute.model.entities.Produitfacture</class>
+    <class>com.lecaddyfute.model.entities.Rights</class>
+    <class>com.lecaddyfute.model.entities.Status</class>
+    <class>com.lecaddyfute.model.entities.Country</class>
+    <class>com.lecaddyfute.model.entities.TypeService</class>
+    <class>com.lecaddyfute.model.entities.LoginHistory</class>
+    <class>com.lecaddyfute.model.entities.UserBillingAccount</class>
+    <class>com.lecaddyfute.model.entities.ShopAddress</class>
+    <class>com.lecaddyfute.model.entities.ShopBill</class>
+    <class>com.lecaddyfute.model.entities.ShopMembershipBill</class>
+    <class>com.lecaddyfute.model.entities.ShoppingList</class>
+    <class>com.lecaddyfute.model.entities.UserShoppingList</class>
+    <class>com.lecaddyfute.model.entities.Categorieproduit</class>
+    <class>com.lecaddyfute.model.entities.VisitorCounter</class>
+    <class>com.lecaddyfute.model.entities.Customer</class>
+    <class>com.lecaddyfute.model.entities.PaymentMethod</class>
+    <class>com.lecaddyfute.model.entities.Product</class>
+    <class>com.lecaddyfute.model.entities.Address</class>
+    <class>com.lecaddyfute.model.entities.UserMembershipBill</class>
+    <class>com.lecaddyfute.model.entities.UserShoppingListBill</class>
+    <class>com.lecaddyfute.model.entities.Shop</class>
+    <class>com.lecaddyfute.model.entities.Service</class>
+    <class>com.lecaddyfute.model.entities.Role</class>
+    <class>com.lecaddyfute.model.entities.PromotedProduct</class>
+    <class>com.lecaddyfute.model.entities.Menu</class>
+    <class>com.lecaddyfute.model.entities.Parameter</class>
+    <class>com.lecaddyfute.model.entities.ParameterDb</class>
+    <class>com.lecaddyfute.model.entities.Users</class>
+    <class>com.lecaddyfute.model.entities.Category</class>
+    <class>com.lecaddyfute.model.entities.Rayon_1</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/lecaddyfutedb?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+    </properties>
+  </persistence-unit>
+</persistence>

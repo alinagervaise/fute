@@ -1,0 +1,645 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.celylog.curam.service.security;
+
+import com.celylog.curam.model.dao.DefaultEntityModel;
+import com.celylog.curam.model.entities.Country;
+import com.celylog.curam.model.entities.District;
+import com.celylog.curam.model.entities.Utilisateur;
+import com.celylog.curam.service.DaoService;
+import com.celylog.curam.service.DefaultService;
+import com.celylog.curam.utils.BasicFonctions;
+import static com.celylog.curam.utils.BasicFonctions.*;
+import com.celylog.curam.utils.GenericParamName;
+import com.celylog.curam.utils.LiveStatus;
+import com.celylog.curam.utils.ObjectUtils;
+import static com.celylog.curam.utils.ObjectUtils.getCode;
+import static com.celylog.curam.utils.ObjectUtils.getFieldValue;
+import static com.celylog.curam.utils.ObjectUtils.setFieldValue;
+import com.celylog.curam.utils.StringUtils;
+import com.celylog.curam.utils.security.MacCrypto;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.util.FieldUtils;
+import org.springframework.stereotype.Service;
+
+/**
+ *
+ * @author Nono
+ */
+@Service
+public class FormService extends DaoService {
+
+    @Autowired
+    DefaultService dao;
+
+    public void init() {
+
+    }
+
+//    public void initSession(HttpSession session) {
+//        try {
+//            initLanguagesSession(session);
+//            initCountriesSession(session);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    public void initLanguagesSession(HttpSession session) {
+//        List<Languages> lLanguages = dao.getAll("select c  from Languages c where  c.available = 1  order by c.name");
+//        session.setAttribute("languages", lLanguages);
+//        Locale locale = LocaleContextHolder.getLocale();
+//        String lang = locale.toString();
+//        if (session.getAttribute("appliLang") == null) {
+//            session.setAttribute("appliLang", lang);
+//        }
+//    }
+    public void initCountriesSession(HttpSession session) {
+        List<Country> lcountry = dao.getAll("select c  from Country c where  c.available = 1  order by c.name");
+        session.setAttribute("countries", lcountry);
+    }
+
+    public String setSignature(Field sf, List<Field> listFields, Object o) {
+        String clairSignature = "";
+        String signature = "";
+        try {
+            // on parcourt tous les champs de la table pour concaténer les valeurs afin d'en générer la signature
+            for (Field f : listFields) {
+                String val = FieldUtils.getFieldValue(o, f.getName()) + "";
+                clairSignature += !BasicFonctions.estVide(val) ? val : "";
+            }
+            // on utilise ici la signature MACMD5 pour générer la signature
+            signature = MacCrypto.MACMD5(clairSignature);
+            ObjectUtils.setFieldValue(sf, o, signature);// on met alors à jour le champs signature
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return signature;
+    }
+
+    public void setLiveStatus(Field f, Object obj, String liveStatus) {
+        try {
+            if (f.getName().equalsIgnoreCase(GenericParamName.liveStatus)) {
+                ObjectUtils.setFieldValue(f, obj, liveStatus);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void setAutomatiqueFields(HttpSession session, Field f, String operation, Object obj, boolean isNew) {
+        try {
+            if (f.getName().equalsIgnoreCase(GenericParamName.createdDateTime) && (operation.startsWith(GenericParamName.PREFIXE_NEW) || isNew)) {
+                ObjectUtils.setFieldValue(f, obj, getCurrentTimeStamp());
+            }
+//            if (f.getName().equalsIgnoreCase(GenericParamName.createdDate) && (operation.startsWith(GenericParamName.PREFIXE_NEW) || isNew)) {
+//                setFieldValue(f, obj, BasicFonctions.getCurrentSqlDate());
+//            }
+//            if (f.getName().equalsIgnoreCase(GenericParamName.createdHour) && (operation.startsWith(GenericParamName.PREFIXE_NEW) || isNew)) {
+//                setFieldValue(f, obj, getCurrentSqlHour());
+//            }
+//            if (f.getName().equalsIgnoreCase(GenericParamName.DATE_HEURE_MAJ)) {
+//                setFieldValue(f, obj, getCurrentTimeStamp());
+//            }
+            if (f.getName().equalsIgnoreCase(GenericParamName.lastUpdatedDateTime)) {
+                setFieldValue(f, obj, getCurrentTimeStamp());
+            }
+
+//            User ou = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            List<Users> leut = dao.getAll("select u  from Users u where  u.login like  '" + ou.getUsername() + "' ");
+            Utilisateur user = (Utilisateur) session.getAttribute("currentUser");
+            long userId = 0;
+            if (user != null) {
+                userId = user.getId();
+            } else {
+                User ou = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                if (!ou.equals("anonymousUser")) {
+                    List<Utilisateur> leut = dao.getAll("select u  from Utilisateur u where  u.login like  '" + ou.getUsername() + "' ");
+                    if (!leut.isEmpty()) {
+                        user = leut.get(0);
+                        userId = user.getId();
+                    }
+                }
+            }
+
+            if (f.getName().equalsIgnoreCase(GenericParamName.userId)) {
+                setFieldValue(f, obj, userId);
+            }
+            if (f.getName().equalsIgnoreCase(GenericParamName.creatorId) && (operation.startsWith(GenericParamName.PREFIXE_NEW) || isNew)) {
+                setFieldValue(f, obj, userId);
+            }
+            if (f.getName().equalsIgnoreCase(GenericParamName.lastModifierId)) {
+                setFieldValue(f, obj, userId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Object add(HttpServletRequest request, HttpSession session, boolean post) throws Exception {
+//        String page = request.getParameter("page_name");
+        try {
+            Map<String, String[]> mapParameters = request.getParameterMap();
+            String categorie = mapParameters.get(GenericParamName.ENTITY)[0];
+            //On récupère la liste des champs de la catégorie
+            List<Field> listfields = DefaultEntityModel.getfields(categorie);
+            // on récupère la liste des colones de la catégorie
+            List<Field> listfieldscolumns = DefaultEntityModel.getfieldscolumns(categorie);
+            // String operation = mapParameters.get(GenericParamName.OPERATION)[0];
+            // on crée un instance de l'entité donnée par la catégorie
+            Class classcategorie = Class.forName(GenericParamName.packageentity + categorie);
+            Object o = classcategorie.newInstance();
+            for (Field f : listfields) {
+                if (mapParameters.get(f.getName()) == null) {
+                    continue;
+                }
+                // on met à jour les champs automatiques
+                // setAutomatiqueFields(f, operation, o);
+                // on met automatiquement à jour tous les champs du formulaire
+                if (listfieldscolumns.contains(f)) {
+                    Object val = StringUtils.valueOf(f.getType(), mapParameters.get(f.getName())[0]);
+                    setFieldValue(f, o, val);
+                    // on met à jour les variable de session
+//                    session.setAttribute(f.getName(), val);
+                    request.setAttribute(f.getName(), val);
+                }
+            }
+            for (Field f : listfields) {
+                if (mapParameters.get(f.getName()) != null) {
+                    continue;
+                }
+                // on met à jour les champs automatiques
+                setAutomatiqueFields(session, f, "", o, true);
+                setLiveStatus(f, o, LiveStatus.ACTIVE);
+            }
+            for (Field f : listfields) {
+                if (f.getName().equals(GenericParamName.signature)) {
+                    // on met ici à jour la valeur de la signature en fonction des valeurs de tous les autrs champs de la table pour cet l'enregistrement
+                    setSignature(f, listfields, o);
+                    break;
+                }
+            }
+            if (post) {
+                dao.create(o);
+                request.setAttribute("successMessage", "message.successMessage.submit");
+            }
+            return o;
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "message.errorMessage.submit");
+            return null;
+        }
+//        return page;
+    }
+
+    public Object add(HttpServletRequest request, HttpSession session, String categorie, boolean post) throws Exception {
+//        String page = request.getParameter("page_name");
+        try {
+            Map<String, String[]> mapParameters = request.getParameterMap();
+            //On récupère la liste des champs de la catégorie
+            List<Field> listfields = DefaultEntityModel.getfields(categorie);
+            // on récupère la liste des colones de la catégorie
+            List<Field> listfieldscolumns = DefaultEntityModel.getfieldscolumns(categorie);
+            // String operation = mapParameters.get(GenericParamName.OPERATION)[0];
+            // on crée un instance de l'entité donnée par la catégorie
+            Class classcategorie = Class.forName(GenericParamName.packageentity + categorie);
+            Object o = classcategorie.newInstance();
+            for (Field f : listfields) {
+                if (mapParameters.get(f.getName()) == null) {
+                    continue;
+                }
+                // on met à jour les champs automatiques
+                // setAutomatiqueFields(f, operation, o);
+                // on met automatiquement à jour tous les champs du formulaire
+                if (listfieldscolumns.contains(f)) {
+                    Object val = StringUtils.valueOf(f.getType(), mapParameters.get(f.getName())[0]);
+                    setFieldValue(f, o, val);
+                    // on met à jour les variable de session
+//                    request.setAttribute(f.getName(), val);
+                    request.setAttribute(f.getName(), val);
+                }
+            }
+            for (Field f : listfields) {
+                if (mapParameters.get(f.getName()) != null) {
+                    continue;
+                }
+                // on met à jour les champs automatiques
+                setAutomatiqueFields(session, f, "", o, true);
+                setLiveStatus(f, o, LiveStatus.ACTIVE);
+            }
+            for (Field f : listfields) {
+                if (f.getName().equals(GenericParamName.signature)) {
+                    // on met ici à jour la valeur de la signature en fonction des valeurs de tous les autrs champs de la table pour cet l'enregistrement
+                    setSignature(f, listfields, o);
+                    break;
+                }
+            }
+            if (post) {
+                dao.create(o);
+                request.setAttribute("successMessage", "message.successMessage.submit");
+            }
+            return o;
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "message.errorMessage.submit");
+            return null;
+        }
+//        return page;
+    }
+
+    public List<Object> find(HttpServletRequest request, HttpSession session, String categorie, boolean post) throws Exception {
+//        String page = request.getParameter("page_name");
+//        try {
+//            Map<String, String[]> mapParameters = request.getParameterMap();
+//            //On récupère la liste des champs de la catégorie
+//            List<Field> listfields = DefaultEntityModel.getfields(categorie);
+//            // on récupère la liste des colones de la catégorie
+//            List<Field> listfieldscolumns = DefaultEntityModel.getfieldscolumns(categorie);
+//            // String operation = mapParameters.get(GenericParamName.OPERATION)[0];
+//            // on crée un instance de l'entité donnée par la catégorie
+//            Class classcategorie = Class.forName(GenericParamName.packageentity + categorie);
+//            Object o = classcategorie.newInstance();
+//            int rowId = 0;
+//            String query = "select t from " + categorie + " t where t.id = '" + rowId + "'";
+//            List<Object> listO = dao.getAll(query);
+//            String [] listFields = new String []{};
+//            for (Field f : listfields) {
+//                if (mapParameters.get(f.getName()) == null) {
+//                    continue;
+//                }else{
+//                    
+//                }
+//                // on met à jour les champs automatiques
+//                // setAutomatiqueFields(f, operation, o);
+//                // on met automatiquement à jour tous les champs du formulaire
+//                if (listfieldscolumns.contains(f)) {
+//                    Object val = StringUtils.valueOf(f.getType(), mapParameters.get(f.getName())[0]);
+//                    setFieldValue(f, o, val);
+//                    // on met à jour les variable de session
+////                    request.setAttribute(f.getName(), val);
+//                    request.setAttribute(f.getName(), val);
+//                }
+//            }
+//
+//            return o;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            request.setAttribute("errorMessage", "message.errorMessage.submit");
+//            return null;
+//        }
+        return null;
+    }
+
+    /**
+     *
+     * @param request
+     * @param o
+     * @param categorie
+     * @throws Exception CEtte methode permet de mettre à jour les variables de
+     * requette pour la mise à jour d'un champs
+     */
+    public void setEntitySessionInForm(HttpServletRequest request, Object o, String categorie) throws Exception {
+        try {
+            //On récupère la liste des champs de la catégorie
+            List<Field> listfields = DefaultEntityModel.getfields(categorie);
+            // on récupère la liste des colones de la catégorie
+            List<Field> listfieldscolumns = DefaultEntityModel.getfieldscolumns(categorie);
+            for (Field f : listfields) {
+                // on met à jour les champs automatiques
+                // on met automatiquement à jour tous les champs du formulaire
+                if (listfieldscolumns.contains(f)) {
+                    Object objvalue = getFieldValue(f, o);
+                    // on met à jour les variable de session
+                    request.setAttribute(f.getName(), objvalue);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        return page;
+    }
+
+    public Object update(HttpServletRequest request, HttpSession session, boolean post) throws Exception {
+        try {
+            Map<String, String[]> mapParameters = request.getParameterMap();
+            String categorie = mapParameters.get(GenericParamName.ENTITY)[0];
+            List<Field> listfields = DefaultEntityModel.getfields(categorie);
+            List<Field> listfieldscolumns = DefaultEntityModel.getfieldscolumns(categorie);
+//            String operation = mapParameters.get(GenericParamName.OPERATION)[0];
+            String operation = "";
+//            List listresult = (List) session.getAttribute(GenericParamName.RESULT_SQLSEARCH_ENTITY + categorie);
+            String rowId_ = request.getParameter("rowId");
+            if (rowId_ != null) {
+                int rowId = 0;
+                rowId = Integer.parseInt(rowId_);
+                Class classcategorie = Class.forName(GenericParamName.packageentity + categorie);
+                Object o = null;
+                String query = "select t from " + categorie + " t where t.id = '" + rowId + "'";
+                List<Object> listO = dao.getAll(query);
+                if (!listO.isEmpty()) {
+                    o = listO.get(0);
+                } else {
+                    o = classcategorie.newInstance();
+                }
+
+                // on  met à jour les valeur de l'instance de l'entité donnée par la catégorie
+                for (Field f : listfields) {
+                    if (mapParameters.get(f.getName()) == null) {
+                        continue;
+                    }
+                    // on met à jour les champs automatiques
+//                setAutomatiqueFields(f, operation, o, false);
+                    // on met automatiquement à jour tous les champs du formulaire
+                    if (listfieldscolumns.contains(f)) {
+                        Object val = StringUtils.valueOf(f.getType(), mapParameters.get(f.getName())[0]);
+                        setFieldValue(f, o, val);
+                        // on met à jour les variable de session
+//                        session.setAttribute(f.getName(), val);
+                        request.setAttribute(f.getName(), val);
+                    }
+                }
+                for (Field f : listfields) {
+                    if (mapParameters.get(f.getName()) != null) {
+                        continue;
+                    }
+                    // on met à jour les champs automatiques
+                    setAutomatiqueFields(session, f, operation, o, false);
+                    setLiveStatus(f, o, LiveStatus.ACTIVE);
+                }
+                for (Field f : listfields) {
+                    if (f.getName().equals(GenericParamName.signature)) {
+                        // on met ici à jour la valeur de la signature en fonction des valeurs de tous les autrs champs de la table pour cet l'enregistrement
+                        setSignature(f, listfields, o);
+                        break;
+                    }
+                }
+
+                if (post) {
+                    dao.update(o);
+                    request.setAttribute("successMessage", "message.successMessage.update");
+                    return o;
+                } else {
+                    return o;
+                }
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "message.errorMessage.update");
+            return null;
+        }
+    }
+
+    public Object update(HttpServletRequest request, HttpSession session, String categorie, Object o, boolean post) throws Exception {
+        try {
+            Map<String, String[]> mapParameters = request.getParameterMap();
+            List<Field> listfields = DefaultEntityModel.getfields(categorie);
+            List<Field> listfieldscolumns = DefaultEntityModel.getfieldscolumns(categorie);
+            String operation = "";
+            if (o != null) {
+                // on  met à jour les valeur de l'instance de l'entité donnée par la catégorie
+                for (Field f : listfields) {
+                    if (mapParameters.get(f.getName()) == null) {
+                        continue;
+                    }
+                    // on met à jour les champs automatiques
+//                setAutomatiqueFields(f, operation, o, false);
+                    // on met automatiquement à jour tous les champs du formulaire
+                    if (listfieldscolumns.contains(f)) {
+                        Object val = StringUtils.valueOf(f.getType(), mapParameters.get(f.getName())[0]);
+                        setFieldValue(f, o, val);
+                        // on met à jour les variable de session
+//                        session.setAttribute(f.getName(), val);
+                        request.setAttribute(f.getName(), val);
+                    }
+                }
+                for (Field f : listfields) {
+                    if (mapParameters.get(f.getName()) != null) {
+                        continue;
+                    }
+                    // on met à jour les champs automatiques
+                    setAutomatiqueFields(session, f, operation, o, false);
+                    setLiveStatus(f, o, LiveStatus.ACTIVE);
+                }
+                for (Field f : listfields) {
+                    if (f.getName().equals(GenericParamName.signature)) {
+                        // on met ici à jour la valeur de la signature en fonction des valeurs de tous les autrs champs de la table pour cet l'enregistrement
+                        setSignature(f, listfields, o);
+                        break;
+                    }
+                }
+
+                if (post) {
+                    dao.update(o);
+                    request.setAttribute("successMessage", "message.successMessage.update");
+                    return o;
+                } else {
+                    return o;
+                }
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "message.errorMessage.update");
+            return null;
+        }
+    }
+
+    public Object delete(HttpServletRequest request, HttpSession session, boolean post) throws Exception {
+        try {
+            Map<String, String[]> mapParameters = request.getParameterMap();
+            String categorie = mapParameters.get(GenericParamName.ENTITY)[0];
+            List<Field> listfields = DefaultEntityModel.getfields(categorie);
+//            List<Field> listfieldscolumns = DefaultEntityModel.getfieldscolumns(categorie);
+//            String operation = mapParameters.get(GenericParamName.OPERATION)[0];
+            String operation = "";
+//            List listresult = (List) session.getAttribute(GenericParamName.RESULT_SQLSEARCH_ENTITY + categorie);
+//            int rowId = Integer.parseInt(request.getParameter("rowId"));
+//            Class classcategorie = Class.forName(GenericParamName.packageentity + categorie);
+//            Object o = null;
+            String rowId_ = request.getParameter("rowId");
+            if (rowId_ != null) {
+                int rowId = 0;
+                rowId = Integer.parseInt(rowId_);
+                Class classcategorie = Class.forName(GenericParamName.packageentity + categorie);
+                Object o = null;
+                String query = "select t from " + categorie + " t where t.id = '" + rowId + "'";
+                List<Object> listO = dao.getAll(query);
+                if (!listO.isEmpty()) {
+                    o = listO.get(0);
+                    for (Field f : listfields) {
+                        if (mapParameters.get(f.getName()) != null) {
+                            continue;
+                        }
+                        // on met à jour les champs automatiques
+                        setAutomatiqueFields(session, f, operation, o, false);
+                        setLiveStatus(f, o, LiveStatus.DELETE);
+                    }
+                    for (Field f : listfields) {
+                        if (f.getName().equals(GenericParamName.signature)) {
+                            // on met ici à jour la valeur de la signature en fonction des valeurs de tous les autrs champs de la table pour cet l'enregistrement
+                            setSignature(f, listfields, o);
+                            break;
+                        }
+                    }
+                    if (post) {
+                        dao.update(o);
+                        request.setAttribute("successMessage", "message.successMessage.delete");
+                    }
+                    return o;
+                } else {
+                    request.setAttribute("errorMessage", "message.errorMessage.delete");
+                    return "";
+                }
+            } else {
+                return null;
+            }
+
+        } catch (Exception e) {
+//            e.printStackTrace();
+            request.setAttribute("errorMessage", "message.errorMessage.delete");
+            return "";
+        }
+    }
+
+//    protected Object updateTable(HttpServletRequest request, HttpSession session)
+//            throws ServletException, IOException {
+//        String page = request.getParameter("page_name");
+//        try {
+//            Map<String, String[]> mapParameters = request.getParameterMap();
+//            String categorie = mapParameters.get(GenericParamName.TABLENAME)[0];
+//            List<Field> listfields = DefaultEntityModel.getfields(categorie);
+//            List<Field> listfieldscolumns = DefaultEntityModel.getfieldscolumns(categorie);
+//
+//            List<Object> listePlanification = new ArrayList<>();
+//            String[] lRowId = request.getParameterValues("rowId");
+//            String[] lCodeReleveur = request.getParameterValues("codeReleveur");
+//            Class classcategorie = Class.forName(GenericParamName.packageentity + categorie);
+//            Object o = null;
+//            for (int i = 0; i < lCodeReleveur.length; i++) {
+//
+//                if (BasicFonctions.estVide(lRowId[i])) {
+//                    o = classcategorie.newInstance();
+//                } else {
+//                    String query = "select t from " + categorie + " t where t.code = '" + lRowId[i] + "'";
+//                    List<Object> listO = dao.getAll(query);
+//
+//                    if (!listO.isEmpty()) {
+//                        o = listO.get(0);
+//                    }
+//                }
+//                for (Field f : listfields) {
+//                    if (listfieldscolumns.contains(f)) {
+//                        Object val = null;
+////                        val = StringUtils.valueOf(f.getType(), mapParameters.get(f.getName())[i]);
+//                        String[] pV = request.getParameterValues(f.getName());
+//                        if (pV != null) {
+//                            String valF = (String) pV[i];
+//                            val = StringUtils.valueOf(f.getType(), valF);
+//                            setFieldValue(f, o, val);
+//                        }
+//                    }
+//                }
+//
+//                o = dao.update(o);
+//                listePlanification.add(o);
+//            }
+//
+//            String moiTourne = (String) request.getParameter("moiTourne");
+//            String anneeTourne = (String) request.getParameter("anneeTourne");
+//            if (BasicFonctions.estVide(moiTourne)) {
+//                moiTourne = BasicFonctions.getCurrentMonth();
+//            }
+//            if (BasicFonctions.estVide(anneeTourne)) {
+//                anneeTourne = BasicFonctions.getCurrentYear();
+//            }
+//            request.setAttribute("moiTourne", moiTourne);
+//            request.setAttribute("anneeTourne", anneeTourne);
+//
+//            session.setAttribute("listePlanification", listePlanification);
+//            request.setAttribute("sucessMessage", "Mis à jour effectuée avec succès!");
+//        } catch (Exception e) {
+////            request.setAttribute("errorMessage", "Une erreur s'est produite lors de l'enregistrement!");
+//            e.printStackTrace();
+//        }
+//        return page;
+//    }
+    protected Object deletePermanently(HttpServletRequest request, HttpServletResponse response, boolean post)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String page = request.getParameter("page_name");
+        try {
+            String entity = (String) request.getParameter("entity");
+            String row_code = (String) request.getParameter("rowId");
+            String page1 = (String) request.getParameter("page");
+//            if (!BasicFonctions.estVide(page1)) {
+//                page = page1;
+//            }
+            String query = "select t from " + entity + " t where t.code = '" + row_code + "'";
+            List<Object> listO = dao.getAll(query);
+            if (!listO.isEmpty()) {
+                Object o = listO.get(0);
+
+                Object ocode = getCode(o);
+//                dao.update(o);// au lieu de supprimer la donnée de façon permanante dans la base de donnée on lui affecte le statut supprimé
+                dao.deleteById(StringUtils.valueOf(Integer.class, ocode.toString()), o.getClass());
+                if (post) {
+                    listO.remove(o);
+                    request.setAttribute("sucessMessage", "Supréssion  effectuée avec succès!");
+                }
+            } else {
+                request.setAttribute("errorMessage", "Aucun enregistrement ne correspond au code: '" + row_code + "' !");
+//                request.getRequestDispatcher(page + ".jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+//            request.setAttribute("errorMessage", "Une erreur s'est produite lors de l'enregistrement!");
+            request.getRequestDispatcher(page + ".jsp").forward(request, response);
+            e.printStackTrace();
+        } finally {
+            out.close();
+        }
+        return page;
+    }
+
+    public Object setAllAutomatiqueFields(HttpSession session, String entity, boolean isNew, Object obj) {
+        try {
+            List<Field> listFields = DefaultEntityModel.getfields(entity); // ceci nous permettra de fabriquer la signature de l'enregistrement
+//            Class classcategorie = Class.forName(entity);
+//            Object obj = classcategorie.newInstance();
+            for (Field f : listFields) {
+                setAutomatiqueFields(session, f, "", obj, isNew);
+            }
+            // ici on met à jour la signature après avoir complété tous les autres champs automatiques
+            for (Field f : listFields) {
+                if (f.getName().equalsIgnoreCase(GenericParamName.signature)) {
+                    setFieldValue(f, obj, setSignature(f, listFields, obj));
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+}

@@ -1,0 +1,54 @@
+<%-- 
+    Document   : chooseprofil
+    Created on : 15 janv. 2015, 10:51:17
+    Author     : Sergeo
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<jsp:include page="header.jsp"/>
+
+    <jsp:include page="top_page.jsp"/>
+
+    <%--<jsp:include page="menu_header.jsp"/>--%>
+
+    <div class="container" style="padding-top: 60px">
+        <legend><spring:message code="form.loginProfile"/></legend>
+        <div class="col-sm-10 signup-form" style=" padding: 20px 10% 20px 10%; border-right:   1px solid #F0F0E9; border-radius: 10px; ">
+
+            <c:if test="${!empty SPRING_SECURITY_LAST_EXCEPTION.message }">
+                <div class="alert alert-error alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <spring:message code="message.errorMessage.loginProfile"/>
+                </div>
+            </c:if>
+            <form role="form" action="<c:url value= "/chooseprofil" />"  method="post">                
+                <div class="row center-block curam_profil">                      
+                    <c:forEach var="profil" items="${currentUserProfils}" >
+                        <div class="col-lg-3 center-block">
+                            <button type="submit" name="profil" value="${profil.id}" class="btn btn-block btn-success ">${profil.nom}</button> 
+                        </div>
+                    </c:forEach>                    
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- title end -->
+
+    <!-- footer start -->
+    <div class="clear"></div>
+    <footer class="templatemo_footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    Copyright © 2014 Celylog
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer end --> 
+    <!-- templatemo 407 solidity -->
+</body>
+</html>

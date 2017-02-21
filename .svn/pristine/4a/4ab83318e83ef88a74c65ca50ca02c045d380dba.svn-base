@@ -1,0 +1,76 @@
+<%-- 
+    Document   : polices
+    Created on : 15 janv. 2015, 18:34:16
+    Author     : user
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<script type="text/javascript">
+
+</script>
+<jsp:include page="header.jsp"/>
+<jsp:include page="top_page.jsp"/>
+<jsp:include page="menu_header.jsp"/>     
+<div id="menu-container">
+    <div class="divs">        
+        <div class="content homepage" id ="menu-8">
+            <div class="container">
+                <jsp:include page="submenus.jsp"/>
+                <div class="row">
+                    <div class="col-md-2 col-sm-6">
+                        <jsp:include page="operations.jsp"/>
+                    </div>
+                    <div class="col-md-10 col-sm-6 fa">
+                        <h4>Profils</h4>
+                        <table class="table table-condensed table-hover table-responsive">                
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nom</th>
+                                    <th>typePolice</th>
+                                    <th>Montant Prime</th>
+                                    <th>Active</th>
+                                    <th>Date Activation</th>
+                                    <th>Date Modification</th>
+                                    <th>Date Création</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="police" items="${listePoliceUser}">
+                                    <tr>
+                                        <td>${police.id}</td>
+                                        <td>${police.libelle}</td>
+                                        <td>${police.typePolice}</td>
+                                        <td>${police.active}</td>
+                                        <td>${police.dateActivation}</td>
+                                        <td>${police.dateModification}</td>
+                                        <td>${police.dateCreation}</td>
+                                        <td class="text-justify">
+                                            <a  class='fa fa-edit tools' data-toggle="modal"  data-target="#editRecord" title='Modifier'></a>
+                                            <a  class='fa fa-trash-o tools' data-toggle="modal" data-target="#deleteRecord" title='Supprimer'></a>
+                                            <!--<a class="fa fa-eject tools"  title="Disable"></a>-->
+                                        </td>
+                                        
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                        <div class="clear"></div>
+                    </div>                
+                </div>
+            </div>    
+        </div>    
+        <div class="modal fade" id="editRecord" tabindex="-1" role="dialog" aria-labelledby="editRecord" aria-hidden="true">
+            <%--<jsp:include page="_editRecord.jsp"/>--%>
+        </div>
+        <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="editContactLabel" aria-hidden="true">
+            <jsp:include page="_deleteRecord.jsp"/>
+        </div>
+        <jsp:include page="headcontent.jsp"/>
+
+    </div>
+    <jsp:include page="footer.jsp"/>

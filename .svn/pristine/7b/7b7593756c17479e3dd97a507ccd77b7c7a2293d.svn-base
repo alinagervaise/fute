@@ -1,0 +1,32 @@
+<%-- 
+    Document   : manageContact
+    Created on : 5 nov. 2014, 07:36:42
+    Author     : Nono Guy
+--%>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+<%--<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>--%>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+            <a data-dismiss="modal" class="btn pull-right"><spring:message code="retour"/></a>
+            <h4 class="modal-title"><i class="fa fa-trash-o">&nbsp;&nbsp;<spring:message code='label.contactDeletion'/></i></h4>
+        </div>
+        <form action="<c:url value="/delete" />" id="confirmDelete" method="post">
+
+            <div class=" center" style="padding-left: 20%">
+                <br>
+                <input type="hidden" id="rowId" name="rowId" />
+                <spring:message code="message.confirmeDelete"/>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="entity" value="Contacts"/>
+                <button type="submit" name="delete" class="btn btn-danger pull-right" ><i class="fa fa-trash-o"></i> <spring:message code="form.del"/></button>
+                <!--<button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>-->
+            </div>
+        </form>
+    </div>
+</div>
